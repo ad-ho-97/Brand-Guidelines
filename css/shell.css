@@ -1,0 +1,488 @@
+    /* ═══════════════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--gray-light);
+      border-right: 1px solid var(--gray-border);
+      overflow-y: auto;
+      scrollbar-width: none;
+      position: relative;
+      z-index: 10;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+
+    .sidebar-logo-wrap {
+      display: block; text-decoration: none; color: inherit; cursor: pointer;
+      padding: 26px 26px 22px;
+      border-bottom: 1px solid var(--gray-border);
+      position: sticky;
+      top: 0;
+      background: var(--gray-light);
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+    .sidebar-logo-wrap img {
+      height: 28px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+    }
+    /* Fallback text logo if image fails */
+    .sidebar-logo-text {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      display: none;
+    }
+
+    .nav-section { border-bottom: 1px solid var(--gray-border); }
+
+    .nav-section-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 26px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black);
+      text-align: left;
+    }
+    .nav-section-btn:hover { background: rgba(0,0,0,0.03); }
+    .nav-chevron {
+      width: 14px; height: 14px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .nav-chevron.open { transform: rotate(180deg); }
+
+    .nav-items { overflow: hidden; }
+
+    .nav-parent {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 26px 11px 52px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.12s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font);
+    }
+    .nav-parent:hover { background: rgba(0,0,0,0.04); }
+    .nav-parent.active { color: var(--purple); font-weight: 600; }
+    .nav-parent.active-section { font-weight: 500; color: var(--black); }
+    .ext-icon { width: 13px; height: 13px; opacity: 0.3; flex-shrink: 0; }
+    .nav-lock { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.45; }
+    .nav-locked { cursor: not-allowed; color: #9a9a9a !important; }
+    .nav-locked:hover { background: none !important; }
+
+    .nav-children { overflow: hidden; }
+    .nav-child {
+      display: block;
+      padding: 8px 26px 8px 68px;
+      font-size: 12.5px;
+      font-weight: 400;
+      color: #8A8A8A;
+      text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-child:hover { background: rgba(0,0,0,0.04); color: var(--black); }
+    .nav-child.active { color: var(--purple); font-weight: 500; }
+    .nav-parent-chevron { opacity: 0.55; }
+    .nav-parent.active-section .nav-parent-chevron { opacity: 0.8; }
+
+    /* ═══════════════════════════════════════════════
+       MAIN CONTENT AREA
+    ═══════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100vh;
+      scroll-behavior: smooth;
+    }
+    .main::-webkit-scrollbar { width: 5px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ═══════════════════════════════════════════════
+       SECTION LAYOUT
+    ═══════════════════════════════════════════════ */
+    .section {
+      padding: var(--section-gap) var(--px);
+      border-bottom: 1px solid var(--gray-border);
+      max-width: calc(var(--content-max) + var(--px) * 2);
+    }
+    .section:last-of-type { border-bottom: none; }
+
+    /* Full-width Figma screenshot inside section */
+    .section-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    /* Two-column heading row */
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 56px;
+    }
+    .section-head.no-body { margin-bottom: 0; }
+    .section-title {
+      font-size: clamp(52px, 6.3vw, 81px);
+      font-weight: 300;
+      letter-spacing: -2.7px;
+      line-height: 1;
+      flex-shrink: 0;
+      max-width: 480px;
+    }
+    .section-title.sm {
+      font-size: clamp(32px, 3.4vw, 44px);
+      letter-spacing: -0.9px;
+    }
+    .section-desc {
+      font-size: 21px;
+      line-height: 1.45;
+      font-weight: 300;
+      color: #222;
+      max-width: 583px;
+      padding-top: 8px;
+    }
+    .section-desc.sm { font-size: 14px; max-width: 640px; }
+
+    /* Btn */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #2a2a2a; }
+
+    /* Resources */
+    .resources-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--black);
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .resource-item:hover { border-color: #aaa; background: #fafafa; }
+    .resource-icon { width: 16px; height: 16px; opacity: 0.5; }
+
+    /* Iconography page */
+    .full-img { width: 100%; height: auto; display: block; border-radius: 10px; overflow: hidden; }
+    .full-img img { width: 100%; height: auto; display: block; }
+    .icon-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--gray-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .icon-grid-2col img { width: 100%; height: auto; display: block; background: #fff; }
+
+    /* Video sections */
+    .section-video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       FIGMA-FAITHFUL SECTION STACK (Logo & Typography)
+       Sections separated by whitespace only — no borders.
+       Logo page rhythm: 96px · Typography page rhythm: 48px
+    ═══════════════════════════════════════════════ */
+    /* Match the Figma canvas colour (Surface light/grey-1) so the
+       exported section images blend seamlessly — same as in Figma. */
+    .fig-stack {
+      max-width: calc(var(--content-max) + var(--px) * 2);
+      padding: 80px var(--px) 0;
+    }
+    .fig-sec { margin-bottom: 96px; }
+    .fig-stack.gap-48 .fig-sec { margin-bottom: 48px; }
+    .fig-sec img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* Hairline divider under a page header (Typography) */
+    .fig-divider {
+      border: none;
+      border-top: 1px solid var(--gray-border);
+      margin: 48px 0 96px;
+    }
+
+    /* Page hero placeholder — one media slot under every page header (same box as Typography) */
+    .page-hero-ph {
+      position: relative; overflow: hidden;
+      aspect-ratio: 1254 / 506;
+      border-radius: 8px;
+      background: #f0f0f0;
+    }
+    .page-hero-ph > img, .page-hero-ph > video {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    /* Hero whose top edge dissolves into the page background: no fill, no top corners,
+       and a soft white fade laid over the top of the video */
+    .hero-blend-top { background: transparent; border-radius: 0 0 8px 8px; }
+    .hero-blend-top::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 30%; pointer-events: none;
+      background: linear-gradient(to bottom, #fff 0%, rgba(255,255,255,.9) 25%, rgba(255,255,255,.5) 60%, rgba(255,255,255,0) 100%);
+    }
+    /* ── Native Figma type system (exact values from the file) ── */
+    .fig-pagehead { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; }
+    .fig-pagehead h1 {
+      font-family: var(--hd);
+      font-weight: 400; /* Halyard Display Regular */
+      font-size: clamp(52px, 5.5vw, 81px);
+      line-height: 1;
+      letter-spacing: -2.7px;
+      color: #000;
+    }
+    .fig-pagehead .intro {
+      font-family: var(--ht);
+      font-weight: 300;
+      font-size: 21px;
+      line-height: 1.4;
+      color: #000;
+      max-width: 685px;
+    }
+
+    .fig-head { margin-bottom: 48px; }
+    .fig-head h2 {
+      font-family: var(--hd);
+      font-weight: 400; /* Halyard Display Regular */
+      font-size: 44px;
+      line-height: 44px;
+      letter-spacing: -0.924px;
+      color: #000;
+    }
+    .fig-head.sm h2 { font-size: 28px; }
+    .fig-head .fh-desc {
+      font-family: var(--ht);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #000;
+      margin-top: 24px;
+      max-width: 827px;
+    }
+    .fig-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    .fig-btn {
+      font-family: var(--ht);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: #fff;
+      background: #222;
+      border: 1px solid #111;
+      border-radius: 8px;
+      padding: 8px 12px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .fig-btn:hover { background: #000; }
+    .fig-rounded { border-radius: 8px; }
+
+    /* Pixel-perfect canvases (fixed 1254px design space, scaled by JS to fit) */
+    .px-wrap { position: relative; }
+    .px-canvas { width: 1254px; transform-origin: top left; position: relative; }
+
+    /* Graceful fallback if an image link has expired */
+    .img-missing {
+      padding: 48px;
+      background: #fafafa;
+      border: 1px dashed #d5d5d5;
+      border-radius: 10px;
+      color: #999;
+      font-size: 13px;
+    }
+
+    /* ═══════════════════════════════════════════════
+       PAGE TRANSITION — gradient band sweeps left→right
+       while the page swaps underneath (glimm-style).
+       Colour is set per destination section in JS.
+    ═══════════════════════════════════════════════ */
+    #page-loader {
+      position: fixed;
+      left: 0; top: -30%; height: 160%;
+      width: 150vw;
+      z-index: 200;
+      transform: translateX(-190vw);
+      /* very soft glow: Purps merges into the section colour, feathered to
+         transparent on both sides. oklab keeps the purps→colour blend clean. */
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--l1, #8000FF) 40%,
+        var(--l2, #B266FF) 66%,
+        transparent 100%);
+      background: linear-gradient(90deg in oklab,
+        transparent 0%,
+        var(--l1, #8000FF) 40%,
+        var(--l2, #B266FF) 66%,
+        transparent 100%);
+      filter: blur(90px) saturate(1.1);
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+    /* Matches glimm defaults: sweepMs 1100, CSS `ease`, alpha swells
+       in a bell curve (faint → full → faint) for a smooth soft sweep. */
+    #page-loader.sweep { animation: pl-sweep 1.1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+    @keyframes pl-sweep {
+      0%   { transform: translateX(-190vw); opacity: 0; }
+      22%  { opacity: 0.88; }
+      50%  { opacity: 0.98; }
+      78%  { opacity: 0.88; }
+      100% { transform: translateX(150vw); opacity: 0; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    /* ═══════════════════════════════════════════════
+       MOBILE / TABLET  (pattern lifted from design.cash.app, measured at 375px)
+       – ≤1023px: sidebar → 88px top bar with a 40px hamburger; menu is a full-screen
+         white sheet re-using the same nav list; content gets 20px gutters and stacks.
+    ═══════════════════════════════════════════════ */
+    .m-topbar { display: none; }
+    @media (max-width: 1023px) {
+      :root { --px: 20px; --section-gap: 60px; --topbar-h: 88px; }
+
+      body { display: block; height: auto; overflow: auto; }
+      .main { height: auto; overflow: visible; padding-top: 88px; }
+
+      /* ── top bar: mark top-left, label under it, hamburger top-right ── */
+      .m-topbar {
+        display: block; position: fixed; top: 0; left: 0; right: 0; height: 88px;
+        background: #fff; border-bottom: 1px solid var(--gray-border); z-index: 60;
+      }
+      .m-topbar .m-mark { position: absolute; left: 15px; top: 15px; width: 28px; height: 28px; display: block; }
+      .m-topbar .m-mark img { width: 28px; height: 28px; display: block; object-fit: contain; }
+      .m-topbar .m-title {
+        position: absolute; left: 15px; top: 48px;
+        font-family: var(--ht); font-size: 16px; font-weight: 500; line-height: 19px; color: #000;
+        text-decoration: none;
+      }
+      .m-burger {
+        position: absolute; right: 10px; top: 20px; width: 40px; height: 40px;
+        border-radius: 50%; border: 1px solid var(--gray-border); background: #fff;
+        display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+      }
+      .m-burger i { position: relative; display: block; width: 12px; height: 12px; }
+      .m-burger i span {
+        position: absolute; left: 0; width: 12px; height: 2px; background: #000;
+        transition: transform .25s ease, opacity .2s ease, top .25s ease;
+      }
+      .m-burger i span:nth-child(1) { top: 0; }
+      .m-burger i span:nth-child(2) { top: 5px; }
+      .m-burger i span:nth-child(3) { top: 10px; }
+      body.menu-open .m-burger i span:nth-child(1) { top: 5px; transform: rotate(45deg); }
+      body.menu-open .m-burger i span:nth-child(2) { opacity: 0; }
+      body.menu-open .m-burger i span:nth-child(3) { top: 5px; transform: rotate(-45deg); }
+
+      /* ── menu sheet: the sidebar itself, fixed under the bar ── */
+      .sidebar {
+        position: fixed; top: 88px; left: 0; right: 0; bottom: 0;
+        width: auto; min-width: 0; height: auto;
+        background: #fff; border-right: none; z-index: 55;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        transform: translateY(-8px); opacity: 0; visibility: hidden;
+        transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
+      }
+      body.menu-open .sidebar { transform: none; opacity: 1; visibility: visible; transition: opacity .2s ease, transform .2s ease; }
+      body.menu-open { overflow: hidden; }
+      .sidebar .sidebar-logo-wrap { display: none; }
+      .nav-section { border-bottom: 1px solid var(--gray-border); }
+      .nav-section-btn { height: 40px; padding: 0 20px; font-size: 16px; }
+      .nav-parent { min-height: 30px; padding: 0 20px 0 40px; font-size: 16px; }
+      .nav-child { min-height: 33px; padding: 0 20px 0 40px; font-size: 16px; color: #848484; }
+
+      /* ── landing page: its own bar goes, the stage sits under ours ── */
+      .ov-topbar { display: none; }
+
+      /* ── content: 20px gutters, everything stacks ── */
+      .fig-stack { padding: 40px var(--px) 0; }
+      .fig-sec { margin-bottom: 56px; }
+      .fig-stack.gap-48 .fig-sec { margin-bottom: 40px; }
+      .fig-pagehead { flex-direction: column; gap: 8px; }
+      .fig-pagehead h1 { font-size: 52px; line-height: 52px; letter-spacing: -1.5px; }
+      .fig-pagehead .intro { font-size: 16px; line-height: 1.35; max-width: none !important; }
+      .fig-divider { margin: 24px calc(-1 * var(--px)) 40px; }
+      .fig-head { margin-bottom: 24px; }
+      .fig-head h2, .cu-text h2 { font-size: 28px; line-height: 32px; letter-spacing: -0.5px; }
+      .fh-desc, .cu-text p, .mo-body { font-size: 16px; }
+      .section { padding: 40px var(--px); }
+      .section-head { flex-direction: column; gap: 8px; margin-bottom: 24px; }
+      .section-title { font-size: 52px; letter-spacing: -1.5px; max-width: none; }
+      .section-desc { font-size: 16px; }
+
+      .cu-row, .lay-row, .combo-tool, .tsc-row { flex-direction: column; }
+      .cu-row { gap: 20px; }
+      .cu-text { max-width: none; flex: none; }
+      .lay-row > * { flex: none; width: 100%; }
+      .tsc-spec { flex: none; }
+      .combo-tool { gap: 12px; }
+      .ct-field { aspect-ratio: 399 / 420; }
+      .ct-cards { flex-direction: row; }
+      .ct-card { aspect-ratio: 4 / 3; }
+      .icon-grid-2col { grid-template-columns: 1fr; }
+      .ring-stage { height: calc(100vh - var(--topbar-h)); }
+      .page-footer { padding: 24px var(--px); }
+    }
+

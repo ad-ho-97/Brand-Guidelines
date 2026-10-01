@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/media-carousel.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent active-section" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: TYPOGRAPHY
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-typography">
+    <div class="fig-stack gap-48">
+
+      <!-- Native "Typography" page header: title left, intro right, hairline divider -->
+      <div class="fig-sec" id="typo-intro">
+        <div class="fig-pagehead">
+          <h1>Typography</h1>
+          <p class="intro" style="max-width:579px;">Typography is a core part of the Headout brand system. It helps us communicate with clarity and consistency across every product, campaign, and customer touchpoint. This system gives every team a shared foundation, so every experience feels recognizably Headout.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="typo-hero">
+        <div class="page-hero-ph">
+          <video autoplay loop muted playsinline>
+            <source src="assets/video/Halyard_type_header.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="our-typeface">
+        <div class="fig-head">
+          <h2>Our typeface</h2>
+          <p class="fh-desc" style="max-width:756px;">Halyard is our voice in type. Halyard Display carries the big, confident moments — titles that inspire people to go somewhere. Halyard Text carries the details that move them from inspiration to action. Two styles, eight weights, one system.</p>
+        </div>
+        <!-- Row 1: two specimen cards. Row 2: two live HTML animations (Osaka slant, New York flyer). -->
+        <div class="tf-grid">
+          <div class="tf-card" id="halyard-display"><img src="assets/images/type-halyard-display.jpg" alt="Halyard Display — we use it for titles that inspire people to go somewhere. 8 weights, 2 styles." /></div>
+          <div class="tf-card" id="halyard-text"><img src="assets/images/type-halyard-text.jpg" alt="Halyard Text — carries the details that help people move from inspiration to action. 8 weights, 2 styles." /></div>
+        </div>
+        <div class="tf-row">
+          <div class="tf-card tf-osaka"><iframe src="widgets/type-osaka/index.html" title="Halyard Display — Osaka slant animation" loading="lazy" scrolling="no"></iframe></div>
+          <div class="tf-card tf-flyer"><iframe src="widgets/type-location-card.html" title="Halyard Display — New York flyer weight animation" loading="lazy" scrolling="no"></iframe></div>
+        </div>
+      </div>
+
+
+      <!-- Type setting: fully native specimens -->
+      <div class="fig-sec" id="type-setting">
+        <div class="fig-head">
+          <h2>Type setting</h2>
+          <p class="fh-desc" style="max-width:756px;">Good typesetting requires a discerning eye. Below are some universal principles to follow when setting type that helps ensure consistency and high legibility.</p>
+        </div>
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1458; background:#f0f0f0;">
+          <img src="assets/images/type-setting.jpg" alt="Type setting — title, subtitle, body and small body specimens with size, leading and tracking" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Type setting — leading / spacing examples (carousel) -->
+      <div class="fig-sec" id="type-setting-examples">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Type setting</h2>
+            <p>Leading, tracking and measure do the quiet work. Headlines sit tight so they read as one shape; body copy gets room to breathe. Browse the examples to see the settings we rely on.</p>
+          </div>
+          <div class="cu-media">
+            <div class="mcar" data-carousel="typesetting"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Alignment — carousel with caption -->
+      <div class="fig-sec" id="typo-alignment">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Alignment</h2>
+            <p>Left-aligned, ragged-right is our default — it reads fastest and keeps layouts calm. Centre alignment is reserved for short, symmetrical moments; we never justify or right-align running text.</p>
+          </div>
+          <div class="cu-media">
+            <div class="mcar" data-carousel="alignment" data-auto="3500"></div>
+            <p class="cu-caption">Halyard Display is designed to create emphasis, not support long-form reading. Use it sparingly for moments that need visual impact, while body copy should remain in Halyard Text to prioritise clarity, comfort and readability.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Colour in typography -->
+      <div class="fig-sec" id="colour-in-typography">
+        <div class="fig-head">
+          <h2>Colour in typography</h2>
+          <p class="fh-desc" style="max-width:756px;">Good typesetting requires a discerning eye. Below are some universal principles to follow when setting type that helps ensure consistency and high legibility. Drag the sliders to explore the palette and see which text colour holds up on every shade.</p>
+        </div>
+        <!-- Live text-colour tool (self-contained, ships alongside this file) -->
+        <iframe src="widgets/brand-textcolor-tool.html"
+                title="Colour in typography — interactive text-colour tool"
+                allow="clipboard-write"
+                style="width:100%; height:540px; border:none; border-radius:8px; overflow:hidden; display:block; background:#F3E9FF;"
+                loading="lazy"></iframe>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Suggested text/background combinations -->
+      <div class="fig-sec" id="type-colour-combinations">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Suggested combinations</h2>
+            <p>Black type carries every tint and mid-tone; white type takes over on the deep shades. On the brightest hues — green, blue, yellow and orange — drop black to 70% opacity so it sits in the colour rather than on top of it.</p>
+          </div>
+          <div class="cu-media">
+            <img src="assets/images/type-colour-combinations.png" alt="Grid of Aa specimens showing recommended text colours on every palette tint and shade" style="display:block; width:100%; height:auto; border-radius:16px;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Incorrect usage: fully native text cards with strike-through -->
+      <div class="fig-sec" id="typo-incorrect-usage">
+        <div class="fig-head">
+          <h2>Incorrect usage</h2>
+          <p class="fh-desc" style="max-width:756px;">Avoid altering Halyard in ways that affect clarity, consistency, or readability. Keep casing, colour, spacing, weight, line height, and effects aligned with the Headout type system.</p>
+        </div>
+        <div class="iu-grid">
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-1.jpg" alt="All-caps headline with all-lowercase body" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid all caps and all lowercase.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-2.jpg" alt="Headline in one colour vs gradient and mixed colours" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Use one solid colour. Avoid gradients or mixed colours.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-3.jpg" alt="Comfortable, too-tight and too-loose letter spacing" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid letter spacing that is too tight or too loose.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-4.jpg" alt="Headline mixing regular and bold weights" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid mixing font weights within the same block of text.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-5.jpg" alt="Paragraph with comfortable vs cramped line height" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Keep enough space between lines for clear reading.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-6.jpg" alt="Headline with a drop shadow" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Do not apply shadows or effects to type.</figcaption></figure>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Typography</div>
+  </div><!-- /page-typography -->
+
+</main>
+
+<!-- Carousel fullscreen lightbox (shared) -->
+<div class="mcar-lightbox" id="mcar-lightbox" aria-hidden="true">
+    <button class="mlb-close" id="mlb-close" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="mlb-nav prev" id="mlb-prev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="mcar-lightbox-stage" id="mlb-stage"></div>
+    <button class="mlb-nav next" id="mlb-next" aria-label="Next">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+<script src="js/shell.js"></script>
+<script src="js/media-carousel.js"></script>
+<script src="js/typography.js"></script>
+</body>
+</html>

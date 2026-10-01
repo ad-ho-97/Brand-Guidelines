@@ -1,0 +1,43 @@
+    /* Halyard self-hosted at the weights the eevee design system defines:
+       300 Light · 500 Medium · 600 SemiBold · 700 Bold (no 400 in the system) */
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Light.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Regular.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/HalyardText-Book.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Medium.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/HalyardDisplay-SemiBold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Bold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/fonts/HalyardText-Light.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/HalyardText-Medium.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/HalyardText-SemiBold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/HalyardText-Bold.woff2') format('woff2'); }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #8000ff;
+      --black: #111111;
+      --white: #ffffff;
+      --gray-bg: #f5f5f5;
+      --gray-light: rgba(226,226,226,0.5);
+      --gray-border: #e0e0e0;
+      --gray-muted: #888;
+      --sidebar-w: 300px;
+      --content-max: 1278px;
+      --px: 96px;
+      --section-gap: 100px;
+      --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      /* Halyard: locally-installed Adobe faces first (all weights), then Headout's typekit kit, then DM Sans */
+      --hd: 'Halyard Display', halyard-display, 'DM Sans', -apple-system, sans-serif;
+      --ht: 'Halyard Text', halyard-text, 'DM Sans', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }

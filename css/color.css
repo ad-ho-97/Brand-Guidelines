@@ -1,0 +1,233 @@
+    /* ═══════════════════════════════════════════════
+       COLOUR PAGE — hover-rise swatch cards
+    ═══════════════════════════════════════════════ */
+    .col-row { display: flex; gap: 24px; }
+    .col-item { flex: 1; min-width: 0; }
+    .col-card {
+      position: relative;
+      aspect-ratio: 1 / 1.08;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s ease;
+    }
+    .col-card:hover {
+      transform: translateY(-14px);
+      box-shadow: 0 24px 48px rgba(17, 0, 41, 0.16);
+    }
+    .col-card.bordered { border: 1px solid rgba(159,159,159,0.4); }
+    .col-chip {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      max-width: calc(100% - 32px);
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      font-family: var(--ht);
+      font-size: 13.5px;
+      color: #111;
+    }
+    .col-chip .nm { font-weight: 500; }
+    .col-chip .hex { color: #555; border-left: 1px solid #e2e2e2; padding-left: 10px; }
+    .col-token {
+      margin-top: 12px;
+      font-family: var(--ht);
+      font-size: 13px;
+      color: #444;
+    }
+
+
+    /* Dropbox-style colour decks: overlapping top-rounded cards in a flat
+       band; hovering pulls a card up out of the stack (no grid backdrop).
+       Compact one-fold layout: small label + band per category. */
+    .deck-group { margin-bottom: 64px; }
+    .deck-group:last-child { margin-bottom: 0; }
+    .deck-lab {
+      font-family: var(--ht);
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .deck {
+      position: relative;
+      height: 74px;
+      z-index: 2;
+      /* clip card bottoms at the band edge, let pops rise above freely */
+      clip-path: inset(-240px -60px 0 -60px);
+    }
+    .deck-cluster { position: relative; flex: 1; }
+    .deck-cluster-labs { display: flex; margin-top: 10px; }
+    .deck-cluster-lab {
+      flex: 1;
+      font-family: var(--ht);
+      font-size: 12px;
+      font-weight: 500;
+      color: #888;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .deck-card {
+      position: absolute;
+      top: 0;
+      height: 190px;
+      border-radius: 18px 18px 0 0;
+      transition: transform 0.45s cubic-bezier(0.15, 0.5, 0.05, 1),
+                  width     0.45s cubic-bezier(0.15, 0.5, 0.05, 1),
+                  left      0.45s cubic-bezier(0.15, 0.5, 0.05, 1);
+      cursor: pointer;
+    }
+    .deck-card.lite { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10); }
+    .dk-info {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px 18px;
+      font-family: var(--ht);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.15s ease-in-out;
+      pointer-events: none;
+    }
+    .dk-info .hex { font-weight: 500; opacity: 0.75; }
+    .deck-card:hover .dk-info { opacity: 1; }
+    /* narrow slices: smaller label, name stacked above hex */
+    .deck-card.slim .dk-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      font-size: 12px;
+      padding: 12px 13px;
+    }
+
+
+    /* Black placeholder blocks (gradients, combos, purpose, incorrect) */
+    .cph {
+      background: #0d0d0f; border-radius: 16px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+    }
+    .cph .cph-tag {
+      color: rgba(255,255,255,0.42); font-family: var(--ht); font-size: 13px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 20px;
+    }
+    .cph .cph-tag svg { width: 26px; height: 26px; opacity: 0.5; }
+    .cpurpose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .cpurpose-card .cph { aspect-ratio: 292 / 401; }
+    .cpurpose-card h3 {
+      font-family: var(--hd); font-weight: 500; font-size: 22px; color: #000; margin-top: 18px;
+    }
+    .cpurpose-card p {
+      font-family: var(--ht); font-size: 13.5px; line-height: 1.45; color: #555; margin-top: 8px;
+    }
+    .cincorrect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    /* ── Interactive colour-blend tool (Suggested combinations) ── */
+    .combo-tool { display: flex; gap: 15px; width: 100%; }
+    .ct-field {
+      flex: 399 1 0; min-width: 0;
+      position: relative;
+      aspect-ratio: 399 / 506;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #101014;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+    .ct-field:active { cursor: grabbing; }
+    /* exact Figma field artwork per mood, crossfaded by opacity.
+       Scoped under .ct-field to beat the global `.fig-sec img{height:auto}` rule. */
+    .ct-field .ct-state {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      opacity: 0; transition: opacity 0.55s ease;
+      will-change: opacity;
+      pointer-events: none;
+    }
+    .ct-field .ct-state.on { opacity: 1; }
+    /* one frosted hexagon overlay — visible on every mood (fill + white edge) */
+    /* Frosted-glass hexagon: a backdrop-blurred layer clipped to the shape sits
+       under the SVG, which paints the lit gradient body, sheen, inner shadow and rim. */
+    .ct-hex-glass {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      clip-path: polygon(22.8% 49.4%, 33.3% 30.1%, 66.7% 30.1%, 77.9% 49.4%, 66.7% 69.9%, 33.3% 69.9%);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
+      backdrop-filter: blur(14px) saturate(1.15);
+    }
+    /* On light fields (yellow/green) pure white glass washes out into a flat slab, so key the
+       glass darker: thinner white top, a smoky bottom, an ink-tinted rim and a stronger inner shadow.
+       stop-color/stop-opacity are presentation attributes, so CSS can retune the SVG gradients. */
+    .ct-field.bright #ctHexFill stop:nth-child(1) { stop-opacity: 0.20; }
+    .ct-field.bright #ctHexFill stop:nth-child(2) { stop-opacity: 0.04; }
+    .ct-field.bright #ctHexFill stop:nth-child(3) { stop-color: #000; stop-opacity: 0.04; }
+    .ct-field.bright #ctHexSheen stop:nth-child(1) { stop-opacity: 0.22; }
+    /* rim stays white-keyed like the other moods — just a whisper of ink at the very bottom */
+    .ct-field.bright #ctHexRim stop:nth-child(1) { stop-opacity: 0.85; }
+    .ct-field.bright #ctHexRim stop:nth-child(2) { stop-color: #fff; stop-opacity: 0.40; }
+    .ct-field.bright #ctHexRim stop:nth-child(3) { stop-color: #000; stop-opacity: 0.06; }
+    .ct-field.bright .ct-hex { filter: drop-shadow(0 14px 28px rgba(0,0,0,0.18)) drop-shadow(0 2px 6px rgba(0,0,0,0.10)); }
+    .ct-field.bright .ct-hex-glass { backdrop-filter: blur(14px) saturate(1.05) brightness(0.97); -webkit-backdrop-filter: blur(14px) saturate(1.05) brightness(0.97); }
+    .ct-hex {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; pointer-events: none; z-index: 2;
+      filter: drop-shadow(0 14px 28px rgba(0,0,0,0.18)) drop-shadow(0 2px 6px rgba(0,0,0,0.10));
+    }
+    /* draggable handle — small glossy pearl */
+    .ct-dot {
+      position: absolute; left: 0; top: 0;
+      width: 25px; height: 25px; margin: -12.5px 0 0 -12.5px;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 32%, #ffffff 0%, #f7f7f7 55%, #e6e6e6 100%);
+      box-shadow:
+        0 4px 12px rgba(0,0,0,0.28),
+        0 1px 2px rgba(0,0,0,0.18),
+        inset 0 1px 1px rgba(255,255,255,0.9),
+        inset 0 -1px 2px rgba(0,0,0,0.08);
+      cursor: grab;
+      z-index: 3;
+    }
+    .ct-dot:active { cursor: grabbing; }
+    .ct-dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+    .ct-cards { flex: 398 1 0; min-width: 0; display: flex; flex-direction: column; gap: 15px; }
+    .ct-card {
+      flex: 1; position: relative; overflow: hidden;
+      border-radius: 16px; background: #0c0c0e;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* mood tint that will sit over the (future) images */
+    .ct-card::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(130% 120% at 50% 0%, var(--tint, #8A2BFF), transparent 72%);
+      opacity: 0.5; transition: opacity 0.2s ease;
+    }
+    .ct-card-tag {
+      position: relative; z-index: 1;
+      font-family: var(--ht); font-size: 12.5px; color: rgba(255,255,255,0.5);
+    }
+    .ct-card .ct-card-media {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; display: block; z-index: 0;
+    }
+    /* when a card holds real media, keep only a whisper of the mood tint */
+    .ct-card.has-media::after { opacity: 0.12; }
+    @media (max-width: 760px) {
+      .combo-tool { flex-direction: column; }
+      .ct-field { aspect-ratio: 399 / 380; }
+      .ct-cards { flex-direction: row; }
+    }
+

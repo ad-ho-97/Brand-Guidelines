@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/overview.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/" style="font-weight:600;color:var(--purple);">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <div class="page active" id="page-overview">
+    <div class="fig-stack gap-48">
+
+      <div class="fig-sec" id="overview-intro">
+        <div class="fig-pagehead">
+          <h1>Overview</h1>
+          <p class="intro" style="max-width:640px;">Everything that makes Headout look and feel like Headout, in one place. Start with the foundations — logo, colour, typography, layout, motion and iconography — and build from there.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="overview-grid">
+        <div class="ov-grid">
+          <div class="ov-col">
+          <a class="ov-card" href="/logo" aria-label="Logo">
+            <div class="ov-box ov-tall"><div class="ov-media"><img src="assets/images/logo-action-2.jpg" alt="" /></div><div class="ov-cap"><span class="ov-name">Logo</span><span class="ov-desc">The blimp and wordmark, and how to use them.</span></div></div>
+          </a>
+          <a class="ov-card" href="/typography" aria-label="Typography">
+            <div class="ov-box ov-tall"><div class="ov-media"><video src="assets/video/type-tile-loop.mp4" autoplay loop muted playsinline poster="" aria-label="Halyard type animation"></video></div><div class="ov-cap"><span class="ov-name">Typography</span><span class="ov-desc">Halyard Display and Text, set with care.</span></div></div>
+          </a>
+          <a class="ov-card" href="/motion" aria-label="Motion">
+            <div class="ov-box ov-tall"><div class="ov-media"><video src="assets/video/logo-animation.mp4" autoplay loop muted playsinline></video></div><div class="ov-cap"><span class="ov-name">Motion</span><span class="ov-desc">How the brand moves — from the logo to the interface.</span></div></div>
+          </a>
+          </div>
+          <div class="ov-col">
+          <a class="ov-card" href="/color" aria-label="Colour">
+            <div class="ov-box ov-tall"><div class="ov-media"><video src="assets/video/color-tile-loop.mp4" autoplay loop muted playsinline aria-label="Payment success animation"></video></div><div class="ov-cap"><span class="ov-name">Colour</span><span class="ov-desc">Purps, the supporting palette and how they combine.</span></div></div>
+          </a>
+          <a class="ov-card" href="/layout" aria-label="Layout">
+            <div class="ov-box ov-tall"><div class="ov-media"><img src="assets/images/layout-tile.jpg" alt="" /></div><div class="ov-cap"><span class="ov-name">Layout</span><span class="ov-desc">Grids and templates that keep every surface consistent.</span></div></div>
+          </a>
+          <a class="ov-card" href="/iconography" aria-label="Iconography">
+            <div class="ov-box ov-tall"><div class="ov-media ov-mask"><svg class="ov-mask-svg" viewBox="0 0 505 630" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
+              <g class="mask-face">
+                <path class="mask-mouth" d="M254.071 386.708C278.592 386.708 299.188 370.158 304.972 347.783C307.663 337.372 303.756 334.982 293.462 334.982H214.68C204.386 334.982 200.48 337.372 203.171 347.783C208.955 370.158 229.551 386.708 254.071 386.708Z" stroke="#000" stroke-width="20.418" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="mask-eyes" d="M189.385 276.775C189.385 266.062 198.069 257.378 208.782 257.378C219.495 257.378 228.179 266.062 228.179 276.775M279.904 276.775C279.904 266.062 288.589 257.378 299.301 257.378C310.014 257.378 318.699 266.062 318.699 276.775" stroke="#000" stroke-width="20.418" stroke-linecap="round" stroke-linejoin="round"/>
+                <path class="mask-outline" d="M351.039 189.652C369.375 187.286 385.223 202.434 383.688 220.858L373.541 342.608C368.291 405.604 315.63 454.06 252.416 454.061C189.202 454.061 136.54 405.605 131.29 342.608L120.911 218.065C119.505 201.193 134.099 187.365 150.871 189.679C215.02 198.527 280.06 198.811 344.284 190.524L351.039 189.652Z" stroke="#000" stroke-width="20.418"/>
+              </g>
+            </svg></div><div class="ov-cap"><span class="ov-name">Iconography</span><span class="ov-desc">Icons, tiles and avatars in the Headout style.</span></div></div>
+          </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Overview</div>
+  </div><!-- /page-overview -->
+
+</main>
+
+<script src="js/shell.js"></script>
+<script src="js/overview.js"></script>
+</body>
+</html>

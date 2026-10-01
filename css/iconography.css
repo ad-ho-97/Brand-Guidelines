@@ -1,0 +1,21 @@
+    /* onix icon library grid */
+    .iconlib-group { margin-bottom: 40px; }
+    .iconlib-lab {
+      font-family: var(--ht); font-weight: 600; font-size: 13px; letter-spacing: 0.6px;
+      text-transform: uppercase; color: var(--purple); margin-bottom: 16px;
+    }
+    .iconlib-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px;
+    }
+    .iconlib-cell {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 20px 8px 12px; border: 1px solid var(--gray-border); border-radius: 10px;
+      background: #fff; transition: border-color 0.15s, background 0.15s;
+      cursor: default; overflow: hidden;
+    }
+    .iconlib-cell:hover { border-color: #b98cff; background: #faf7ff; }
+    .iconlib-cell img { width: 24px; height: 24px; display: block; }
+    .iconlib-name {
+      font-family: var(--ht); font-weight: 300; font-size: 11px; line-height: 1.3;
+      color: #666; text-align: center; word-break: break-word;
+    }

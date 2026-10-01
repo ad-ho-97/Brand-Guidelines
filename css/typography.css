@@ -1,0 +1,157 @@
+    #page-typography { background: #fafafa; min-height: 100vh; }
+
+    /* ── Colour variants (Figma 6480:52882): 2-col grid, 21.6px col gap, 31.4px row gap ── */
+    .cv-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 21.6px; row-gap: 31.4px; }
+    /* ── Incorrect usage: 3-col grid, caption below each card ── */
+    .iu-grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 20px; row-gap: 32px; }
+    .iu-item { margin: 0; }
+    .iu-card-type { aspect-ratio: 1635/1078; }
+    .iu-card { aspect-ratio: 1648/1087; border-radius: 8px; overflow: hidden; background: #f0f0f0; }
+    .iu-card > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .iu-item figcaption { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-family: var(--ht); font-weight: 300; font-size: 15px; line-height: 1.4; color: #000; }
+    .iu-x { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #E00000; position: relative; }
+    .iu-x::before, .iu-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 1.8px; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
+    .iu-x::after { transform: translate(-50%,-50%) rotate(-45deg); }
+    .cv-item-full { grid-column: 1 / -1; }
+    .cv-label { font-family: var(--ht); font-weight: 300; font-size: 13.76px; line-height: 1.4; color: #000; margin-bottom: 7.9px; }
+    .cv-card {
+      position: relative; height: 300px; border-radius: 7.86px; overflow: hidden;
+      border: 0.98px solid rgba(159,159,159,0.4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cv-card-tall { height: 507px; }
+    .cv-card > img, .cv-card > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    /* logo = wordmark silhouette masked with the card's ink colour; 62.8% of card width (18.62% inset each side) */
+    .cv-logo {
+      position: relative; z-index: 1; display: block; width: 62.8%; aspect-ratio: 2775.88 / 390.11;
+      -webkit-mask: url('../assets/svg/logo-wordmark.svg') center / contain no-repeat; mask: url('../assets/svg/logo-wordmark.svg') center / contain no-repeat;
+    }
+    .cv-logo-sm { width: 30.8%; }
+    @media (max-width: 1023px) {
+      .cv-grid { grid-template-columns: 1fr; row-gap: 24px; }
+      .iu-grid { grid-template-columns: 1fr; row-gap: 28px; }
+      .cv-card { height: auto; aspect-ratio: 616 / 300; }
+      .cv-card-tall { aspect-ratio: 1254 / 507; }
+    }
+
+    /* ── Our typeface: 2 specimen cards + 2 live animation cards ── */
+    .tf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 21.6px; margin-bottom: 21.6px; }
+    .tf-row  { display: flex; gap: 21.6px; align-items: stretch; }
+    .tf-card { position: relative; overflow: hidden; border-radius: 7.86px; background: #f0f0f0; }
+    .tf-grid .tf-card { aspect-ratio: 2145 / 1367; }
+    .tf-card > img, .tf-card > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+    .tf-card > img { object-fit: cover; }
+    /* bottom row: widths follow the cards' native ratios (722:437 and 492:437), same height */
+    .tf-osaka { flex: 722 1 0; aspect-ratio: 722 / 437; background: #ebedf0; }
+    .tf-flyer { flex: 492 1 0; aspect-ratio: 492 / 437; background: #0f1e3a; }
+    @media (max-width: 1023px) {
+      .tf-grid { grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+      .tf-row { flex-direction: column; gap: 16px; }
+      .tf-osaka, .tf-flyer { flex: none; width: 100%; }
+    }
+
+    /* Halyard weight ladder (black card + overlapping blue specimen card) */
+    .ladder-card { position: relative; background: #000; border-radius: 8px; height: 506px; overflow: hidden; }
+    .ladder-rule { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid rgba(219,215,249,0.22); }
+    /* Rows live in 68px slots so glyphs sit between the rules, never across them */
+    .ladder-row { position: absolute; left: 44px; height: 68px; line-height: 66px; font-family: var(--hd); font-size: 54px; color: #DBD7F9; white-space: nowrap; }
+    .ladder-row.txt { font-family: var(--ht); }
+    /* Gradient specimen card: exactly the right half of the black card, full height */
+    .ladder-blue { position: absolute; top: 0; right: 0; width: 50.48%; height: 100%; background: #362AE2; border-radius: 16.88px; overflow: hidden; z-index: 2; }
+    .ladder-blue img { position: absolute; pointer-events: none; }
+    .lb-headline { position: absolute; left: 39px; top: 80px; width: 423px; font-family: var(--hd); font-weight: 500; font-size: 64px; line-height: 1; letter-spacing: -1.28px; color: #fff; z-index: 2; }
+    .lb-para { position: absolute; left: 39px; top: 60px; width: 508px; max-width: calc(100% - 78px); font-family: var(--ht); font-weight: 300; font-size: 28px; line-height: 1.4; color: #fff; z-index: 2; }
+    .lb-logo { left: 30px; bottom: 28px; width: 189px; height: auto; z-index: 2; }
+
+    /* Type setting specimen panel */
+    .ts-panel { position: relative; width: 1254px; height: 1177px; background: #EBEDF0; overflow: hidden; }
+    .ts-rule { position: absolute; left: 0; right: 0; border-top: 1px solid rgba(0,0,0,0.14); }
+    .ts-label { position: absolute; font-family: var(--ht); font-weight: 500; font-size: 19.65px; line-height: 1.1; letter-spacing: -0.197px; text-transform: uppercase; color: rgba(68,68,68,0.7); }
+    .ts-headline { position: absolute; left: 59px; width: 897px; font-family: var(--hd); font-weight: 500; font-size: 111px; line-height: 1; color: #1C1C1C; }
+    .ts-body { position: absolute; left: 59px; width: 1003px; font-family: var(--ht); font-weight: 300; font-size: 26px; line-height: 1.3; color: #150029; }
+    .ts-caption { position: absolute; left: 59px; font-family: var(--ht); font-weight: 500; font-size: 26px; line-height: 1.3; letter-spacing: 2.6px; color: #150029; }
+
+    /* Good/bad example cards (Line height sections) */
+    .gb-row { display: flex; gap: 28px; }
+    .gb-col { flex: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .gb-card { background: #EBEDF0; border-radius: 18.4px; overflow: hidden; position: relative; height: 337px; }
+    .gb-headline { position: absolute; left: 43px; top: 54px; font-family: var(--hd); font-weight: 500; font-size: 67.4px; color: #000; }
+    .gb-para { position: absolute; left: 43px; top: 90px; width: 529px; max-width: calc(100% - 70px); font-family: var(--ht); font-weight: 300; font-size: 26px; color: #000; }
+    .gb-caption { display: flex; align-items: center; gap: 8px; font-family: var(--hd); font-weight: 500; font-size: 16px; line-height: 1.4; color: #000; }
+    .gb-caption img { width: 28px; height: 28px; }
+
+    /* Three-column caption cards (Alignment / Incorrect usage) */
+    .tri-row { display: flex; justify-content: space-between; gap: 24px; }
+    .tri-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+    .tri-card { width: 100%; height: 220px; background: #EBEDF0; border-radius: 12px; overflow: hidden; position: relative; }
+    .tri-card img.cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tri-title { font-family: var(--hd); font-weight: 500; font-size: 16px; line-height: 1.4; color: #000; }
+    .tri-body { font-family: var(--ht); font-weight: 300; font-size: 14px; line-height: 1.4; color: #000; margin-top: 8px; }
+    .tri-strike::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(to top right, transparent calc(50% - 0.7px), #111 50%, transparent calc(50% + 0.7px)); }
+    .tri-spec { position: absolute; left: 28px; top: 35px; width: 339px; max-width: calc(100% - 56px); font-family: var(--hd); font-weight: 500; font-size: 18px; line-height: 1.4; color: #000; }
+
+    /* Typography in action collage (fixed design space) */
+    .tia-canvas { position: relative; width: 1256px; height: 841px; }
+    .tia-card { position: absolute; background: #DCDCDC; border-radius: 4px; overflow: hidden; }
+    .tia-card img.cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+
+    /* ═══════════════════════════════════════════════
+       HALYARD DISPLAY SWEEP ANIMATION
+       Gradient card slides across the ladder: covers the
+       roman set, reveals the italics; its headline swaps
+       to italics mid-sweep. Selectors are scoped to beat
+       the global .fig-sec img sizing rule.
+    ═══════════════════════════════════════════════ */
+    .hd-anim {
+      position: relative;
+      aspect-ratio: 1254/506;
+      border-radius: 8px;
+      overflow: hidden;             /* clips the card like the Figma frame */
+    }
+    .hd-anim .hd-anim-base { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .hd-anim .hd-card {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50.478%;               /* 633 / 1254 */
+      left: 49.52%;                 /* start: right half */
+      animation: hd-sweep 7s ease-in-out infinite;
+      will-change: left;
+    }
+    .hd-anim .hd-card img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    /* Italic card stays opaque underneath; only the roman card fades on top */
+    .hd-anim .hd-card .roman { animation: hd-roman 7s ease-in-out infinite; }
+    @keyframes hd-sweep {
+      0%, 18%   { left: 49.52%; }   /* hold on roman */
+      40%, 60%  { left: -0.48%; }   /* sweep left, hold on italics */
+      82%, 100% { left: 49.52%; }   /* sweep back */
+    }
+    @keyframes hd-roman {
+      0%, 25%   { opacity: 1; }
+      33%, 67%  { opacity: 0; }
+      75%, 100% { opacity: 1; }
+    }
+
+
+    /* Type scale reference (eevee named styles) */
+    .tsc-group-lab {
+      font-family: var(--ht); font-weight: 600; font-size: 13px; letter-spacing: 0.6px;
+      text-transform: uppercase; color: var(--purple); margin: 40px 0 4px;
+    }
+    .tsc-group-lab:first-child { margin-top: 0; }
+    .tsc-row {
+      display: flex; align-items: baseline; gap: 32px;
+      padding: 18px 0; border-bottom: 1px solid var(--gray-border);
+    }
+    .tsc-sample { flex: 1; min-width: 0; color: #111; overflow: hidden; }
+    .tsc-spec {
+      flex: 0 0 300px; font-family: var(--ht); font-weight: 300;
+      font-size: 12.5px; line-height: 1.5; color: #666; white-space: nowrap;
+    }
+    .tsc-spec .nm { font-weight: 500; color: #111; }
+    @media (max-width: 760px) {
+      .tsc-row { flex-direction: column; gap: 10px; }
+      .tsc-spec { flex: none; }
+    }
+

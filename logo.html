@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/media-carousel.css" />
+  <link rel="stylesheet" href="css/logo.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent active-section" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: LOGO
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-logo">
+    <div class="fig-stack gap-48">
+
+      <!-- Native "Logo" page header: title left, intro right, hairline divider, one media placeholder -->
+      <div class="fig-sec" id="logo-intro">
+        <div class="fig-pagehead">
+          <h1>Logo</h1>
+          <p class="intro" style="max-width:640px;">The Headout blimp cuts through the noise — a mark travelers spot and trust in an instant. It's kinetic by design, echoing the spontaneity and movement at the heart of what we do. More than a symbol, it's our handshake with the world. Every size, every surface, every context is a chance to show up as ourselves.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="logo-hero">
+        <div class="page-hero-ph">
+          <video autoplay loop muted playsinline>
+            <source src="assets/video/logo-hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="primary-logo">
+        <div class="fig-head">
+          <h2>Primary Logo</h2>
+          <p class="fh-desc">This is our signature — how we write our name and use our mark. Whether it's pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it's really us.</p>
+        </div>
+        <!-- Full-bleed looping video card -->
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:4096/1652; background:#f0f0f0;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/primary-logo.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="colour-variants">
+        <div class="fig-head fig-head-row">
+          <div style="max-width:828px;">
+            <h2>Colour variants</h2>
+            <p class="fh-desc">Colour is the first thing people remember about a brand — ours is Purps. When Purps can't do its job (low contrast, busy backgrounds), fall back to monochrome. Always pick the variant that stays legible against whatever's behind it.</p>
+          </div>
+          <a class="fig-btn" href="#">Download logo assets</a>
+        </div>
+        <!-- Figma 6480:52882 — five labelled cards (supplied exports) -->
+        <div class="cv-grid">
+          <div class="cv-item"><p class="cv-label">White on Purps</p><div class="cv-card"><img src="assets/images/cv-white-on-purps.png" alt="White logo on Purps" /></div></div>
+          <div class="cv-item"><p class="cv-label">Purps on White</p><div class="cv-card"><img src="assets/images/cv-purps-on-white.png" alt="Purps logo on white" /></div></div>
+          <div class="cv-item cv-item-full"><p class="cv-label">White on Image</p><div class="cv-card cv-card-tall"><img src="assets/images/cv-white-on-image.jpg" alt="White logo over a photograph" /></div></div>
+          <div class="cv-item"><p class="cv-label">Black on White</p><div class="cv-card"><img src="assets/images/cv-black-on-white.png" alt="Black logo on white" /></div></div>
+          <div class="cv-item"><p class="cv-label">White on Black</p><div class="cv-card"><img src="assets/images/cv-white-on-black.png" alt="White logo on black" /></div></div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="logo-clearspace">
+        <div class="fig-head">
+          <h2>Logo clearspace</h2>
+          <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
+        </div>
+        <!-- Interactive clearspace: Grid view toggle on the card -->
+        <div class="clearspace-wrap">
+          <img
+            id="cs-grid-on"
+            class="clearspace-grid"
+            src="assets/svg/cs_grid_on.svg"
+            alt="Logo clearspace with grid"
+          />
+          <img
+            id="cs-grid-off"
+            class="clearspace-grid"
+            src="assets/svg/cs_grid_off.svg"
+            alt="Headout logo clearspace"
+            style="display:none;"
+          />
+          <button class="clearspace-toggle" id="clearspace-toggle-btn" onclick="toggleClearspaceGrid()" role="switch" aria-checked="true">
+            <span class="toggle-pill"></span>
+            Grid view
+          </button>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="sub-brand-lockup">
+        <div class="fig-head">
+          <h2>Sub-brand lockup</h2>
+          <p class="fh-desc">Headout Partners, Headout Hub, Headout Blog — every sub-brand locks up the same way. The blimp and wordmark stay untouched; the sub-brand name sits beside it in a lighter weight. One system, many voices, always recognisably Headout.</p>
+        </div>
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/465; background:#fafafa; border:1px solid rgba(159,159,159,0.4);">
+          <img src="https://www.figma.com/api/mcp/asset/71b51079-b0b0-48e1-abea-14c70b31a71d.png" alt="Sub-brand lockup" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/headout_subbrand_lockup_zoom.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="sub-brand-grid">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1154; background:#fafafa;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/subbrand-grid.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="co-brand-lockup">
+        <div class="cb-row">
+          <div class="fig-head">
+            <h2>Co-brand lockup</h2>
+            <p class="fh-desc">When we share space with a partner — Mastercard, Broadway — our logo shares the frame, never the spotlight. Keep both marks equal in visual weight, separate them with a clean divider, and give each its full clearspace.</p>
+          </div>
+          <img class="fig-rounded" src="assets/images/cobrand-lockup.jpg" alt="Co-brand lockup — Headout and Mastercard with the clearspace divider" />
+        </div>
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:4096/1598; background:#f0f0f0;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/cobrand-examples.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="minimum-size">
+        <div class="fig-head">
+          <h2>Minimum size</h2>
+          <p class="fh-desc">The logo has to stay legible, always. Never scale it below the minimum size — you'll lose detail and recognition before it even looks "off." If space is tight, fix it with layout or whitespace, not by shrinking the logo further.</p>
+        </div>
+        <div class="cv-grid" style="row-gap:0;">
+          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-digital.jpg" alt="Minimum size — digital, min width 120px" /></div>
+          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-print.jpg" alt="Minimum size — print, min width 120px" /></div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="logo-animation">
+        <div class="fig-head fig-head-row">
+          <div style="max-width:828px;">
+            <h2>Logo animation</h2>
+            <p class="fh-desc">Our animated logo shows up at key brand moments — video intros and outros, launch films, LinkedIn announcements, presentation openers — plus idle loops for anywhere it needs to hold, pause, or sit in the background.</p>
+          </div>
+          <a class="fig-btn" href="#">Download animation kit</a>
+        </div>
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:16/9; background:#8000FF;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/logo-animation.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="icon-construction">
+        <div class="fig-head">
+          <h2>Icon construction</h2>
+          <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
+        </div>
+        <!-- Interactive construction: same Grid view toggle as clearspace -->
+        <div class="clearspace-wrap" style="aspect-ratio:2154/1004; margin-bottom:0;">
+          <img id="ic-grid-on"  class="clearspace-grid" src="assets/images/icon-construction-grid-on.png"  alt="Icon construction with grid" />
+          <img id="ic-grid-off" class="clearspace-grid" src="assets/images/icon-construction-grid-off.png" alt="Icon construction" style="display:none;" />
+          <button class="clearspace-toggle" id="ic-toggle-btn" onclick="toggleConstructionGrid()" role="switch" aria-checked="true">
+            <span class="toggle-pill"></span>
+            Grid view
+          </button>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="app-tile">
+        <div class="fig-head fig-head-row">
+          <div style="max-width:544px;">
+            <h2>App tile and avatars</h2>
+            <p class="fh-desc">At app-icon and avatar scale, less is more. The blimp sits centered and slightly reduced, so it stays crisp and calm even at the smallest sizes.</p>
+          </div>
+          <a class="fig-btn" href="#">Download avatar assets</a>
+        </div>
+        <img class="fig-rounded" src="assets/images/app-tile-avatars.png" alt="App tile and avatars — circle, rounded square and square tiles" style="border:1px solid rgba(159,159,159,0.4);" />
+      </div>
+
+      <div class="fig-sec" id="logo-in-action">
+        <div class="fig-head">
+          <h2>Logo in action</h2>
+          <p class="fh-desc" style="max-width:687px;">From city billboards to airport screens, the logo holds up in the wild — legible, confident, and unmistakably Headout at any scale or distance.</p>
+        </div>
+        <!-- Full-width banner: looping video -->
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/650; background:#0d0d0f;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+            <source src="assets/video/logo-in-action.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <!-- Below: text left, media right (placeholder until the asset lands) -->
+        <div class="cu-row" style="margin-top:112px;">
+          <div class="cu-text">
+            <h2>Our suggested combinations</h2>
+            <p>This is our signature — how we write our name and use our mark. Whether it's pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it's really us.</p>
+          </div>
+          <div class="cu-media">
+            <div class="mcar" data-carousel="logoaction" data-auto="3500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR code section: hidden for now (display:none removes it from flex-gap flow) -->
+      <div class="fig-sec" id="qr-code" hidden style="display:none;">
+        <div class="qr-row">
+          <div class="fig-head" style="max-width:610px;">
+            <h2>QR code</h2>
+            <p class="fh-desc">QR codes aren't just utility — they're an extension of our brand. Treat them with the same rigor as the logo: keep clearspace intact, keep the dot pattern untouched, and never let the mark compromise the scan.</p>
+          </div>
+          <img src="assets/images/qr-code.png" alt="Branded QR code — Headout mark in the centre" style="border-radius:12px;" />
+        </div>
+      </div>
+
+      <div class="fig-sec" id="incorrect-usage">
+        <div class="fig-head">
+          <h2>Incorrect usage</h2>
+          <p class="fh-desc" style="max-width:610px;">The logo is our signature — it doesn't flex, stretch, recolor, or improvise. Here's what to avoid.</p>
+        </div>
+        <div class="iu-grid">
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-1-gold.jpg" alt="Logo recoloured gold" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't change the colour of the logo.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-2-font.jpg" alt="Logo set in a different sans-serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in another typeface.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-3-serif.jpg" alt="Logo set in a serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in a serif.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-4-gradient.jpg" alt="Logo filled with a gradient" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't apply gradients to the logo.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-5-photofill.jpg" alt="Logo filled with a photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't fill the logo with imagery.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-6-onphoto.jpg" alt="Logo placed on a busy photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't place the logo on busy imagery without contrast.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="logo-end">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2393/1336; background:#f0f0f0;">
+          <img src="assets/images/logo-end-image.jpg" alt="Headout signage on a rooftop against a blue sky" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Logo</div>
+  </div><!-- /page-logo -->
+
+</main>
+
+<!-- Carousel fullscreen lightbox (shared) -->
+<div class="mcar-lightbox" id="mcar-lightbox" aria-hidden="true">
+    <button class="mlb-close" id="mlb-close" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="mlb-nav prev" id="mlb-prev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="mcar-lightbox-stage" id="mlb-stage"></div>
+    <button class="mlb-nav next" id="mlb-next" aria-label="Next">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+<script src="js/shell.js"></script>
+<script src="js/media-carousel.js"></script>
+<script src="js/logo.js"></script>
+</body>
+</html>

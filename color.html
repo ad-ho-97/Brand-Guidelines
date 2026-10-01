@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/media-carousel.css" />
+  <link rel="stylesheet" href="css/color.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent active-section" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: COLOUR — Dropbox-style hover-rise swatch
+       cards, in site style. Primary = SS1, Secondary = SS2.
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-color">
+    <div class="fig-stack gap-48">
+
+      <div class="fig-sec" id="color-intro">
+        <div class="fig-pagehead">
+          <h1>Colour</h1>
+          <p class="intro" style="max-width:640px;">Purps is loud, confident and unmistakably ours. It carries the weight of the brand, while a small, disciplined set of secondary colours gives us room to be playful without ever losing the plot.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="color-hero">
+        <div class="page-hero-ph hero-blend-top">
+          <video autoplay loop muted playsinline aria-label="Colour hero — organic gradient motion">
+            <source src="assets/video/color-hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <!-- Primary palette (interactive cards — kept as-is) -->
+      <div class="fig-sec" id="color-primary">
+        <div class="fig-head"><h2>Primary palette</h2>
+          <p class="fh-desc">Purps carries the brand, white keeps things clean, and slate black holds everything together. Hover any card to pull it from the stack; click to copy the hex.</p>
+        </div>
+        <div class="deck-group">
+          <div class="deck" id="deck-primary"></div>
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Headout Purps in use — media carousel -->
+      <div class="fig-sec" id="color-purps-in-use">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Headout Purps in use</h2>
+            <p>Purps is at its best when it leads — across billboards, screens, packaging and print. Browse the ways it shows up in the wild.</p>
+          </div>
+          <div class="cu-media">
+            <div class="mcar" data-carousel="purps"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:64px 0;" />
+
+      <!-- Secondary palette (single cards, same behaviour as Primary) -->
+      <div class="fig-sec" id="color-secondary">
+        <div class="fig-head"><h2>Secondary palette</h2>
+          <p class="fh-desc">Purps plus five supporting colours. Use them to add warmth and variety — one at a time, never competing with Purps. Hover to lift a card; click to copy the hex.</p>
+        </div>
+        <div class="deck-group">
+          <div class="deck" id="deck-secondary"></div>
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Secondary colour in use — media carousel -->
+      <div class="fig-sec" id="color-secondary-in-use">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Secondary colour in use</h2>
+            <p>How the supporting palette comes to life alongside Purps in real work. Images and videos to follow.</p>
+          </div>
+          <div class="cu-media">
+            <div class="mcar" data-carousel="secondary"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:64px 0;" />
+
+      <!-- Gradients (placeholder) -->
+      <div class="fig-sec" id="color-gradients">
+        <div class="fig-head"><h2>Gradients</h2>
+          <p class="fh-desc">Our gradients are drawn from imagery and motion — a living wash of Purps and its neighbours. Coming soon.</p>
+        </div>
+        <div style="aspect-ratio:1254/620; border-radius:16px; overflow:hidden; background:#0d0d0f;">
+          <video autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+            <source src="assets/video/gradients.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div style="height:64px;"></div>
+
+      <!-- Our suggested combinations (placeholder tool) -->
+      <div class="fig-sec" id="color-combinations">
+        <div class="cu-row">
+          <div class="cu-text">
+            <h2>Our suggested combinations</h2>
+            <p>Drag the dot around the colour field to blend through the palette. Everything on the right re-themes live to match the mood you land on.</p>
+          </div>
+          <div class="cu-media">
+            <div class="combo-tool" id="combo-tool">
+              <!-- interactive colour field -->
+              <div class="ct-field" id="ct-field">
+                <img class="ct-state on" src="assets/ct-states/state-1.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/ct-states/state-2.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/ct-states/state-3.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/ct-states/state-4.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/ct-states/state-5.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/ct-states/state-6.svg" alt="" aria-hidden="true" />
+                <!-- frosted glass: real backdrop blur under the hexagon -->
+                <div class="ct-hex-glass" aria-hidden="true"></div>
+                <svg class="ct-hex" viewBox="0 0 399 506" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <!-- glass body: lit from the top, denser toward the bottom -->
+                    <linearGradient id="ctHexFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0"   stop-color="#fff" stop-opacity="0.26" />
+                      <stop offset="0.55" stop-color="#fff" stop-opacity="0.14" />
+                      <stop offset="1"   stop-color="#fff" stop-opacity="0.06" />
+                    </linearGradient>
+                    <!-- rim light: bright on the upper-left edge, fading out below -->
+                    <linearGradient id="ctHexRim" x1="0" y1="0" x2="0.6" y2="1">
+                      <stop offset="0"   stop-color="#fff" stop-opacity="0.95" />
+                      <stop offset="0.5" stop-color="#fff" stop-opacity="0.45" />
+                      <stop offset="1"   stop-color="#fff" stop-opacity="0.18" />
+                    </linearGradient>
+                    <!-- specular sheen across the top third -->
+                    <linearGradient id="ctHexSheen" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0"    stop-color="#fff" stop-opacity="0.30" />
+                      <stop offset="0.38" stop-color="#fff" stop-opacity="0.06" />
+                      <stop offset="0.5"  stop-color="#fff" stop-opacity="0" />
+                    </linearGradient>
+                    <!-- soft inner shadow along the lower edge for depth -->
+                    <filter id="ctHexInner" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b" />
+                      <feOffset dx="0" dy="-5" in="b" result="o" />
+                      <feComposite in="o" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="inner" />
+                      <feColorMatrix in="inner" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.20 0" />
+                    </filter>
+                    <clipPath id="ctHexClip">
+                      <path d="M91.0167 257.206L124.397 341.468C127.267 348.712 134.269 353.47 142.061 353.47L258.183 353.47C265.926 353.47 272.894 348.772 275.797 341.594L309.916 257.231C311.806 252.56 311.762 247.329 309.795 242.69L276.473 164.113C273.496 157.091 266.608 152.531 258.981 152.531L142.399 152.531C134.798 152.531 127.929 157.06 124.935 164.046L91.2173 242.724C89.241 247.336 89.1689 252.542 91.0167 257.206Z" />
+                    </clipPath>
+                  </defs>
+                  <!-- body -->
+                  <path id="ctHexPath" d="M91.0167 257.206L124.397 341.468C127.267 348.712 134.269 353.47 142.061 353.47L258.183 353.47C265.926 353.47 272.894 348.772 275.797 341.594L309.916 257.231C311.806 252.56 311.762 247.329 309.795 242.69L276.473 164.113C273.496 157.091 266.608 152.531 258.981 152.531L142.399 152.531C134.798 152.531 127.929 157.06 124.935 164.046L91.2173 242.724C89.241 247.336 89.1689 252.542 91.0167 257.206Z"
+                        fill="url(#ctHexFill)" />
+                  <!-- inner shadow (clipped to the body) -->
+                  <g clip-path="url(#ctHexClip)">
+                    <use href="#ctHexPath" fill="#000" filter="url(#ctHexInner)" />
+                    <!-- sheen -->
+                    <use href="#ctHexPath" fill="url(#ctHexSheen)" />
+                  </g>
+                  <!-- rim -->
+                  <use href="#ctHexPath" fill="none" stroke="url(#ctHexRim)" stroke-width="1.25" vector-effect="non-scaling-stroke" />
+                </svg>
+                <div class="ct-dot" id="ct-dot" role="slider" aria-label="Colour mood" tabindex="0"></div>
+              </div>
+              <!-- two re-theming cards (black placeholders until images are added) -->
+              <div class="ct-cards">
+                <div class="ct-card" id="ct-card-top"><span class="ct-card-tag">Image coming soon</span></div>
+                <div class="ct-card" id="ct-card-bot"><span class="ct-card-tag">Image coming soon</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:64px 0;" />
+
+      <!-- Colour use with a purpose (4 placeholder cards) -->
+      <div class="fig-sec" id="color-purpose">
+        <div class="fig-head"><h2>Colour use with a purpose</h2>
+          <p class="fh-desc">Every colour earns its place. Four jobs colour does across the system — recognition, expression, navigation and utility.</p>
+        </div>
+        <div class="cpurpose-grid">
+          <div class="cpurpose-card">
+            <div class="cph" style="aspect-ratio:292/401;">
+              <img src="assets/images/purpose-recognition.jpg" alt="Headout window sticker on a green tram" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+            </div>
+            <h3>Recognition</h3>
+            <p>Purps first — the colour people remember us by.</p>
+          </div>
+          <div class="cpurpose-card">
+            <div class="cph" style="aspect-ratio:292/401;">
+              <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+                <source src="assets/video/purpose-expression.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <h3>Expression</h3>
+            <p>Secondary colours bring energy, mood and variety.</p>
+          </div>
+          <div class="cpurpose-card">
+            <div class="cph" style="aspect-ratio:292/401;">
+              <img src="assets/images/purpose-navigation.jpg" alt="Rating card — 4.7 stars, 27,021 ratings" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+            </div>
+            <h3>Navigation</h3>
+            <p>Colour that guides the eye and signals action.</p>
+          </div>
+          <div class="cpurpose-card">
+            <div class="cph" style="aspect-ratio:292/401;">
+              <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+                <source src="assets/video/purpose-utility.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <h3>Utility</h3>
+            <p>Functional states — success, warning, error, info.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:64px 0;" />
+
+      <!-- Incorrect usage (4 placeholder frames) -->
+      <div class="fig-sec" id="color-incorrect">
+        <div class="fig-head"><h2>Incorrect usage</h2>
+          <p class="fh-desc">Colour is easy to get wrong. Examples of what to avoid — coming soon.</p>
+        </div>
+        <div class="cincorrect-grid">
+          <div class="cph" style="aspect-ratio:794/381;"><span class="cph-tag">Coming soon</span></div>
+          <div class="cph" style="aspect-ratio:794/381;"><span class="cph-tag">Coming soon</span></div>
+          <div class="cph" style="aspect-ratio:794/381;"><span class="cph-tag">Coming soon</span></div>
+          <div class="cph" style="aspect-ratio:794/381;"><span class="cph-tag">Coming soon</span></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Colour</div>
+  </div><!-- /page-color -->
+
+</main>
+
+<!-- Carousel fullscreen lightbox (shared) -->
+<div class="mcar-lightbox" id="mcar-lightbox" aria-hidden="true">
+    <button class="mlb-close" id="mlb-close" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="mlb-nav prev" id="mlb-prev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="mcar-lightbox-stage" id="mlb-stage"></div>
+    <button class="mlb-nav next" id="mlb-next" aria-label="Next">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+<script src="js/shell.js"></script>
+<script src="js/media-carousel.js"></script>
+<script src="js/color.js"></script>
+</body>
+</html>

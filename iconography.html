@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/iconography.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent active" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: ICONOGRAPHY
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-iconography">
+
+    <!-- Native page header: title left, intro right, hairline divider, one media placeholder -->
+    <div class="fig-stack gap-48" style="padding-bottom:0;">
+      <div class="fig-sec" id="iconography-intro">
+        <div class="fig-pagehead">
+          <h1>Iconography</h1>
+          <p class="intro" style="max-width:640px;">Our icon system is designed to be clear, approachable, and instantly recognizable across every touchpoint. Built on a consistent visual language, each icon balances simplicity with personality to create a cohesive experience throughout the Headout ecosystem.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="iconography-hero" style="margin-bottom:0;">
+        <div class="page-hero-ph" aria-label="Iconography hero — image or video placeholder"></div>
+      </div>
+    </div>
+
+    <div class="section" id="icon-foundation">
+      <div class="section-head">
+        <h2 class="section-title sm">Foundation First</h2>
+        <p class="section-desc sm">Every icon starts with the same foundation. Shared geometry, spacing, and optical balance ensure that the system remains consistent regardless of size, platform, or application.</p>
+      </div>
+      <div class="icon-grid-2col">
+        <img src="https://www.figma.com/api/mcp/asset/6d4d060f-41e7-4d76-a81a-109e7b7e5891.png" alt="Foundation First — icon grid" />
+        <img src="https://www.figma.com/api/mcp/asset/8eb92d34-a772-45b3-9bb0-68c63439c3b3.png" alt="Foundation First — consistency" />
+      </div>
+    </div>
+
+    <div class="section" id="icon-consistency">
+      <div class="section-head">
+        <h2 class="section-title sm">Consistency</h2>
+        <p class="section-desc sm">Shared construction principles create familiarity across the entire library, making every icon feel connected regardless of subject.</p>
+      </div>
+      <div class="full-img" style="border-radius:10px;overflow:hidden;">
+        <img src="https://www.figma.com/api/mcp/asset/1a0a9848-f91c-4ca0-a4f4-98278e2b6bfd.png" alt="Consistency — icon pairs" />
+      </div>
+    </div>
+
+    <div class="section" id="icon-personality">
+      <div class="section-head">
+        <h2 class="section-title sm">Personality</h2>
+        <p class="section-desc sm">Our icons are functional by design but expressive in character, reflecting the curiosity, movement, and excitement that define the Headout experience.</p>
+      </div>
+      <div class="full-img" style="border-radius:10px;overflow:hidden;">
+        <img src="https://www.figma.com/api/mcp/asset/c833bb01-1db0-4cb1-85bb-3652ed5a509c.png" alt="Personality — expressive icons" />
+      </div>
+    </div>
+
+    <div class="section" id="icon-levels">
+      <div class="section-head">
+        <h2 class="section-title sm">Icon Levels</h2>
+        <p class="section-desc sm">Icons exist across multiple levels of visual weight and detail — from the most refined for UI use, to more expressive illustrations for marketing.</p>
+      </div>
+      <div class="full-img" style="border-radius:10px;overflow:hidden;">
+        <img src="https://www.figma.com/api/mcp/asset/414a7da4-e22c-490f-a86e-9746b739a1d7.png" alt="Icon Levels" />
+      </div>
+    </div>
+
+    <div class="section" id="icons-in-context">
+      <div class="section-head">
+        <h2 class="section-title sm">Icons in Context</h2>
+        <p class="section-desc sm">Icons should never exist in isolation. Their purpose is to simplify interfaces, improve comprehension, and support the overall experience without competing for attention.</p>
+      </div>
+      <div class="full-img" style="border-radius:10px;overflow:hidden;">
+        <img src="https://www.figma.com/api/mcp/asset/57748978-ef98-4539-ab85-8b98e2de85e1.png" alt="Icons in Context" />
+      </div>
+    </div>
+
+    <div class="section" id="icon-library">
+      <div class="section-head">
+        <h2 class="section-title sm">The icon set</h2>
+        <p class="section-desc sm">A live sample from Headout’s icon system (<strong>onix</strong>) — 730+ icons across UI, categories, micro-brands and spot illustrations, each in outline and filled variants at a 16px grid. A selection is shown below.</p>
+      </div>
+      <div id="icon-lib"></div>
+    </div>
+
+    <div class="section" id="icon-resources">
+      <div class="section-head">
+        <h2 class="section-title sm">Resources</h2>
+        <p class="section-desc sm">Download the complete Headout icon library in SVG and Figma formats, including all size variants and filled/outline versions.</p>
+      </div>
+      <div class="resources-row">
+        <a href="#" class="resource-item">
+          <svg class="resource-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M5 8l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Icon library (SVG)
+        </a>
+        <a href="#" class="resource-item">
+          <svg class="resource-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M5 8l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Icon library (Figma)
+        </a>
+        <a href="#" class="resource-item">
+          <svg class="resource-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M5 8l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Usage guidelines (PDF)
+        </a>
+      </div>
+    </div>
+
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Iconography</div>
+  </div><!-- /page-iconography -->
+
+</main>
+
+<script src="js/shell.js"></script>
+<script src="js/iconography.js"></script>
+</body>
+</html>

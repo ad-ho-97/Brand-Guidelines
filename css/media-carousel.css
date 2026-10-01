@@ -1,0 +1,104 @@
+    /* ── "… in use" rows: text column + media carousel ── */
+    /* Narrow text column, wide media card (Klarna-style ≈ 28% / 70%) */
+    .cu-row { display: flex; gap: 40px; align-items: stretch; }
+    .cu-text { flex: 330 1 0; min-width: 0; max-width: 340px; }
+    .cu-text h2 {
+      font-family: var(--hd); font-weight: 400; /* Halyard Display Regular */
+      font-size: 44px; line-height: 44px; letter-spacing: -0.924px; color: #000;
+    }
+    .cu-text p {
+      font-family: var(--ht); font-weight: 300;
+      font-size: 14px; line-height: 1.4; color: #333; margin-top: 24px; max-width: 401px;
+    }
+    .cu-media { flex: 860 1 0; min-width: 0; }
+    .cu-caption { font-family: var(--ht); font-weight: 300; font-size: 14px; line-height: 1.4; color: #333; margin-top: 24px; max-width: 401px; }
+
+
+    /* Reusable media carousel (black until images/videos are added) */
+    .mcar {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 813 / 506;
+      background: #0d0d0f;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .mcar-track { position: absolute; inset: 0; display: flex; transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+    .mcar-slide { position: relative; flex: 0 0 100%; height: 100%; }
+    .mcar-slide img, .mcar-slide video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .mcar-empty {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; text-align: center; color: rgba(255,255,255,0.5);
+      font-family: var(--ht); font-size: 14px;
+    }
+    .mcar-empty svg { width: 30px; height: 30px; opacity: 0.55; }
+    /* controls */
+    .mcar-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18);
+      color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      z-index: 3; opacity: 0; transition: opacity 0.2s ease, background 0.2s ease;
+    }
+    .mcar:hover .mcar-btn { opacity: 1; }
+    .mcar-btn:hover { background: rgba(0,0,0,0.8); }
+    .mcar-btn.prev { left: 14px; }
+    .mcar-btn.next { right: 14px; }
+    .mcar-btn[disabled] { opacity: 0 !important; pointer-events: none; }
+    .mcar-expand {
+      position: absolute; top: 14px; right: 14px; z-index: 3;
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18);
+      color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s ease, background 0.2s ease;
+    }
+    .mcar:hover .mcar-expand { opacity: 1; }
+    .mcar-expand:hover { background: rgba(0,0,0,0.8); }
+    .mcar-dots {
+      position: absolute; left: 0; right: 0; bottom: 14px; z-index: 3;
+      display: flex; gap: 7px; justify-content: center; pointer-events: none;
+    }
+    .mcar-dots button {
+      width: 7px; height: 7px; border-radius: 50%; border: none; padding: 0;
+      background: rgba(255,255,255,0.4); cursor: pointer; pointer-events: auto;
+      transition: background 0.2s ease, width 0.2s ease;
+    }
+    .mcar-dots button.on { background: #fff; width: 18px; border-radius: 4px; }
+
+    /* Fullscreen lightbox for the carousel ("extend" view) */
+    .mcar-lightbox {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(8,4,16,0.94);
+      display: none; align-items: center; justify-content: center;
+    }
+    .mcar-lightbox.on { display: flex; }
+    .mcar-lightbox-stage {
+      position: relative; width: min(92vw, 1400px); height: min(86vh, 900px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mcar-lightbox-stage img, .mcar-lightbox-stage video {
+      max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; display: block;
+    }
+    .mlb-close {
+      position: absolute; top: 22px; right: 26px;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      z-index: 4;
+    }
+    .mlb-close:hover { background: rgba(255,255,255,0.22); }
+    .mlb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .mlb-nav:hover { background: rgba(255,255,255,0.22); }
+    .mlb-nav.prev { left: 2vw; }
+    .mlb-nav.next { right: 2vw; }
+    .mlb-nav[disabled] { opacity: 0.25; pointer-events: none; }
+
+

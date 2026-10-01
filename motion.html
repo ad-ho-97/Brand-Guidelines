@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/layout-motion.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children" style="display:none;">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent active-section" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: MOTION — copy + demo visuals from
+       Figma (node 1-5180), in site style
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-motion">
+    <div class="fig-stack gap-48">
+
+      <div class="fig-sec" id="motion-intro">
+        <div class="fig-pagehead">
+          <h1>Motion</h1>
+          <p class="intro" style="max-width:640px;">When banks say no, green says go. It's energetic and vibrant, just like the world we live in. And it's our primary colour, supported by a lively secondary palette that's as at home on buttons, as it is on billboards.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="motion-hero">
+        <div class="page-hero-ph" aria-label="Motion hero — image or video placeholder"></div>
+      </div>
+
+      <div class="fig-sec" id="motion-principles">
+        <div class="fig-head"><h2>Principles</h2></div>
+        <div class="lay-row" style="margin-bottom:26px;">
+          <div class="mo-card">
+            <div class="mo-box" style="aspect-ratio:622/475;">
+              <img src="https://www.figma.com/api/mcp/asset/d2465bb2-f6e5-48d3-b5be-b28d23930f26.png" style="width:48.5%;" alt="Delight — bouncing ball demo" />
+            </div>
+            <h3 class="mo-sub">Delight</h3>
+            <p class="mo-body">Playful, joyful motion that creates emotional connection through bouncy, energetic animations. The ball's enthusiastic bounce conveys happiness and engagement, making interactions feel alive and celebratory—perfect for success states, micro-interactions, and moments where you want users to feel genuine joy in their digital experience.</p>
+          </div>
+          <div class="mo-card">
+            <div class="mo-box" style="aspect-ratio:622/475;">
+              <img src="https://www.figma.com/api/mcp/asset/cd2654ed-f1b8-45ca-8262-c58e9ab6f802.png" style="width:49.2%;" alt="Seamlessness — ball through portals demo" />
+            </div>
+            <h3 class="mo-sub">Seamlessness</h3>
+            <p class="mo-body">Smooth, continuous motion that maintains flow and context throughout user journeys. The ball's effortless travel through portals represents transitions that preserve mental models and spatial relationships, ensuring users never feel lost or disoriented as they navigate between states, pages, or modal experiences.</p>
+          </div>
+        </div>
+        <div class="lay-row">
+          <div class="mo-card">
+            <div class="mo-box" style="aspect-ratio:622/475;">
+              <img src="https://www.figma.com/api/mcp/asset/8bba9276-e780-4aa5-a66b-b5b1ceb366d5.png" style="width:49.5%;" alt="Dynamic — morphing shape demo" />
+            </div>
+            <h3 class="mo-sub">Dynamic</h3>
+            <p class="mo-body">Adaptive, intelligent motion that morphs and responds based on context, data, and user behavior. The ball's shape-shifting transformation demonstrates how motion can communicate system thinking—showing processing states, data changes, or contextual awareness that makes interfaces feel truly responsive and smart rather than merely animated</p>
+          </div>
+          <div class="mo-card" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:48px 0;" />
+
+      <div class="fig-sec" id="motion-easings">
+        <div class="fig-head"><h2>Easings</h2></div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Functional easing</h3>
+            <p class="mo-body">The base ease for most of our components. The ease is characterized by its slow ease in, faster peak and smooth ease out. This creates a sort of snappiness in motion that is signature to our brand. Both on product &amp; marketing.</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1264/404; justify-content:flex-start; padding-left:5.6%;">
+            <img src="https://www.figma.com/api/mcp/asset/4b633974-00a2-4bcf-b344-fb040f1b9645.png" style="width:28.3%;" alt="Functional easing curve" />
+          </div>
+        </div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Expressive easing</h3>
+            <p class="mo-body">Expressive is similar to the functional easing, with an added anticipation and overshoot to it. Expressive motion is to be used when an interaction is directly initiated by the user.</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1264/404; justify-content:flex-start; padding-left:4%;">
+            <img src="https://www.figma.com/api/mcp/asset/cbf8fab0-b763-4c54-8e1a-7785db09baee.png" style="width:27.5%;" alt="Expressive easing curve" />
+          </div>
+        </div>
+      </div>
+
+      <hr class="fig-divider" style="margin:48px 0;" />
+
+      <div class="fig-sec" id="motion-ui">
+        <div class="fig-head"><h2>UI</h2></div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Linear</h3>
+            <p class="mo-body">The only exception to using linear is with elements that move slow on screen, like marquees, players, carousel indicator</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1290/330; gap:16px; padding:16px;">
+            <img src="https://www.figma.com/api/mcp/asset/43b00c46-8417-4c36-8611-a589b1927cf6.png" style="width:20%;" alt="Linear demo 1" />
+            <img src="https://www.figma.com/api/mcp/asset/db8d544c-0560-491b-a491-ebe7e41c6ce2.png" style="width:37%;" alt="Linear demo 2" />
+            <img src="https://www.figma.com/api/mcp/asset/2acd3aaf-8bc0-4699-afb8-1ab5c8cf9e82.png" style="width:37%;" alt="Linear demo 3" />
+          </div>
+        </div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Standard</h3>
+            <p class="mo-body">The easing which has an accelerating curve, a peak velocity and a decelerating curve. The element starts from rest, reaches its highest pace and then gently comes back to rest. Use standard-easing whenever the element transitions to a different state on screen.</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1290/400;">
+            <img src="https://www.figma.com/api/mcp/asset/605826ec-2011-4b0d-806b-6ae7bea736f2.png" style="width:44.6%;" alt="Standard easing demo" />
+          </div>
+        </div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Enter</h3>
+            <p class="mo-body">The easing has peak velocity and a decelerating curve. The element starts off at the highest pace and slows down to gentle rest. Use enter - easing when adding elements to the view, such as a modal or toaster appearing.</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1290/400;">
+            <img src="https://www.figma.com/api/mcp/asset/810e69a5-8f38-4232-a101-8375225d84d9.png" style="width:49%;" alt="Enter easing demo" />
+          </div>
+        </div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Exit</h3>
+            <p class="mo-body">The easing has an accelerating curve and ends with a peak velocity. The element begins at rest and end at highest pace. Use exit - easing when removing elements from view, such as a modal or swipesheets completely from the page. If the element is being hidden such as a drop down, use the standard easing to show that it is retrievable.</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1290/400;">
+            <img src="https://www.figma.com/api/mcp/asset/93c04d89-250a-4b0f-9365-9c1fa1346ceb.png" style="width:40%;" alt="Exit easing demo" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="motion-marketing">
+        <div class="fig-head"><h2>Marketing</h2></div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Motiffs</h3>
+            <p class="mo-body">This section is all about out how we can add motion to our portals, these are directional ways</p>
+          </div>
+          <div class="lay-row">
+            <div class="mo-box" style="aspect-ratio:630/404;">
+              <img src="https://www.figma.com/api/mcp/asset/c029c79c-a190-42d5-9800-01b91c4f04fc.png" style="width:50%;" alt="Portal motif demo 1" />
+            </div>
+            <div class="mo-box" style="aspect-ratio:630/404;">
+              <img src="https://www.figma.com/api/mcp/asset/054f84ce-ed40-4f42-938e-9aa73d6e586b.png" style="width:45%;" alt="Portal motif demo 2" />
+            </div>
+          </div>
+        </div>
+        <div class="mo-block">
+          <div class="mo-subrow">
+            <h3 class="mo-sub">Logo</h3>
+            <p class="mo-body">Wanted it to be dynamic, it supposed to be a worldwide thing, hence the rotation, the motion aspect should come out wherever possible</p>
+          </div>
+          <div class="mo-box" style="aspect-ratio:1293/613;">
+            <video autoplay loop muted playsinline style="width:58%; mix-blend-mode:multiply;">
+              <source src="assets/video/headout_logo_intro_white.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Motion</div>
+  </div><!-- /page-motion -->
+
+</main>
+
+<script src="js/shell.js"></script>
+</body>
+</html>

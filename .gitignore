@@ -1,0 +1,21 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Local tool/deploy state (not meant to be shared or version-controlled)
+.vercel
+_reorg.py
+_split_css.py
+_split_js.py
+_build_pages.py
+_src/
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Editor
+.vscode/
+.idea/

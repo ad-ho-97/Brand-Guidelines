@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout Brand Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <!-- Halyard via Headout's own Adobe Fonts kit (same one brand.headout.com uses):
+       provides `halyard-display` (300/500) + `halyard-text` (300).
+       Locally-installed Adobe Halyard ('Halyard Display'/'Halyard Text') takes priority for full weights. -->
+  <link rel="stylesheet" href="https://use.typekit.net/cjm6jgs.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/shell.css" />
+  <link rel="stylesheet" href="css/layout-motion.css" />
+</head>
+<body>
+
+<!-- Gradient page-transition wash (ragged-edge style) -->
+<div id="page-loader" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════════════════ -->
+<!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
+<div class="m-topbar" id="m-topbar">
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-title" href="/">Brand guidelines</a>
+  <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
+</div>
+
+<aside class="sidebar" id="site-nav">
+  <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
+    <img src="assets/svg/logo-full.svg" alt="Headout"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+    <span class="sidebar-logo-text">headout</span>
+  </a>
+
+  <!-- Overview -->
+  <div class="nav-section">
+    <a class="nav-section-btn" id="nav-overview-btn" href="/">Overview</a>
+  </div>
+
+  <!-- Foundations -->
+  <div class="nav-section" id="nav-foundations">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+      Foundations
+      <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
+        <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="nav-items" id="items-foundations">
+
+      <!-- Logo -->
+      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-logo-children" style="display:none;">
+        <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
+        <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
+        <a class="nav-child" href="/logo#logo-clearspace">Logo clearspace</a>
+        <a class="nav-child" href="/logo#sub-brand-lockup">Sub-brand lockup</a>
+        <a class="nav-child" href="/logo#co-brand-lockup">Co-brand lockup</a>
+        <a class="nav-child" href="/logo#minimum-size">Minimum size</a>
+        <a class="nav-child" href="/logo#logo-animation">Logo animation</a>
+        <a class="nav-child" href="/logo#icon-construction">Icon construction</a>
+        <a class="nav-child" href="/logo#app-tile">App tile and avatars</a>
+        <a class="nav-child" href="/logo#logo-in-action">Logo in action</a>
+        <!-- <a class="nav-child" href="/logo#qr-code">QR code</a> --> <!-- QR hidden for now -->
+        <a class="nav-child" href="/logo#incorrect-usage">Incorrect usage</a>
+      </div>
+
+      <!-- Color -->
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-color-children" style="display:none;">
+        <a class="nav-child" href="/color#color-primary">Primary palette</a>
+        <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
+        <a class="nav-child" href="/color#color-secondary">Secondary palette</a>
+        <a class="nav-child" href="/color#color-secondary-in-use">Secondary colour in use</a>
+        <a class="nav-child" href="/color#color-gradients">Gradients</a>
+        <a class="nav-child" href="/color#color-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/color#color-purpose">Colour use with a purpose</a>
+        <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
+      </div>
+      <!-- Typography -->
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-typography-children" style="display:none;">
+        <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
+        <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
+        <a class="nav-child" href="/typography#halyard-text">Halyard Text</a>
+        <a class="nav-child" href="/typography#type-setting">Type setting</a>
+        <a class="nav-child" href="/typography#typo-alignment">Alignment</a>
+        <a class="nav-child" href="/typography#colour-in-typography">Colour in typography</a>
+        <a class="nav-child" href="/typography#type-colour-combinations">Suggested combinations</a>
+        <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
+      </div>
+      <!-- Layout -->
+      <a class="nav-parent active-section" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-layout-children">
+        <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
+        <a class="nav-child" href="/layout#layout-grid">The grid system</a>
+        <a class="nav-child" href="/layout#layout-grids-action">Grids in action</a>
+        <a class="nav-child" href="/layout#layout-usecases">Use cases</a>
+        <a class="nav-child" href="/layout#layout-portals">Portals</a>
+      </div>
+      <!-- Motion -->
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="nav-children" id="nav-motion-children" style="display:none;">
+        <a class="nav-child" href="/motion#motion-principles">Principles</a>
+        <a class="nav-child" href="/motion#motion-easings">Easings</a>
+        <a class="nav-child" href="/motion#motion-ui">UI</a>
+        <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
+      </div>
+      <!-- Iconography -->
+      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <!-- Voice & Tone -->
+      <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
+        <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expressions -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Employees
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-expressions" style="display:none;"></div>
+  </div>
+
+  <!-- Resources -->
+  <div class="nav-section">
+    <button class="nav-section-btn nav-locked" aria-disabled="true" title="Coming soon">
+      Asset bank : Partners
+      <svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════════════ -->
+<main class="main" id="main-scroll">
+
+  <!-- ────────────────────────────────────────────
+       PAGE: LAYOUT — mockup compressed from the
+       Figma deck (node 1907-21050); visuals are
+       cropped regions of the canvas render
+  ──────────────────────────────────────────── -->
+  <div class="page active" id="page-layout">
+    <div class="fig-stack gap-48">
+
+      <div class="fig-sec" id="layout-intro">
+        <div class="fig-pagehead">
+          <h1>Layout</h1>
+          <p class="intro" style="max-width:640px;">Layout is how the brand holds together on any surface. Three ways to create layouts with our visual design system — all anchored by one grid — so every banner, screen, and page feels unmistakably Headout.</p>
+        </div>
+      </div>
+
+      <hr class="fig-divider" />
+
+      <div class="fig-sec" id="layout-hero">
+        <div class="page-hero-ph" aria-label="Layout hero — image or video placeholder"></div>
+      </div>
+
+      <div class="fig-sec" id="layout-three-ways">
+        <div class="fig-head">
+          <h2>Three ways to lay out</h2>
+          <p class="fh-desc" style="max-width:756px;">Our visual design system gives every layout a starting point — type-led, image-led, or device-led. Whichever way you build, the same ingredients and the same grid keep the result recognisably Headout.</p>
+        </div>
+        <div class="lay-row">
+          <div class="lay-crop" style="aspect-ratio:1.610;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:904.2%; left:-159.0%; top:-183.1%;" alt="Layout example — system applied A" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.610;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:904.2%; left:-392.4%; top:-183.1%;" alt="Layout example — system applied B" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="layout-grid">
+        <div class="fig-head">
+          <h2>The grid system</h2>
+          <p class="fh-desc" style="max-width:756px;">A system to standardise how we lay out content: one grid with consistent columns, gutters, and margins across every breakpoint. Set the grid first — then the layout takes care of itself.</p>
+        </div>
+        <div class="lay-row">
+          <div class="lay-crop" style="aspect-ratio:1.699;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:856.6%; left:-471.7%; top:-183.1%;" alt="Grid system — column specifications" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.632;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:891.8%; left:-606.2%; top:-183.1%;" alt="Grid system — breakpoint grids" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="layout-grids-action">
+        <div class="fig-head">
+          <h2>Grids in action</h2>
+          <p class="fh-desc" style="max-width:756px;">What the grid is actually doing underneath — real communications with their construction exposed, showing how content snaps to columns at any size.</p>
+        </div>
+        <div class="lay-stack">
+          <div class="lay-crop" style="aspect-ratio:1.610;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:904.2%; left:-159.0%; top:-309.0%;" alt="Grids in action — example 1" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.632;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:891.8%; left:-273.3%; top:-309.0%;" alt="Grids in action — example 2" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.475;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:986.4%; left:-437.1%; top:-309.0%;" alt="Grids in action — example 3" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="layout-usecases">
+        <div class="fig-head">
+          <h2>Use cases</h2>
+          <p class="fh-desc" style="max-width:756px;">The system at work across real campaigns and touchpoints — different formats, one recognisable layout language.</p>
+        </div>
+        <div class="lay-row">
+          <div class="lay-crop" style="aspect-ratio:1.605;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:916.9%; left:-168.3%; top:-458.0%;" alt="Use case 1" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.651;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:891.8%; left:-273.3%; top:-458.0%;" alt="Use case 2" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:1.628;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:904.2%; left:-391.0%; top:-458.0%;" alt="Use case 3" />
+          </div>
+        </div>
+      </div>
+
+      <div class="fig-sec" id="layout-portals">
+        <div class="fig-head">
+          <h2>Portals</h2>
+          <p class="fh-desc" style="max-width:756px;">Portals are Headout's visual device for framing experiences — a threshold between the viewer and the destination. What we seek in an experience, how the portal adapts to every format, and where it shows up in the world.</p>
+        </div>
+        <div class="lay-row" style="margin-bottom:24px;">
+          <div class="lay-crop" style="aspect-ratio:0.782;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:707.6%; left:-151.6%; top:-220.5%;" alt="Welcome to the world of Portals — hero" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:0.598;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:707.6%; left:-151.6%; top:-281.7%;" alt="What do we seek during an experience" />
+          </div>
+        </div>
+        <div class="lay-row">
+          <div class="lay-crop" style="aspect-ratio:0.300;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:707.6%; left:-151.6%; top:-193.1%;" alt="Portal adaptations across formats" />
+          </div>
+          <div class="lay-crop" style="aspect-ratio:0.385;">
+            <img src="https://www.figma.com/api/mcp/asset/12ac4975-b5ff-4815-a5eb-9c3ae3727b3d.png" style="width:707.6%; left:-151.6%; top:-377.3%;" alt="Portal applications in the wild" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Headout, Inc. Brand Guidelines · Layout</div>
+  </div><!-- /page-layout -->
+
+</main>
+
+<script src="js/shell.js"></script>
+</body>
+</html>

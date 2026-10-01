@@ -1,0 +1,52 @@
+    /* ═══════════════════════════════════════════════
+       LAYOUT PAGE — visuals cropped from the Figma canvas
+    ═══════════════════════════════════════════════ */
+    .lay-row { display: flex; gap: 24px; align-items: flex-start; }
+    .lay-row > * { flex: 1; min-width: 0; }
+    .lay-stack { display: flex; flex-direction: column; gap: 24px; }
+    .lay-crop {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #ececec;
+      border: 1px solid rgba(159,159,159,0.25);
+    }
+    .lay-crop img { position: absolute; display: block; max-width: none; height: auto; }
+
+
+    /* ── Motion page (.mo-*) ── */
+    /* ═══════════════════════════════════════════════
+       MOTION PAGE
+    ═══════════════════════════════════════════════ */
+    .mo-sub {
+      font-family: var(--hd);
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 1.1;
+      color: #5d5d5d;
+    }
+    .mo-body {
+      font-family: var(--ht);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #000;
+    }
+    .mo-subrow { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 24px; }
+    .mo-subrow .mo-sub { flex: 0 0 320px; }
+    .mo-subrow .mo-body { flex: 1; max-width: 785px; }
+    .mo-box {
+      background: #EBEDF0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .mo-box img { display: block; height: auto; }
+    .mo-card { flex: 1; min-width: 0; }
+    .mo-card .mo-sub { margin: 24px 0 12px; }
+    .mo-block { margin-bottom: 48px; }
+    .mo-block:last-child { margin-bottom: 0; }
+
+
