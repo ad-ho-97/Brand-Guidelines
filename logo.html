@@ -14,6 +14,181 @@
   <link rel="stylesheet" href="css/shell.css" />
   <link rel="stylesheet" href="css/media-carousel.css" />
   <link rel="stylesheet" href="css/logo.css" />
+  <style>
+    /* Content rail: Figma measures 819px content + 96px gutter (1011px total), not the
+       1200px --content-max every other page shares — scoped here rather than changing
+       the shared token, which would resize color.html/typography.html/etc. too. */
+    #page-logo .fig-stack { max-width: calc(819px + var(--px) * 2); padding-top: 110px; }
+    /* No trailing footer anymore — the last section shouldn't leave its bottom gap dangling */
+    #page-logo .fig-stack > .fig-sec:last-child { margin-bottom: 0; }
+    /* Heading-to-asset gap is 24px by default — confirmed against Figma on every section
+       except Colour variants, which measures 48px (override further down) */
+    #page-logo .fig-head-row:has(.fig-btn) { margin-bottom: 24px; }
+
+    /* Figma gives every .fig-head-row's text column its own measured width — there is no
+       shared constant. This is the fallback; every real instance overrides it below. */
+    #page-logo .fig-head-row .fig-head-text { max-width: 640px; }
+    /* One "text beside media" row component. Figma uses three different row gaps
+       (24 / 24 / 40px) and bespoke column proportions per instance — overridden per
+       section (Primary Logo, Co-brand lockup, Suggested combinations) below. */
+    #page-logo .fig-row {
+      display: flex;
+      align-items: stretch; /* not flex-start: a non-stretch cross-axis alignment lets a
+        column-stacked child grow past the viewport on mobile */
+      gap: 24px;
+    }
+    #page-logo .fig-row > .fig-head {
+      flex: 330 1 0;
+      max-width: 340px;
+      margin-bottom: 0;
+    }
+    #page-logo .fig-row > :last-child {
+      flex: 860 1 0;
+      min-width: 0;
+    }
+    /* One grid component, column count as a modifier. Figma: cols-2 gap is 21.6px
+       (Colour variants, Minimum size), cols-3 is 20px (Incorrect usage). */
+    #page-logo .fig-grid { display: grid; row-gap: 32px; }
+    #page-logo .fig-grid.cols-2 { grid-template-columns: 1fr 1fr; column-gap: 21.6px; }
+    #page-logo .fig-grid.cols-3 { grid-template-columns: repeat(3, 1fr); column-gap: 20px; }
+
+    /* Figma: every full-bleed media banner is 8px radius with no edge, except Primary
+       Logo (11.047px), Co-brand lockup's image (6.5px) and the carousel (16px, kept on
+       .mcar). Only Sub-brand lockup and App tile carry a real 1px border — nothing else
+       does, so the blanket inset ring from the earlier design-system pass is removed. */
+    #page-logo .fig-rounded,
+    #page-logo .page-hero-ph {
+      border-radius: 8px;
+    }
+    #page-logo .mcar {
+      border-radius: 16px;
+    }
+    #page-logo #sub-brand-lockup .fig-rounded,
+    #page-logo #app-tile .fig-rounded {
+      border: 1px solid rgba(159,159,159,0.4);
+    }
+    /* Logo end breaks out to edge-to-edge on desktop (below, §1024px block) — a
+       full-bleed image takes no radius of its own (radius.md §1) */
+
+    /* Section headings/body copy: page title stays Halyard Display (the one page-level
+       heading, §5). One additional breakpoint (1023px), matching the rest of the page. */
+    #page-logo .fig-pagehead h1 {
+      font-weight: 500; font-size: 60px; line-height: 72px; letter-spacing: 0.8px; color: #222222;
+    }
+    #page-logo .fig-pagehead { gap: 24px; }
+    #page-logo .fig-pagehead .intro {
+      font-weight: 300; font-size: 17px; line-height: 28px; letter-spacing: 0; color: #222222;
+      max-width: 464px;
+    }
+    #page-logo .fig-head h2 {
+      font-family: var(--hd); font-weight: 500; font-size: 30px; line-height: 38px;
+      letter-spacing: 0.4px; color: #111111;
+    }
+    #page-logo .fig-head .fh-desc {
+      font-weight: 300; font-size: 15px; line-height: 24px; letter-spacing: 0;
+      color: #222222; margin-top: 8px;
+    }
+
+    /* ── Per-section Figma overrides (measured values — see visual-parity audit) ── */
+    /* Hero video sits tight under the intro (24px), not at full section rhythm */
+    #page-logo #logo-intro .page-hero-ph { margin-top: 24px; }
+
+    /* Primary Logo: 24px row gap; card proportioned 232:563 with Figma's own aspect
+       ratio instead of a fixed height */
+    #page-logo #primary-logo { gap: 24px; }
+    #page-logo #primary-logo .fig-head { flex: 232 1 0; max-width: none; }
+    #page-logo #primary-logo .fig-rounded {
+      flex: 563 1 0; max-width: none; margin-left: 0;
+      aspect-ratio: 563 / 456.134; height: auto;
+    }
+
+    /* Colour variants: 48px header gap (the one exception to the 24px default), 506px
+       text column, 14/20 body copy; rebuilt as two swatches (Coloured / Monochrome)
+       to match the Figma frame instead of the previous five photo cards */
+    #page-logo #colour-variants .fig-head-row { margin-bottom: 48px; }
+    #page-logo #colour-variants .fig-head-text { max-width: 506px; }
+    #page-logo #colour-variants .fh-desc { font-size: 14px; line-height: 20px; }
+    #page-logo .cv-swatch {
+      aspect-ratio: 398.703 / 470;
+      border: 1px solid rgba(159,159,159,0.4);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #page-logo .cv-swatch .cv-logo { background: currentColor; }
+
+    /* Logo clearspace: 506px text column (matches Colour variants) */
+    #page-logo #logo-clearspace .fig-head-text { max-width: 506px; }
+
+    /* Co-brand lockup: fixed 253.461px text column (not the 330/860 flex proportion);
+       image radius is the 6.5px set per-instance below */
+    #page-logo #co-brand-lockup .fig-head { flex: none; width: 253.461px; max-width: none; }
+    #page-logo #co-brand-lockup > img.fig-rounded { border-radius: 6.5px; }
+
+    /* Minimum size: 8px card radius (the shared .cv-card default, 12px, is used by
+       other pages and left untouched) */
+    #page-logo #minimum-size .cv-card { border-radius: 8px; }
+
+    /* Logo animation: 506px text column */
+    #page-logo #logo-animation .fig-head-text { max-width: 506px; }
+
+    /* App tile: 544px text column (already correct — restated for clarity) */
+    #page-logo #app-tile .fig-head-text { max-width: 544px; }
+
+    /* Our suggested combinations: 40px row gap (the third, distinct value in this file)
+       and #333 body copy (not the page's standard #222222) */
+    #page-logo #logo-in-action .fig-row { gap: 40px; }
+    #page-logo #logo-in-action .fig-row .fh-desc { color: #333; }
+
+    /* Incorrect usage: 8px card radius, no edge (the shared .iu-card default of 12px +
+       ring was added in an earlier pass that didn't match this file); figcaption
+       20px line-height and #111 (not 24px/#222222); icon #E00000 (not #d60404) */
+    #page-logo #incorrect-usage .iu-card { border-radius: 8px; box-shadow: none; }
+    #page-logo #incorrect-usage .iu-item figcaption { line-height: 20px; color: #111; }
+    #page-logo #incorrect-usage .iu-x { background: #E00000; }
+
+    /* Logo end: the visible crop window is 819:511 (≈1.603:1), not the asset's own
+       1011:564 ratio the container previously carried */
+    #page-logo #logo-end .fig-rounded { aspect-ratio: 819 / 511; }
+
+    @media (max-width: 1023px) {
+      /* Mobile gutter per layout.md §1 (space.16), scoped here rather than
+         changing the shared --px token every other page still uses at 20px */
+      #page-logo { --px: 16px; }
+      #page-logo .fig-pagehead h1 { font-size: 30px; line-height: 38px; letter-spacing: 0.4px; }
+      #page-logo .fig-pagehead .intro { font-size: 15px; line-height: 24px; }
+      #page-logo .fig-head h2 { font-size: 24px; line-height: 28px; letter-spacing: 0.4px; }
+      #page-logo .fig-head .fh-desc { font-size: 14px; line-height: 20px; }
+      /* Stacks back to one column on mobile (layout.md §2). .fig-head keeps its
+         base flex/max-width — clearing them here broke align-items:stretch and
+         let the column blow past the viewport width. The media child DOES need its
+         flex-grow cleared: flex:860 1 0 sets flex-basis:0 on the now-vertical main
+         axis, and since every media child has overflow:hidden, its automatic
+         min-height resolves to 0 too (no auto-min-height rescue the way text gets) —
+         with no free space for an auto-height row to distribute, flex-grow does
+         nothing and the element renders at zero height. */
+      #page-logo .fig-row { flex-direction: column; gap: 20px; }
+      #page-logo .fig-row > :last-child { flex: none; width: 100%; min-width: 0; }
+      #page-logo .fig-row > .fig-head { max-width: none; }
+      #page-logo #primary-logo .fig-head { max-width: none; flex: none; }
+      #page-logo #primary-logo .fig-rounded { aspect-ratio: 563 / 456.134; }
+      #page-logo #co-brand-lockup .fig-head { width: auto; max-width: none; flex: none; }
+      /* .cols-2/.cols-3 outrank a bare .fig-grid on specificity, so match them explicitly */
+      #page-logo .fig-grid.cols-2,
+      #page-logo .fig-grid.cols-3 { grid-template-columns: 1fr; row-gap: 16px; }
+    }
+
+    /* Section rhythm (spacing.md §3): space.64 desktop, space.48 mobile — scoped inside
+       a width query so it cannot out-specificity the shared mobile rhythm in shell.css */
+    @media (min-width: 1024px) {
+      #page-logo .fig-stack.gap-48 .fig-sec { margin-bottom: 80px; }
+      /* Grid-view toggle moves from an overlay-on-image to a heading-row aside (next to Switch, not Link) */
+      #page-logo .fig-head-row .clearspace-toggle { position: static; white-space: nowrap; flex-shrink: 0; }
+      /* Closing signage image breaks out of the content gutters to run edge-to-edge */
+      #page-logo #logo-end { margin-left: calc(-1 * var(--px)); margin-right: calc(-1 * var(--px)); }
+      #page-logo #logo-end .fig-rounded { border-radius: 0; }
+    }
+  </style>
 </head>
 <body>
 
@@ -30,7 +205,7 @@
   <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
 </div>
 
-<aside class="sidebar" id="site-nav">
+<nav class="sidebar" id="site-nav" aria-label="Brand guidelines">
   <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
     <img src="assets/svg/logo-full.svg" alt="Headout"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
@@ -44,7 +219,7 @@
 
   <!-- Foundations -->
   <div class="nav-section" id="nav-foundations">
-    <button class="nav-section-btn" onclick="toggleSection('foundations')">
+    <button class="nav-section-btn" onclick="toggleSection('foundations')" aria-expanded="true" aria-controls="items-foundations">
       Foundations
       <svg class="nav-chevron open" id="chevron-foundations" viewBox="0 0 14 14" fill="none">
         <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -53,7 +228,7 @@
     <div class="nav-items" id="items-foundations">
 
       <!-- Logo -->
-      <a class="nav-parent active-section" id="nav-logo-parent" href="/logo"><span>Logo</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="nav-parent active-section" id="nav-logo-parent" href="/logo" aria-current="page"><span>Logo</span></a>
       <div class="nav-children" id="nav-logo-children">
         <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
         <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
@@ -70,7 +245,7 @@
       </div>
 
       <!-- Color -->
-      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span></a>
       <div class="nav-children" id="nav-color-children" style="display:none;">
         <a class="nav-child" href="/color#color-primary">Primary palette</a>
         <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
@@ -82,7 +257,7 @@
         <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
       </div>
       <!-- Typography -->
-      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span></a>
       <div class="nav-children" id="nav-typography-children" style="display:none;">
         <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
         <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
@@ -94,7 +269,7 @@
         <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
       </div>
       <!-- Layout -->
-      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span></a>
       <div class="nav-children" id="nav-layout-children" style="display:none;">
         <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
         <a class="nav-child" href="/layout#layout-grid">The grid system</a>
@@ -103,7 +278,7 @@
         <a class="nav-child" href="/layout#layout-portals">Portals</a>
       </div>
       <!-- Motion -->
-      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span><svg class="nav-chevron nav-parent-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="nav-parent" id="nav-motion-parent" href="/motion"><span>Motion</span></a>
       <div class="nav-children" id="nav-motion-children" style="display:none;">
         <a class="nav-child" href="/motion#motion-principles">Principles</a>
         <a class="nav-child" href="/motion#motion-easings">Easings</a>
@@ -136,7 +311,7 @@
     </button>
     <div class="nav-items" id="items-resources-nav" style="display:none;"></div>
   </div>
-</aside>
+</nav>
 
 <!-- ═══════════════════════════════════════════════════════════
      MAIN
@@ -153,13 +328,8 @@
       <div class="fig-sec" id="logo-intro">
         <div class="fig-pagehead">
           <h1>Logo</h1>
-          <p class="intro" style="max-width:640px;">The Headout blimp cuts through the noise — a mark travelers spot and trust in an instant. It's kinetic by design, echoing the spontaneity and movement at the heart of what we do. More than a symbol, it's our handshake with the world. Every size, every surface, every context is a chance to show up as ourselves.</p>
+          <p class="intro">The Headout blimp cuts through the noise — a mark travelers spot and trust in an instant. It's kinetic by design, echoing the spontaneity and movement at the heart of what we do. More than a symbol, it's our handshake with the world. Every size, every surface, every context is a chance to show up as ourselves.</p>
         </div>
-      </div>
-
-      <hr class="fig-divider" />
-
-      <div class="fig-sec" id="logo-hero">
         <div class="page-hero-ph">
           <video autoplay loop muted playsinline>
             <source src="assets/video/logo-hero.mp4" type="video/mp4" />
@@ -167,14 +337,16 @@
         </div>
       </div>
 
-      <div class="fig-sec" id="primary-logo">
+      <hr class="fig-divider" style="margin:56px 0;" />
+
+      <div class="fig-sec fig-row" id="primary-logo">
         <div class="fig-head">
           <h2>Primary Logo</h2>
           <p class="fh-desc">This is our signature — how we write our name and use our mark. Whether it's pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it's really us.</p>
         </div>
         <!-- Full-bleed looping video card -->
-        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:4096/1652; background:#f0f0f0;">
-          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; height:300px; background:#f0f0f0;">
+          <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center;">
             <source src="assets/video/primary-logo.mp4" type="video/mp4" />
           </video>
         </div>
@@ -182,46 +354,77 @@
 
       <div class="fig-sec" id="colour-variants">
         <div class="fig-head fig-head-row">
-          <div style="max-width:828px;">
+          <div class="fig-head-text">
             <h2>Colour variants</h2>
             <p class="fh-desc">Colour is the first thing people remember about a brand — ours is Purps. When Purps can't do its job (low contrast, busy backgrounds), fall back to monochrome. Always pick the variant that stays legible against whatever's behind it.</p>
           </div>
           <a class="fig-btn" href="#">Download logo assets</a>
         </div>
-        <!-- Figma 6480:52882 — five labelled cards (supplied exports) -->
-        <div class="cv-grid">
-          <div class="cv-item"><p class="cv-label">White on Purps</p><div class="cv-card"><img src="assets/images/cv-white-on-purps.png" alt="White logo on Purps" /></div></div>
-          <div class="cv-item"><p class="cv-label">Purps on White</p><div class="cv-card"><img src="assets/images/cv-purps-on-white.png" alt="Purps logo on white" /></div></div>
-          <div class="cv-item cv-item-full"><p class="cv-label">White on Image</p><div class="cv-card cv-card-tall"><img src="assets/images/cv-white-on-image.jpg" alt="White logo over a photograph" /></div></div>
-          <div class="cv-item"><p class="cv-label">Black on White</p><div class="cv-card"><img src="assets/images/cv-black-on-white.png" alt="Black logo on white" /></div></div>
-          <div class="cv-item"><p class="cv-label">White on Black</p><div class="cv-card"><img src="assets/images/cv-white-on-black.png" alt="White logo on black" /></div></div>
+        <!-- Figma: two swatches (Coloured / Monochrome), not five photo cards -->
+        <div class="fig-grid cols-2">
+          <figure class="cv-item">
+            <figcaption class="cv-label">Coloured</figcaption>
+            <div class="cv-swatch" style="background:#8000ff; color:#fff;"><span class="cv-logo" role="img" aria-label="Headout wordmark"></span></div>
+          </figure>
+          <figure class="cv-item">
+            <figcaption class="cv-label">Monochrome</figcaption>
+            <div class="cv-swatch" style="background:#fff; color:#111;"><span class="cv-logo" role="img" aria-label="Headout wordmark"></span></div>
+          </figure>
         </div>
       </div>
 
       <div class="fig-sec" id="logo-clearspace">
-        <div class="fig-head">
-          <h2>Logo clearspace</h2>
-          <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
-        </div>
-        <!-- Interactive clearspace: Grid view toggle on the card -->
-        <div class="clearspace-wrap">
-          <img
-            id="cs-grid-on"
-            class="clearspace-grid"
-            src="assets/svg/cs_grid_on.svg"
-            alt="Logo clearspace with grid"
-          />
-          <img
-            id="cs-grid-off"
-            class="clearspace-grid"
-            src="assets/svg/cs_grid_off.svg"
-            alt="Headout logo clearspace"
-            style="display:none;"
-          />
+        <div class="fig-head fig-head-row">
+          <div class="fig-head-text">
+            <h2>Logo clearspace</h2>
+            <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
+          </div>
           <button class="clearspace-toggle" id="clearspace-toggle-btn" onclick="toggleClearspaceGrid()" role="switch" aria-checked="true">
             <span class="toggle-pill"></span>
-            Grid view
+            Show grid
           </button>
+        </div>
+        <!-- Interactive clearspace: grid overlay builds around the fixed wordmark -->
+        <div class="clearspace-wrap cs-wrap is-grid-active" id="cs-figure">
+          <img class="clearspace-grid" src="assets/logo/Default_logomark.svg" alt="Headout logo clearspace" />
+          <svg class="cs-grid-overlay" viewBox="0 0 1254 489" fill="none" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="cs-clip-outer">
+                <rect width="954" height="299" fill="white" transform="translate(150 95.793)"/>
+              </clipPath>
+              <clipPath id="cs-clip-left">
+                <rect width="41" height="91" fill="white" transform="matrix(-1 0 0 1 417 95.2656)"/>
+              </clipPath>
+              <clipPath id="cs-clip-right">
+                <rect width="43" height="91" fill="white" transform="translate(417 95.2656)"/>
+              </clipPath>
+            </defs>
+
+            <g class="clearspace-circles" clip-path="url(#cs-clip-outer)">
+              <path opacity="0.5" d="M191.491 394.638C166.949 394.638 150.009 376.187 150.024 349.349C150.039 322.511 167.352 303.688 191.893 303.688C216.435 303.688 233.551 322.511 233.537 349.349C233.522 375.814 216.033 394.638 191.491 394.638ZM191.499 379.169C206.507 379.169 216.047 367.8 216.057 349.908L216.057 349.163C216.067 330.712 206.716 319.156 191.885 319.156C177.054 319.156 167.514 330.712 167.504 349.163L167.503 349.908C167.493 367.986 176.668 379.169 191.499 379.169Z" fill="#C4C4C4"/>
+              <g opacity="0.5" clip-path="url(#cs-clip-left)">
+                <path opacity="0.5" d="M417.491 186.216C392.949 186.216 376.009 167.765 376.024 140.927C376.039 114.089 393.352 95.2656 417.893 95.2656C442.435 95.2656 459.551 114.089 459.537 140.927C459.522 167.392 442.033 186.216 417.491 186.216ZM417.499 170.747C432.507 170.747 442.047 159.378 442.057 141.486L442.057 140.741C442.067 122.29 432.716 110.735 417.885 110.735C403.054 110.735 393.514 122.29 393.504 140.741L393.503 141.486C393.493 159.564 402.668 170.747 417.499 170.747Z" fill="#C4C4C4"/>
+              </g>
+              <g clip-path="url(#cs-clip-right)">
+                <path opacity="0.5" d="M417.491 186.216C392.949 186.216 376.009 167.765 376.024 140.927C376.039 114.089 393.352 95.2656 417.893 95.2656C442.435 95.2656 459.551 114.089 459.537 140.927C459.522 167.392 442.033 186.216 417.491 186.216ZM417.499 170.747C432.507 170.747 442.047 159.378 442.057 141.486L442.057 140.741C442.067 122.29 432.716 110.735 417.885 110.735C403.054 110.735 393.514 122.29 393.504 140.741L393.503 141.486C393.493 159.564 402.668 170.747 417.499 170.747Z" fill="#C4C4C4"/>
+              </g>
+              <path opacity="0.5" d="M1061.43 293.493C1036.88 293.493 1019.95 275.042 1019.96 248.204C1019.97 221.367 1037.29 202.543 1061.83 202.543C1086.37 202.543 1103.49 221.367 1103.47 248.204C1103.46 274.669 1085.97 293.493 1061.43 293.493ZM1061.43 278.024C1076.44 278.024 1085.98 266.655 1085.99 248.764L1085.99 248.018C1086 229.567 1076.65 218.012 1061.82 218.012C1046.99 218.012 1037.45 229.567 1037.44 248.018L1037.44 248.764C1037.43 266.842 1046.6 278.024 1061.43 278.024Z" fill="#C4C4C4"/>
+              <path opacity="0.5" d="M718.063 394.216C693.521 394.216 676.582 375.765 676.596 348.927C676.611 322.089 693.924 303.266 718.466 303.266C743.007 303.266 760.123 322.089 760.109 348.927C760.094 375.392 742.605 394.216 718.063 394.216ZM718.072 378.747C733.079 378.747 742.619 367.378 742.629 349.486L742.63 348.741C742.64 330.29 733.288 318.735 718.457 318.735C703.626 318.735 694.086 330.29 694.076 348.741L694.075 349.486C694.066 367.564 703.241 378.747 718.072 378.747Z" fill="#C4C4C4"/>
+            </g>
+
+            <g class="measurement-guides">
+              <path d="M417 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M234 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M1104 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M150 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M1020 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M460 0V490.586" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M0 95.793L1254 95.793" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M0 186.793L1254 186.793" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M0 303.793L1254 303.793" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M0 394.793L1254 394.793" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+            </g>
+          </svg>
         </div>
       </div>
 
@@ -230,16 +433,13 @@
           <h2>Sub-brand lockup</h2>
           <p class="fh-desc">Headout Partners, Headout Hub, Headout Blog — every sub-brand locks up the same way. The blimp and wordmark stay untouched; the sub-brand name sits beside it in a lighter weight. One system, many voices, always recognisably Headout.</p>
         </div>
-        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/465; background:#fafafa; border:1px solid rgba(159,159,159,0.4);">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/465; background:#fafafa;">
           <img src="https://www.figma.com/api/mcp/asset/71b51079-b0b0-48e1-abea-14c70b31a71d.png" alt="Sub-brand lockup" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
             <source src="assets/video/headout_subbrand_lockup_zoom.mp4" type="video/mp4" />
           </video>
         </div>
-      </div>
-
-      <div class="fig-sec" id="sub-brand-grid">
-        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1154; background:#fafafa;">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1154; background:#fafafa; margin-top:24px;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
             <source src="assets/video/subbrand-grid.mp4" type="video/mp4" />
           </video>
@@ -247,7 +447,7 @@
       </div>
 
       <div class="fig-sec" id="co-brand-lockup">
-        <div class="cb-row">
+        <div class="fig-row">
           <div class="fig-head">
             <h2>Co-brand lockup</h2>
             <p class="fh-desc">When we share space with a partner — Mastercard, Broadway — our logo shares the frame, never the spotlight. Keep both marks equal in visual weight, separate them with a clean divider, and give each its full clearspace.</p>
@@ -266,7 +466,7 @@
           <h2>Minimum size</h2>
           <p class="fh-desc">The logo has to stay legible, always. Never scale it below the minimum size — you'll lose detail and recognition before it even looks "off." If space is tight, fix it with layout or whitespace, not by shrinking the logo further.</p>
         </div>
-        <div class="cv-grid" style="row-gap:0;">
+        <div class="fig-grid cols-2" style="row-gap:0;">
           <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-digital.jpg" alt="Minimum size — digital, min width 120px" /></div>
           <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-print.jpg" alt="Minimum size — print, min width 120px" /></div>
         </div>
@@ -274,7 +474,7 @@
 
       <div class="fig-sec" id="logo-animation">
         <div class="fig-head fig-head-row">
-          <div style="max-width:828px;">
+          <div class="fig-head-text">
             <h2>Logo animation</h2>
             <p class="fh-desc">Our animated logo shows up at key brand moments — video intros and outros, launch films, LinkedIn announcements, presentation openers — plus idle loops for anywhere it needs to hold, pause, or sit in the background.</p>
           </div>
@@ -288,30 +488,146 @@
       </div>
 
       <div class="fig-sec" id="icon-construction">
-        <div class="fig-head">
-          <h2>Icon construction</h2>
-          <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
-        </div>
-        <!-- Interactive construction: same Grid view toggle as clearspace -->
-        <div class="clearspace-wrap" style="aspect-ratio:2154/1004; margin-bottom:0;">
-          <img id="ic-grid-on"  class="clearspace-grid" src="assets/images/icon-construction-grid-on.png"  alt="Icon construction with grid" />
-          <img id="ic-grid-off" class="clearspace-grid" src="assets/images/icon-construction-grid-off.png" alt="Icon construction" style="display:none;" />
+        <div class="fig-head fig-head-row">
+          <div class="fig-head-text">
+            <h2>Icon construction</h2>
+            <p class="fh-desc">The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.</p>
+          </div>
           <button class="clearspace-toggle" id="ic-toggle-btn" onclick="toggleConstructionGrid()" role="switch" aria-checked="true">
             <span class="toggle-pill"></span>
-            Grid view
+            Show grid
           </button>
+        </div>
+        <!-- Interactive construction: grid overlay builds around the fixed logo -->
+        <div class="clearspace-wrap ic-wrap is-grid-active" id="ic-figure" style="aspect-ratio:2154/1004; margin-bottom:0;">
+          <img class="clearspace-grid" src="assets/logo/Default.svg" alt="Icon construction" />
+          <svg class="ic-grid-overlay" viewBox="0 0 1254 584" fill="none" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="ic-clip-outer">
+                <rect x="400.689" y="63.9141" width="452.62" height="452.62" fill="white"/>
+              </clipPath>
+              <clipPath id="ic-clip-inner">
+                <rect width="82.2946" height="183.035" fill="white" transform="translate(401.398 198.586)"/>
+              </clipPath>
+              <mask id="ic-mask-1" maskUnits="userSpaceOnUse" x="374.77" y="281.809" width="14" height="14" fill="black">
+                <rect fill="white" x="374.77" y="281.809" width="14" height="14"/>
+                <path d="M375.968 294.809L380.514 288.577L376.326 282.754H378.318L381.638 287.402L384.933 282.754H386.874L382.66 288.526L387.206 294.809H385.188L381.536 289.701L377.909 294.809H375.968Z"/>
+              </mask>
+              <mask id="ic-mask-2" maskUnits="userSpaceOnUse" x="795.43" y="528.789" width="36" height="19" fill="black">
+                <rect fill="white" x="795.43" y="528.789" width="36" height="19"/>
+                <path d="M796.711 546.789L801.257 540.557L797.068 534.734H799.06L802.38 539.383L805.675 534.734H807.616L803.402 540.506L807.948 546.789H805.93L802.278 541.681L798.652 546.789H796.711ZM808.757 546.789L816.112 529.831H817.874L810.519 546.789H808.757ZM818.997 546.789V546.38C818.997 538.514 828.881 539.051 828.881 534.479C828.881 532.461 827.553 531.21 825.177 531.21C822.853 531.21 821.474 532.436 820.58 534.862L818.946 534.172C820.121 531.108 822.113 529.55 825.203 529.55C828.523 529.55 830.771 531.414 830.771 534.428C830.771 540.123 821.678 539.663 820.938 545.129H830.745V546.789H818.997Z"/>
+              </mask>
+              <mask id="ic-mask-3" maskUnits="userSpaceOnUse" x="860.723" y="467.641" width="36" height="19" fill="black">
+                <rect fill="white" x="860.723" y="467.641" width="36" height="19"/>
+                <path d="M862.004 485.641L866.55 479.409L862.361 473.586H864.353L867.673 478.234L870.968 473.586H872.909L868.695 479.358L873.241 485.641H871.223L867.571 480.533L863.945 485.641H862.004ZM874.05 485.641L881.405 468.682H883.167L875.812 485.641H874.05ZM884.29 485.641V485.232C884.29 477.366 894.174 477.902 894.174 473.33C894.174 471.313 892.846 470.061 890.47 470.061C888.146 470.061 886.767 471.287 885.873 473.714L884.239 473.024C885.414 469.959 887.406 468.401 890.496 468.401C893.816 468.401 896.064 470.266 896.064 473.279C896.064 478.975 886.971 478.515 886.231 483.981H896.038V485.641H884.29Z"/>
+              </mask>
+            </defs>
+
+            <g class="grid-lines" clip-path="url(#ic-clip-outer)">
+              <g clip-path="url(#ic-clip-inner)">
+                <path pathLength="1" d="M355.568 208.432L529.995 125.391" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 214.252L529.995 131.211" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 220.076L529.995 137.035" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 225.897L529.995 142.855" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 231.717L529.995 148.676" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 237.537L529.995 154.496" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 243.362L529.995 160.32" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 249.182L529.995 166.141" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 255.002L529.995 171.961" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 260.822L529.995 177.781" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 266.647L529.995 183.605" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 272.467L529.995 189.426" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 278.291L529.995 195.25" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 284.112L529.995 201.07" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 289.932L529.995 206.891" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 295.752L529.995 212.711" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 301.572L529.995 218.531" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 307.397L529.995 224.355" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 313.217L529.995 230.176" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 319.041L529.995 236" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 429.647L529.995 346.605" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 324.858L529.995 241.816" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 435.467L529.995 352.426" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 330.682L529.995 247.641" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 441.287L529.995 358.246" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 336.502L529.995 253.461" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 447.112L529.995 364.07" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 342.322L529.995 259.281" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 452.932L529.995 369.891" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 348.147L529.995 265.105" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 458.752L529.995 375.711" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 353.967L529.995 270.926" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 464.576L529.995 381.535" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 359.791L529.995 276.75" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 365.612L529.995 282.57" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 371.432L529.995 288.391" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 377.256L529.995 294.215" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 383.076L529.995 300.035" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 388.897L529.995 305.855" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 394.721L529.995 311.68" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 400.541L529.995 317.5" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 406.362L529.995 323.32" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 412.182L529.995 329.141" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 418.002L529.995 334.961" stroke="#8000FF" stroke-width="0.630508"/>
+                <path pathLength="1" d="M355.568 423.826L529.995 340.785" stroke="#8000FF" stroke-width="0.630508"/>
+              </g>
+            </g>
+
+            <g class="measurement-guides">
+              <rect x="400.689" y="63.9141" width="452.62" height="452.62" stroke="#9F9F9F" stroke-opacity="0.7" stroke-width="1.41887" stroke-dasharray="5.68 5.68"/>
+              <path d="M381.572 381.985L381.572 308.758" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M381.572 271.696L381.572 198.469" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <g>
+                <path d="M375.968 294.809L380.514 288.577L376.326 282.754H378.318L381.638 287.402L384.933 282.754H386.874L382.66 288.526L387.206 294.809H385.188L381.536 289.701L377.909 294.809H375.968Z" fill="#5B5B5B"/>
+                <path d="M375.968 294.809L375.685 294.602L375.277 295.16H375.968V294.809ZM380.514 288.577L380.798 288.784L380.948 288.578L380.799 288.372L380.514 288.577ZM376.326 282.754V282.403H375.641L376.041 282.959L376.326 282.754ZM378.318 282.754L378.604 282.55L378.498 282.403H378.318V282.754ZM381.638 287.402L381.352 287.606L381.639 288.008L381.924 287.605L381.638 287.402ZM384.933 282.754V282.403H384.751L384.646 282.551L384.933 282.754ZM386.874 282.754L387.157 282.961L387.565 282.403H386.874V282.754ZM382.66 288.526L382.376 288.319L382.226 288.525L382.375 288.732L382.66 288.526ZM387.206 294.809V295.16H387.893L387.49 294.603L387.206 294.809ZM385.188 294.809L384.902 295.013L385.007 295.16H385.188V294.809ZM381.536 289.701L381.821 289.496L381.535 289.096L381.25 289.497L381.536 289.701ZM377.909 294.809V295.16H378.09L378.195 295.012L377.909 294.809ZM375.968 294.809L376.252 295.016L380.798 288.784L380.514 288.577L380.231 288.37L375.685 294.602L375.968 294.809ZM380.514 288.577L380.799 288.372L376.611 282.549L376.326 282.754L376.041 282.959L380.229 288.782L380.514 288.577ZM376.326 282.754V283.105H378.318V282.754V282.403H376.326V282.754ZM378.318 282.754L378.032 282.958L381.352 287.606L381.638 287.402L381.924 287.198L378.604 282.55L378.318 282.754ZM381.638 287.402L381.924 287.605L385.219 282.957L384.933 282.754L384.646 282.551L381.352 287.199L381.638 287.402ZM384.933 282.754V283.105H386.874V282.754V282.403H384.933V282.754ZM386.874 282.754L386.59 282.547L382.376 288.319L382.66 288.526L382.943 288.733L387.157 282.961L386.874 282.754ZM382.66 288.526L382.375 288.732L386.921 295.014L387.206 294.809L387.49 294.603L382.944 288.32L382.66 288.526ZM387.206 294.809V294.458H385.188V294.809V295.16H387.206V294.809ZM385.188 294.809L385.474 294.604L381.821 289.496L381.536 289.701L381.25 289.905L384.902 295.013L385.188 294.809ZM381.536 289.701L381.25 289.497L377.623 294.605L377.909 294.809L378.195 295.012L381.822 289.904L381.536 289.701ZM377.909 294.809V294.458H375.968V294.809V295.16H377.909V294.809Z" fill="#5B5B5B" mask="url(#ic-mask-1)"/>
+              </g>
+              <path d="M770.342 -56.0312V640.048" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M483.658 -56.0312V640.048" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M853.311 -56.0312V640.048" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M400.689 -56.0312V640.048" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 146.883L1516.63 146.883" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 198.469L1516.63 198.469" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 381.98L1516.63 381.98" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 433.566L1516.63 433.566" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 63.9141L1516.63 63.9141" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M-262.633 516.535L1516.63 516.535" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <g>
+                <path d="M796.711 546.789L801.257 540.557L797.068 534.734H799.06L802.38 539.383L805.675 534.734H807.616L803.402 540.506L807.948 546.789H805.93L802.278 541.681L798.652 546.789H796.711ZM808.757 546.789L816.112 529.831H817.874L810.519 546.789H808.757ZM818.997 546.789V546.38C818.997 538.514 828.881 539.051 828.881 534.479C828.881 532.461 827.553 531.21 825.177 531.21C822.853 531.21 821.474 532.436 820.58 534.862L818.946 534.172C820.121 531.108 822.113 529.55 825.203 529.55C828.523 529.55 830.771 531.414 830.771 534.428C830.771 540.123 821.678 539.663 820.938 545.129H830.745V546.789H818.997Z" fill="#5B5B5B"/>
+                <path d="M796.711 546.789L796.427 546.582L796.02 547.14H796.711V546.789ZM801.257 540.557L801.54 540.764L801.69 540.559L801.542 540.352L801.257 540.557ZM797.068 534.734V534.383H796.383L796.783 534.939L797.068 534.734ZM799.06 534.734L799.346 534.53L799.241 534.383H799.06V534.734ZM802.38 539.383L802.095 539.587L802.382 539.988L802.667 539.586L802.38 539.383ZM805.675 534.734V534.383H805.494L805.389 534.531L805.675 534.734ZM807.616 534.734L807.9 534.941L808.307 534.383H807.616V534.734ZM803.402 540.506L803.118 540.299L802.968 540.505L803.118 540.712L803.402 540.506ZM807.948 546.789V547.14H808.635L808.233 546.583L807.948 546.789ZM805.93 546.789L805.645 546.993L805.75 547.14H805.93V546.789ZM802.278 541.681L802.564 541.477L802.277 541.076L801.992 541.478L802.278 541.681ZM798.652 546.789V547.14H798.833L798.938 546.992L798.652 546.789ZM796.711 546.789L796.994 546.996L801.54 540.764L801.257 540.557L800.973 540.35L796.427 546.582L796.711 546.789ZM801.257 540.557L801.542 540.352L797.353 534.529L797.068 534.734L796.783 534.939L800.972 540.762L801.257 540.557ZM797.068 534.734V535.085H799.06V534.734V534.383H797.068V534.734ZM799.06 534.734L798.775 534.938L802.095 539.587L802.38 539.383L802.666 539.178L799.346 534.53L799.06 534.734ZM802.38 539.383L802.667 539.586L805.961 534.937L805.675 534.734L805.389 534.531L802.094 539.18L802.38 539.383ZM805.675 534.734V535.085H807.616V534.734V534.383H805.675V534.734ZM807.616 534.734L807.333 534.527L803.118 540.299L803.402 540.506L803.686 540.713L807.9 534.941L807.616 534.734ZM803.402 540.506L803.118 540.712L807.664 546.995L807.948 546.789L808.233 546.583L803.686 540.3L803.402 540.506ZM807.948 546.789V546.438H805.93V546.789V547.14H807.948V546.789ZM805.93 546.789L806.216 546.585L802.564 541.477L802.278 541.681L801.993 541.885L805.645 546.993L805.93 546.789ZM802.278 541.681L801.992 541.478L798.365 546.586L798.652 546.789L798.938 546.992L802.565 541.884L802.278 541.681ZM798.652 546.789V546.438H796.711V546.789V547.14H798.652V546.789Z" fill="#5B5B5B" mask="url(#ic-mask-2)"/>
+              </g>
+              <path d="M834.676 540.934H853.311" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M771.125 540.934H789.76" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <g>
+                <path d="M862.004 485.641L866.55 479.409L862.361 473.586H864.353L867.673 478.234L870.968 473.586H872.909L868.695 479.358L873.241 485.641H871.223L867.571 480.533L863.945 485.641H862.004ZM874.05 485.641L881.405 468.682H883.167L875.812 485.641H874.05ZM884.29 485.641V485.232C884.29 477.366 894.174 477.902 894.174 473.33C894.174 471.313 892.846 470.061 890.47 470.061C888.146 470.061 886.767 471.287 885.873 473.714L884.239 473.024C885.414 469.959 887.406 468.401 890.496 468.401C893.816 468.401 896.064 470.266 896.064 473.279C896.064 478.975 886.971 478.515 886.231 483.981H896.038V485.641H884.29Z" fill="#5B5B5B"/>
+                <path d="M862.004 485.641L861.72 485.434L861.313 485.992H862.004V485.641ZM866.55 479.409L866.833 479.616L866.983 479.41L866.835 479.204L866.55 479.409ZM862.361 473.586V473.235H861.676L862.076 473.791L862.361 473.586ZM864.353 473.586L864.639 473.382L864.534 473.235H864.353V473.586ZM867.673 478.234L867.388 478.438L867.675 478.84L867.96 478.437L867.673 478.234ZM870.968 473.586V473.235H870.787L870.682 473.383L870.968 473.586ZM872.909 473.586L873.193 473.793L873.6 473.235H872.909V473.586ZM868.695 479.358L868.411 479.151L868.261 479.357L868.411 479.564L868.695 479.358ZM873.241 485.641V485.992H873.928L873.525 485.435L873.241 485.641ZM871.223 485.641L870.938 485.845L871.043 485.992H871.223V485.641ZM867.571 480.533L867.857 480.328L867.57 479.928L867.285 480.329L867.571 480.533ZM863.945 485.641V485.992H864.126L864.231 485.844L863.945 485.641ZM862.004 485.641L862.287 485.848L866.833 479.616L866.55 479.409L866.266 479.202L861.72 485.434L862.004 485.641ZM866.55 479.409L866.835 479.204L862.646 473.381L862.361 473.586L862.076 473.791L866.265 479.614L866.55 479.409ZM862.361 473.586V473.937H864.353V473.586V473.235H862.361V473.586ZM864.353 473.586L864.068 473.79L867.388 478.438L867.673 478.234L867.959 478.03L864.639 473.382L864.353 473.586ZM867.673 478.234L867.96 478.437L871.254 473.789L870.968 473.586L870.682 473.383L867.387 478.031L867.673 478.234ZM870.968 473.586V473.937H872.909V473.586V473.235H870.968V473.586ZM872.909 473.586L872.626 473.379L868.411 479.151L868.695 479.358L868.979 479.565L873.193 473.793L872.909 473.586ZM868.695 479.358L868.411 479.564L872.957 485.846L873.241 485.641L873.525 485.435L868.979 479.152L868.695 479.358ZM873.241 485.641V485.29H871.223V485.641V485.992H873.241V485.641ZM871.223 485.641L871.509 485.436L867.857 480.328L867.571 480.533L867.286 480.737L870.938 485.845L871.223 485.641ZM867.571 480.533L867.285 480.329L863.658 485.437L863.945 485.641L864.231 485.844L867.858 480.736L867.571 480.533ZM863.945 485.641V485.29H862.004V485.641V485.992H863.945V485.641ZM874.05 485.641L873.727 485.501L873.515 485.992H874.05V485.641ZM881.405 468.682V468.331H881.175L881.083 468.543L881.405 468.682ZM883.167 468.682L883.489 468.822L883.702 468.331H883.167V468.682ZM875.812 485.641V485.992H876.042L876.134 485.78L875.812 485.641ZM874.05 485.641L874.372 485.78L881.727 468.822L881.405 468.682L881.083 468.543L873.727 485.501L874.05 485.641ZM881.405 468.682V469.033H883.167V468.682V468.331H881.405V468.682ZM883.167 468.682L882.845 468.543L875.49 485.501L875.812 485.641L876.134 485.78L883.489 468.822L883.167 468.682ZM875.812 485.641V485.29H874.05V485.641V485.992H875.812V485.641ZM884.29 485.641H883.939V485.992H884.29V485.641ZM885.873 473.714L885.737 474.037L886.076 474.18L886.203 473.835L885.873 473.714ZM884.239 473.024L883.911 472.898L883.789 473.215L884.102 473.347L884.239 473.024ZM886.231 483.981L885.883 483.933L885.829 484.332H886.231V483.981ZM896.038 483.981H896.389V483.629H896.038V483.981ZM896.038 485.641V485.992H896.389V485.641H896.038ZM884.29 485.641H884.641V485.232H884.29H883.939V485.641H884.29ZM884.29 485.232H884.641C884.641 483.348 885.229 481.985 886.105 480.92C886.99 479.843 888.179 479.056 889.407 478.35C890.612 477.657 891.892 477.025 892.844 476.29C893.813 475.542 894.525 474.627 894.525 473.33H894.174H893.823C893.823 474.32 893.299 475.052 892.415 475.735C891.513 476.431 890.323 477.013 889.057 477.741C887.813 478.456 886.532 479.295 885.563 480.474C884.586 481.663 883.939 483.183 883.939 485.232H884.29ZM894.174 473.33H894.525C894.525 472.241 894.164 471.322 893.447 470.678C892.736 470.039 891.717 469.71 890.47 469.71V470.061V470.412C891.599 470.412 892.432 470.71 892.978 471.2C893.52 471.687 893.823 472.402 893.823 473.33H894.174ZM890.47 470.061V469.71C889.242 469.71 888.234 470.036 887.413 470.706C886.6 471.369 886.003 472.346 885.544 473.592L885.873 473.714L886.203 473.835C886.637 472.655 887.177 471.805 887.857 471.25C888.532 470.699 889.375 470.412 890.496 470.412V470.061ZM885.873 473.714L886.01 473.39L884.375 472.701L884.239 473.024L884.102 473.347L885.737 474.037L885.873 473.714ZM884.239 473.024L884.567 473.15C885.138 471.659 885.896 470.566 886.86 469.844C887.82 469.125 889.013 468.752 890.496 468.752V468.401V468.05C888.889 468.05 887.541 468.457 886.439 469.282C885.34 470.106 884.514 471.324 883.911 472.898L884.239 473.024ZM890.496 468.401V468.752C892.093 468.752 893.396 469.2 894.295 469.976C895.189 470.747 895.713 471.866 895.713 473.279H896.064H896.415C896.415 471.679 895.815 470.359 894.754 469.444C893.699 468.534 892.219 468.05 890.496 468.05V468.401ZM896.064 473.279H895.713C895.713 474.593 895.195 475.545 894.386 476.334C893.563 477.138 892.447 477.764 891.258 478.407C890.087 479.041 888.843 479.693 887.852 480.536C886.85 481.39 886.083 482.458 885.883 483.933L886.231 483.981L886.579 484.028C886.749 482.77 887.396 481.846 888.307 481.071C889.229 480.286 890.398 479.671 891.592 479.025C892.768 478.388 893.972 477.72 894.877 476.837C895.796 475.94 896.415 474.814 896.415 473.279H896.064ZM886.231 483.981V484.332H896.038V483.981V483.629H886.231V483.981ZM896.038 483.981H895.687V485.641H896.038H896.389V483.981H896.038ZM896.038 485.641V485.29H884.29V485.641V485.992H896.038V485.641Z" fill="#5B5B5B" mask="url(#ic-mask-3)"/>
+              </g>
+              <path d="M879.459 452.155V435.129" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+              <path d="M879.459 516.534V499.508" stroke="#9F9F9F" stroke-opacity="0.7" stroke-dasharray="4 4"/>
+            </g>
+
+            <g class="anchor-points" clip-path="url(#ic-clip-outer)">
+              <rect x="770.342" y="433.566" width="82.9686" height="82.9686" fill="#D9D9D9"/>
+              <rect x="770.342" y="63.9141" width="82.9686" height="82.9686" fill="#D9D9D9"/>
+              <rect x="400.689" y="433.566" width="82.9686" height="82.9686" fill="#D9D9D9"/>
+              <rect x="400.689" y="63.9141" width="82.9686" height="82.9686" fill="#D9D9D9"/>
+            </g>
+
+            <g class="construction-boundary">
+              <rect x="402.108" y="64.6235" width="449.783" height="451.202" rx="224.891" stroke="black" stroke-width="1.41887"/>
+            </g>
+          </svg>
         </div>
       </div>
 
       <div class="fig-sec" id="app-tile">
         <div class="fig-head fig-head-row">
-          <div style="max-width:544px;">
+          <div class="fig-head-text">
             <h2>App tile and avatars</h2>
             <p class="fh-desc">At app-icon and avatar scale, less is more. The blimp sits centered and slightly reduced, so it stays crisp and calm even at the smallest sizes.</p>
           </div>
           <a class="fig-btn" href="#">Download avatar assets</a>
         </div>
-        <img class="fig-rounded" src="assets/images/app-tile-avatars.png" alt="App tile and avatars — circle, rounded square and square tiles" style="border:1px solid rgba(159,159,159,0.4);" />
+        <img class="fig-rounded" src="assets/images/app-tile-avatars.png" alt="App tile and avatars — circle, rounded square and square tiles" />
       </div>
 
       <div class="fig-sec" id="logo-in-action">
@@ -320,27 +636,25 @@
           <p class="fh-desc" style="max-width:687px;">From city billboards to airport screens, the logo holds up in the wild — legible, confident, and unmistakably Headout at any scale or distance.</p>
         </div>
         <!-- Full-width banner: looping video -->
-        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/650; background:#0d0d0f;">
+        <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/650; background:#111111;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
             <source src="assets/video/logo-in-action.mp4" type="video/mp4" />
           </video>
         </div>
         <!-- Below: text left, media right (placeholder until the asset lands) -->
-        <div class="cu-row" style="margin-top:112px;">
-          <div class="cu-text">
+        <div class="fig-row" style="margin-top:80px;">
+          <div class="fig-head">
             <h2>Our suggested combinations</h2>
-            <p>This is our signature — how we write our name and use our mark. Whether it's pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it's really us.</p>
+            <p class="fh-desc">This is our signature — how we write our name and use our mark. Whether it's pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it's really us.</p>
           </div>
-          <div class="cu-media">
-            <div class="mcar" data-carousel="logoaction" data-auto="3500"></div>
-          </div>
+          <div class="mcar" data-carousel="logoaction" data-auto="3500" role="region" aria-roledescription="carousel" aria-label="Logo in action"></div>
         </div>
       </div>
 
       <!-- QR code section: hidden for now (display:none removes it from flex-gap flow) -->
       <div class="fig-sec" id="qr-code" hidden style="display:none;">
-        <div class="qr-row">
-          <div class="fig-head" style="max-width:610px;">
+        <div class="fig-row">
+          <div class="fig-head">
             <h2>QR code</h2>
             <p class="fh-desc">QR codes aren't just utility — they're an extension of our brand. Treat them with the same rigor as the logo: keep clearspace intact, keep the dot pattern untouched, and never let the mark compromise the scan.</p>
           </div>
@@ -353,7 +667,7 @@
           <h2>Incorrect usage</h2>
           <p class="fh-desc" style="max-width:610px;">The logo is our signature — it doesn't flex, stretch, recolor, or improvise. Here's what to avoid.</p>
         </div>
-        <div class="iu-grid">
+        <div class="fig-grid cols-3">
           <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-1-gold.jpg" alt="Logo recoloured gold" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't change the colour of the logo.</figcaption></figure>
           <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-2-font.jpg" alt="Logo set in a different sans-serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in another typeface.</figcaption></figure>
           <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-3-serif.jpg" alt="Logo set in a serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in a serif.</figcaption></figure>
@@ -370,13 +684,12 @@
       </div>
 
     </div>
-    <div class="page-footer">Headout, Inc. Brand Guidelines · Logo</div>
   </div><!-- /page-logo -->
 
 </main>
 
 <!-- Carousel fullscreen lightbox (shared) -->
-<div class="mcar-lightbox" id="mcar-lightbox" aria-hidden="true">
+<div class="mcar-lightbox" id="mcar-lightbox" role="dialog" aria-modal="true" aria-label="Media viewer" aria-hidden="true">
     <button class="mlb-close" id="mlb-close" aria-label="Close">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
@@ -392,5 +705,16 @@
 <script src="js/shell.js"></script>
 <script src="js/media-carousel.js"></script>
 <script src="js/logo.js"></script>
+<!-- Agentation: dev-only visual feedback toolbar, loaded via esm.sh (no build step) -->
+<script type="module">
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    const React = await import("https://esm.sh/react@18.3.1");
+    const { createRoot } = await import("https://esm.sh/react-dom@18.3.1/client");
+    const { Agentation } = await import("https://esm.sh/agentation@3.1.2?deps=react@18.3.1,react-dom@18.3.1");
+    const mount = document.createElement("div");
+    document.body.appendChild(mount);
+    createRoot(mount).render(React.createElement(Agentation, { endpoint: "http://localhost:4747", appName: "Brand guidelines" }));
+  }
+</script>
 </body>
 </html>
