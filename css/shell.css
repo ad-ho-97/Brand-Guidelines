@@ -62,7 +62,7 @@
     }
     .nav-section-btn:hover { background: rgba(0,0,0,0.03); }
     .nav-chevron {
-      width: 14px; height: 14px;
+      width: 16px; height: 16px;
       flex-shrink: 0;
       transition: transform 0.2s ease;
     }
@@ -88,8 +88,7 @@
       font-family: var(--font);
     }
     .nav-parent:hover { background: rgba(0,0,0,0.04); }
-    .nav-parent.active { color: var(--purple); font-weight: 600; }
-    .nav-parent.active-section { font-weight: 500; color: var(--black); }
+    .nav-parent.active, .nav-parent.active-section { color: var(--purple); font-weight: 600; }
     .ext-icon { width: 13px; height: 13px; opacity: 0.3; flex-shrink: 0; }
     .nav-lock { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.45; }
     .nav-locked { cursor: not-allowed; color: #9a9a9a !important; }
@@ -101,14 +100,12 @@
       padding: 8px 26px 8px 68px;
       font-size: 12.5px;
       font-weight: 400;
-      color: #8A8A8A;
+      color: #666666;
       text-decoration: none;
       transition: background 0.12s, color 0.12s;
     }
     .nav-child:hover { background: rgba(0,0,0,0.04); color: var(--black); }
     .nav-child.active { color: var(--purple); font-weight: 500; }
-    .nav-parent-chevron { opacity: 0.55; }
-    .nav-parent.active-section .nav-parent-chevron { opacity: 0.8; }
 
     /* ═══════════════════════════════════════════════
        MAIN CONTENT AREA
@@ -157,7 +154,7 @@
     .section-title {
       font-size: clamp(52px, 6.3vw, 81px);
       font-weight: 300;
-      letter-spacing: -2.7px;
+      letter-spacing: -0.033em;
       line-height: 1;
       flex-shrink: 0;
       max-width: 480px;
@@ -249,6 +246,7 @@
        exported section images blend seamlessly — same as in Figma. */
     .fig-stack {
       max-width: calc(var(--content-max) + var(--px) * 2);
+      margin: 0 auto;
       padding: 80px var(--px) 0;
     }
     .fig-sec { margin-bottom: 96px; }
@@ -289,7 +287,7 @@
       font-weight: 400; /* Halyard Display Regular */
       font-size: clamp(52px, 5.5vw, 81px);
       line-height: 1;
-      letter-spacing: -2.7px;
+      letter-spacing: -0.033em;
       color: #000;
     }
     .fig-pagehead .intro {
@@ -301,7 +299,7 @@
       max-width: 685px;
     }
 
-    .fig-head { margin-bottom: 48px; }
+    .fig-head { margin-bottom: 24px; }
     .fig-head h2 {
       font-family: var(--hd);
       font-weight: 400; /* Halyard Display Regular */
@@ -314,29 +312,37 @@
     .fig-head .fh-desc {
       font-family: var(--ht);
       font-weight: 300;
-      font-size: 14px;
+      font-size: 16px;
       line-height: 1.4;
       color: #000;
       margin-top: 24px;
       max-width: 827px;
     }
     .fig-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+    .fig-head-row:has(.fig-btn) { margin-bottom: 48px; gap: 48px; }
+    /* Button, `bold` type, `medium` size (button.md): 40px fixed height, 8px radius —
+       `small` (32/6px) read as squat and tight next to this page's large-format
+       visuals, so `medium` is the better-fitting of the two compact steps.
+       Edge in the fill colour (invisible at rest); hover steps to the lighter #444444. */
     .fig-btn {
       font-family: var(--ht);
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
       color: #fff;
-      background: #222;
-      border: 1px solid #111;
+      background: #222222;
+      border: 1px solid #222222;
       border-radius: 8px;
-      padding: 8px 12px;
+      padding: 0 12px;
+      height: 40px;
       white-space: nowrap;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       flex-shrink: 0;
     }
-    .fig-btn:hover { background: #000; }
+    .fig-btn:hover { background: #444444; border-color: #444444; }
+    .fig-btn:focus-visible { outline: 1px solid #330066; outline-offset: 2px; }
     .fig-rounded { border-radius: 8px; }
 
     /* Pixel-perfect canvases (fixed 1254px design space, scaled by JS to fit) */
@@ -450,8 +456,8 @@
       .sidebar .sidebar-logo-wrap { display: none; }
       .nav-section { border-bottom: 1px solid var(--gray-border); }
       .nav-section-btn { height: 40px; padding: 0 20px; font-size: 16px; }
-      .nav-parent { min-height: 30px; padding: 0 20px 0 40px; font-size: 16px; }
-      .nav-child { min-height: 33px; padding: 0 20px 0 40px; font-size: 16px; color: #848484; }
+      .nav-parent { min-height: 44px; padding: 0 20px 0 40px; font-size: 16px; }
+      .nav-child { min-height: 44px; padding: 0 20px 0 40px; font-size: 16px; color: #666666; display: flex; align-items: center; }
 
       /* ── landing page: its own bar goes, the stage sits under ours ── */
       .ov-topbar { display: none; }
@@ -461,12 +467,16 @@
       .fig-sec { margin-bottom: 56px; }
       .fig-stack.gap-48 .fig-sec { margin-bottom: 40px; }
       .fig-pagehead { flex-direction: column; gap: 8px; }
-      .fig-pagehead h1 { font-size: 52px; line-height: 52px; letter-spacing: -1.5px; }
-      .fig-pagehead .intro { font-size: 16px; line-height: 1.35; max-width: none !important; }
+      .fig-pagehead .intro { max-width: none !important; }
       .fig-divider { margin: 24px calc(-1 * var(--px)) 40px; }
       .fig-head { margin-bottom: 24px; }
+      .fig-head-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .fig-head-row:has(.fig-btn) { gap: 16px; }
+      .fig-head-row .fig-btn { align-self: flex-start; }
       .fig-head h2, .cu-text h2 { font-size: 28px; line-height: 32px; letter-spacing: -0.5px; }
       .fh-desc, .cu-text p, .mo-body { font-size: 16px; }
+      .fig-btn { padding: 12px 16px; min-height: 44px; } /* touch-target exception to the 32px small-button spec */
+      .clearspace-toggle { padding: 12px 0; margin: -12px 0; }
       .section { padding: 40px var(--px); }
       .section-head { flex-direction: column; gap: 8px; margin-bottom: 24px; }
       .section-title { font-size: 52px; letter-spacing: -1.5px; max-width: none; }
@@ -484,5 +494,18 @@
       .icon-grid-2col { grid-template-columns: 1fr; }
       .ring-stage { height: calc(100vh - var(--topbar-h)); }
       .page-footer { padding: 24px var(--px); }
+    }
+
+    /* Tablet tier — intermediate step between the desktop clamp and the phone-sized
+       pagehead, so 768-1023px (iPad-landscape, small laptops) isn't flattened to
+       the same type sizes as a 375px phone. */
+    @media (max-width: 1023px) and (min-width: 768px) {
+      .fig-pagehead h1 { font-size: 64px; line-height: 1; letter-spacing: -2px; }
+      .fig-pagehead .intro { font-size: 18px; line-height: 1.4; }
+    }
+
+    @media (max-width: 767px) {
+      .fig-pagehead h1 { font-size: 52px; line-height: 52px; letter-spacing: -1.5px; }
+      .fig-pagehead .intro { font-size: 16px; line-height: 1.35; }
     }
 

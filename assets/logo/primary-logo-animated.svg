@@ -1,0 +1,173 @@
+<svg width="1254" height="565" viewBox="0 0 1254 565" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="blurA" x="730.837" y="-398.163" width="1382.08" height="1235.46" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="127.582" result="effect1_foregroundBlur"/>
+    </filter>
+    <filter id="blurB" x="-787.163" y="-183.163" width="1699.33" height="980.327" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="127.582" result="effect1_foregroundBlur"/>
+    </filter>
+    <radialGradient id="gradA" cx="0" cy="0" r="1" gradientTransform="matrix(958.109 -370.515 706.327 502.592 821.116 662.199)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8000FF"/>
+      <stop offset="1" stop-color="#8000FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gradB" cx="0" cy="0" r="1" gradientTransform="matrix(794.923 -370.847 586.025 503.041 -149.353 518.463)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8000FF"/>
+      <stop offset="1" stop-color="#8000FF" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clipCard">
+      <path d="M0 8.00002C0 3.58174 3.58172 0 8 0H1246C1250.42 0 1254 3.58172 1254 8V557C1254 561.418 1250.42 565 1246 565H8.00002C3.58175 565 0 561.418 0 557V8.00002Z" fill="white"/>
+    </clipPath>
+
+    <!-- icon drawn once, instanced twice below (#icon-a for the horizontal lockup, #icon-b for the stacked lockup) -->
+    <path id="iconShape" fill="#8000FF" d="M692.702 270.603C689.247 247.387 661.184 236.811 634.954 241.234C621.356 243.534 603.503 253.209 589.738 263.951C589.293 263.287 588.56 262.481 587.416 261.983C585.261 261.046 562.919 259.375 561.242 263.252C559.575 267.105 566.763 282.056 569.885 285.578C568.885 287.783 568.463 289.811 568.718 291.554C568.985 293.332 569.974 295.123 571.54 296.889C569.596 301.324 567.108 317.828 569.807 320.935C572.529 324.065 593.293 315.113 595.071 313.512C596.159 312.528 596.615 311.331 596.804 310.536C603.58 312.742 610.979 314.485 618.256 315.54L623.956 321.539C625.844 323.531 628.377 324.693 631.032 324.741C633.854 324.8 637.965 324.646 643.031 323.792C648.786 322.82 654.018 321.243 657.462 320.057C660.084 319.156 662.262 317.188 663.539 314.579L666.528 308.426C682.981 300.245 695.102 286.799 692.702 270.603ZM638.854 250.98C660.784 247.269 677.906 256.119 683.65 266.731C675.829 263.98 664.561 260.655 640.976 264.639C618.134 268.504 597.603 276.33 584.739 282.388C594.148 272.168 615.834 254.869 638.854 250.98ZM644.397 305.331C620.912 309.303 595.548 299.806 584.739 293.605C598.592 294.755 621.523 295.372 644.953 291.411C664.817 288.056 678.051 282.014 685.161 276.916C682.428 288.63 666.517 301.584 644.408 305.319L644.397 305.331Z"/>
+
+    <style>
+      /* back to two icon instances riding inside their own lockup (one sweep, not a single
+         traveling icon with a bank) -- that read better than the single-icon rebuild, which
+         added rotation/overlap problems of its own. Kept from that detour: the gentler push
+         curve (0.15,0,0.85,1), which fixed a real issue independent of icon count -- the old
+         (0.33,0,0.67,1) had a near-dead first 50ms of the 320ms push (2.8% progress at 10%
+         time), reading as a hesitation right when the transition should feel immediate. Also
+         kept: the 530px gap-fix distance, the blur pulse masking the crossfade, the 170ms
+         (vs 260ms reveal) faster hide, and the subtle overshoot on the reveal. */
+      #icon-a {
+        animation: icon-a-move 3.02s infinite cubic-bezier(0.34, 1.3, 0.64, 1);
+      }
+      #word-h {
+        animation: word-h-fade 3.02s infinite cubic-bezier(0.34, 1.3, 0.64, 1);
+      }
+      #lockup-h {
+        animation: lockup-h-push 3.02s infinite cubic-bezier(0.15, 0, 0.85, 1),
+                   lockup-h-blur 3.02s infinite cubic-bezier(0.15, 0, 0.85, 1);
+      }
+      #lockup-s {
+        animation: lockup-s-push 3.02s infinite cubic-bezier(0.15, 0, 0.85, 1),
+                   lockup-s-blur 3.02s infinite cubic-bezier(0.15, 0, 0.85, 1);
+      }
+      #icon-b {
+        animation: icon-b-move 3.02s infinite cubic-bezier(0.4, 0, 1, 1);
+      }
+      #word-s {
+        animation: word-s-fade 3.02s infinite cubic-bezier(0.4, 0, 1, 1);
+      }
+
+      /* icon-a's own move: center -> horizontal-lockup slot (627,282.5) -> (409.029,282.828). It never
+         moves again after arriving -- #lockup-h's own transform does the rest of the journey (the push). */
+      @keyframes icon-a-move {
+        0%     { transform: translate(0px, 0px) scale(1); }
+        16.56% { transform: translate(0px, 0px) scale(1); }
+        25.17% { transform: translate(-217.971px, 0.328px) scale(1); }
+        100%   { transform: translate(-217.971px, 0.328px) scale(1); }
+      }
+      @keyframes word-h-fade {
+        0%     { opacity: 0; }
+        16.56% { opacity: 0; }
+        25.17% { opacity: 1; }
+        100%   { opacity: 1; }
+      }
+
+      /* the push: a short 530px slide keeps the two lockups' content close together during the
+         crossing -- the gap between their native edges at this distance is ~41px, deliberately
+         small. 530px alone isn't far enough to physically clip either one past the clip-path's
+         canvas edge, so opacity finishes the hiding: each lockup fades to 0 by the moment its
+         own slide completes. */
+      @keyframes lockup-h-push {
+        0%     { transform: translate(0px, 0px); opacity: 1; }
+        53.31% { transform: translate(0px, 0px); opacity: 1; }
+        63.91% { transform: translate(530px, 0px); opacity: 0; }
+        100%   { transform: translate(530px, 0px); opacity: 0; }
+      }
+      @keyframes lockup-s-push {
+        0%     { transform: translate(-530px, 0px); opacity: 0; }
+        53.31% { transform: translate(-530px, 0px); opacity: 0; }
+        63.91% { transform: translate(0px, 0px); opacity: 1; }
+        100%   { transform: translate(0px, 0px); opacity: 1; }
+      }
+
+      /* blur pulse, separate from the push so the position/opacity timing stays untouched:
+         peaks at 58.61% (the exact midpoint of the push, where both lockups are ~50% opacity and
+         closest together) to blend the crossfade into one transformation instead of a visible swap */
+      @keyframes lockup-h-blur {
+        0%     { filter: blur(0px); }
+        53.31% { filter: blur(0px); }
+        58.61% { filter: blur(2px); }
+        63.91% { filter: blur(0px); }
+        100%   { filter: blur(0px); }
+      }
+      @keyframes lockup-s-blur {
+        0%     { filter: blur(0px); }
+        53.31% { filter: blur(0px); }
+        58.61% { filter: blur(2px); }
+        63.91% { filter: blur(0px); }
+        100%   { filter: blur(0px); }
+      }
+
+      /* icon-b's own move: stacked-lockup slot -> center. target_center - scale*native_center,
+         since the icon scales about the default (0,0) SVG origin, not its own center. It holds at
+         the stacked slot (set by #lockup-s's push) until this final bookend hide begins. */
+      @keyframes icon-b-move {
+        0%     { transform: translate(-51.623px, -79.396px) scale(1.08234); }
+        94.37% { transform: translate(-51.623px, -79.396px) scale(1.08234); }
+        100%   { transform: translate(0px, 0px) scale(1); }
+      }
+      @keyframes word-s-fade {
+        0%     { opacity: 1; }
+        94.37% { opacity: 1; }
+        100%   { opacity: 0; }
+      }
+
+      /* perpetual, non-interactive motion gets no exception: freeze on the horizontal lockup, the fullest static representation of the mark */
+      @media (prefers-reduced-motion: reduce) {
+        #icon-a, #word-h, #lockup-h, #lockup-s, #icon-b, #word-s { animation: none; }
+        #icon-a { transform: translate(-217.971px, 0.328px) scale(1); }
+        #word-h { opacity: 1; }
+        #lockup-h { transform: translate(0px, 0px); opacity: 1; filter: none; }
+        #lockup-s { transform: translate(-530px, 0px); opacity: 0; filter: none; }
+        #icon-b { transform: translate(-51.623px, -79.396px) scale(1.08234); }
+        #word-s { opacity: 1; }
+      }
+    </style>
+  </defs>
+
+  <g clip-path="url(#clipCard)">
+    <path d="M0 8.00002C0 3.58174 3.58172 0 8 0H1246C1250.42 0 1254 3.58172 1254 8V557C1254 561.418 1250.42 565 1246 565H8.00002C3.58175 565 0 561.418 0 557V8.00002Z" fill="#F0F0F0"/>
+    <g filter="url(#blurA)">
+      <path d="M986 230.32C986 262.404 1515.1 -216.126 1736 -133.365C1939.54 -57.1083 1838.92 582.135 1782.57 582.135C1665.05 582.135 1770.31 291.967 1770.31 230.32C1770.31 168.673 898.56 327.917 1016.08 327.917C1133.6 327.917 986 168.673 986 230.32Z" fill="url(#gradA)" fill-opacity="0.6"/>
+    </g>
+    <g filter="url(#blurB)">
+      <path d="M-12.5511 86.1982C-12.5511 147.901 745.848 438.327 648.344 438.327C550.84 438.327 638.176 147.901 638.176 86.1982C638.176 68.4022 -446.089 532.062 -529.375 541.92C-588.31 548.896 365.278 97.4448 296.315 110.463C124.831 142.832 -37.0768 183.882 12.4058 183.882C109.91 183.882 -12.5511 24.4959 -12.5511 86.1982Z" fill="url(#gradB)" fill-opacity="0.5"/>
+    </g>
+
+    <!-- lockup 1: icon + horizontal wordmark (Frame 2 glyphs), slides off right during the push -->
+    <g id="lockup-h">
+      <use id="icon-a" href="#iconShape" xlink:href="#iconShape"/>
+      <g id="word-h">
+        <path fill="#8000FF" d="M506.121 325.082L506.537 241.15H518.783L518.395 274.045C521.462 265.292 527.46 260.444 536.773 260.444C549.785 260.444 557.69 269.466 557.681 286.434L557.66 325.082H545.03L545.051 287.107C545.056 277.142 541.104 271.89 532.94 271.89C523.627 271.89 518.392 280.105 518.384 294.648L518.368 325.082H506.121Z"/>
+        <path fill="#8000FF" d="M595.942 325.089C577.444 325.089 565.97 312.162 565.981 292.636C565.991 272.975 578.373 259.374 595.468 259.374C613.2 259.374 623.782 271.898 623.771 291.962L623.768 296.81H578.48C579.24 307.718 585.742 314.316 595.948 314.316C606.154 314.316 610.622 309.064 612.921 302.87L624.018 307.449C619.93 317.279 611.378 325.089 595.942 325.089ZM578.231 286.845H610.889C610.385 275.938 604.647 270.147 595.207 270.147C586.149 270.147 579.512 276.476 578.231 286.845Z"/>
+        <path fill="#8000FF" d="M651.312 325.089C638.428 325.089 630.522 317.682 630.528 306.775C630.536 292.501 640.616 289.269 654.012 286.171C664.219 283.882 670.471 283.209 671.748 279.708L671.749 278.765C671.752 273.513 668.054 269.473 658.869 269.473C649.939 269.473 645.089 273.782 644.575 280.92L644.575 281.728H631.945C632.335 267.453 643.056 258.835 659.003 258.835C674.439 258.835 683.62 266.107 683.611 282.266L683.594 313.643L683.716 323.473H671.597L671.602 313.912C667.516 321.453 659.987 325.089 651.312 325.089ZM653.614 314.989C662.417 314.989 670.711 310.276 671.739 297.887L671.743 290.077C668.042 292.77 661.663 293.847 655.794 295.328C648.904 297.214 643.289 299.503 643.286 306.236C643.283 311.488 646.98 314.989 653.614 314.989Z"/>
+        <path fill="#8000FF" d="M717.329 325.088C701.893 325.088 690.291 312.833 690.302 292.23C690.313 272.031 701.802 258.834 717.493 258.834C725.785 258.834 732.544 263.008 736.878 269.741L737.175 239.908H749.422L749.095 323.741H736.849L736.854 314.449C732.64 321.182 725.749 325.088 717.329 325.088ZM720.525 313.776C730.858 313.776 737.497 304.888 737.503 292.23L737.504 291.153C737.511 278.629 731.137 270.145 720.548 270.145C710.343 270.145 703.45 278.09 703.442 291.826L703.442 292.769C703.434 306.369 710.191 313.776 720.525 313.776Z"/>
+        <path fill="#8000FF" d="M787.781 325.089C770.048 325.089 757.808 311.758 757.819 292.366C757.83 272.975 770.339 259.374 788.071 259.374C805.804 259.374 818.171 272.975 818.16 292.366C818.15 311.488 805.513 325.089 787.781 325.089ZM787.787 313.912C798.63 313.912 805.523 305.698 805.531 292.77L805.531 292.232C805.538 278.9 798.781 270.551 788.065 270.551C777.349 270.551 770.456 278.9 770.449 292.232L770.448 292.77C770.441 305.833 777.071 313.912 787.787 313.912Z"/>
+        <path fill="#8000FF" d="M846.21 325.091C832.688 325.091 824.656 315.261 824.665 299.101L824.686 260.453H837.315L837.295 298.428C837.29 308.258 841.369 313.645 849.533 313.645C859.484 313.645 864.081 304.622 864.089 290.887L864.105 260.453H876.607L876.573 324.014H864.071L864.077 313.106C860.756 320.917 854.885 325.091 846.21 325.091Z"/>
+        <path fill="#8000FF" d="M899.704 325.092C888.733 324.553 885.93 319.301 885.808 309.202L885.827 272.843L885.882 268.739L885.826 264.656L885.834 261.531L885.84 249.142L897.964 241.197L897.953 261.531H910.965L910.959 272.843H897.947L897.928 307.586C897.926 311.626 899.455 313.511 903.283 313.511H910.427L910.42 325.092H899.704Z"/>
+      </g>
+    </g>
+
+    <!-- lockup 2: icon + stacked wordmark (Frame 3 glyphs), slides in from the left during the push -->
+    <g id="lockup-s">
+      <use id="icon-b" href="#iconShape" xlink:href="#iconShape"/>
+      <g id="word-s">
+        <path fill="#8000FF" d="M422.363 381.476L422.783 301.975H435.163L434.771 333.133C437.871 324.842 443.935 320.25 453.349 320.25C466.504 320.25 474.494 328.796 474.485 344.868L474.464 381.476H461.697L461.717 345.505C461.723 336.066 457.728 331.092 449.474 331.092C440.06 331.092 434.768 338.873 434.76 352.648L434.743 381.476H422.363Z"/>
+        <path fill="#8000FF" d="M513.168 381.483C494.468 381.483 482.868 369.238 482.879 350.742C482.89 332.119 495.407 319.236 512.688 319.236C530.614 319.236 541.311 331.099 541.3 350.105L541.297 354.696H495.515C496.283 365.028 502.856 371.279 513.174 371.279C523.491 371.279 528.007 366.304 530.332 360.436L541.549 364.773C537.417 374.085 528.772 381.483 513.168 381.483ZM495.263 345.257H528.277C527.767 334.926 521.967 329.441 512.424 329.441C503.268 329.441 496.558 335.436 495.263 345.257Z"/>
+        <path fill="#8000FF" d="M569.142 381.482C556.117 381.482 548.125 374.467 548.131 364.135C548.139 350.614 558.329 347.553 571.872 344.619C582.19 342.451 588.51 341.813 589.802 338.497L589.802 337.604C589.805 332.629 586.067 328.802 576.782 328.802C567.754 328.802 562.851 332.884 562.332 339.645L562.331 340.41H549.564C549.958 326.889 560.796 318.726 576.917 318.726C592.521 318.726 601.803 325.614 601.794 340.92L601.777 370.64L601.9 379.952H589.649L589.654 370.895C585.523 378.038 577.912 381.482 569.142 381.482ZM571.469 371.916C580.368 371.916 588.753 367.451 589.792 355.716L589.796 348.318C586.054 350.869 579.606 351.89 573.672 353.293C566.707 355.079 561.032 357.247 561.028 363.625C561.025 368.599 564.763 371.916 571.469 371.916Z"/>
+        <path fill="#8000FF" d="M635.872 381.481C620.268 381.481 608.539 369.874 608.55 350.358C608.561 331.225 620.175 318.724 636.037 318.724C644.42 318.724 651.253 322.678 655.634 329.056L655.934 300.798H668.315L667.985 380.206H655.604L655.609 371.404C651.35 377.782 644.384 381.481 635.872 381.481ZM639.102 370.767C649.549 370.767 656.26 362.348 656.266 350.358L656.267 349.337C656.274 337.475 649.83 329.439 639.126 329.439C628.809 329.439 621.841 336.965 621.833 349.975L621.833 350.868C621.825 363.751 628.656 370.767 639.102 370.767Z"/>
+        <path fill="#8000FF" d="M707.096 381.483C689.17 381.483 676.797 368.855 676.807 350.487C676.818 332.119 689.464 319.236 707.39 319.236C725.316 319.236 737.818 332.119 737.807 350.487C737.797 368.6 725.022 381.483 707.096 381.483ZM707.102 370.896C718.064 370.896 725.032 363.115 725.04 350.87L725.04 350.36C725.047 337.732 718.217 329.823 707.384 329.823C696.551 329.823 689.582 337.732 689.575 350.36L689.575 350.87C689.567 363.243 696.269 370.896 707.102 370.896Z"/>
+        <path fill="#8000FF" d="M766.166 381.484C752.496 381.484 744.377 372.172 744.386 356.866L744.407 320.258H757.174L757.153 356.228C757.148 365.54 761.272 370.642 769.525 370.642C779.585 370.642 784.232 362.096 784.24 349.085L784.256 320.258H796.895L796.86 380.464H784.222L784.228 370.132C780.87 377.53 774.936 381.484 766.166 381.484Z"/>
+        <path fill="#8000FF" d="M820.243 381.485C809.152 380.975 806.318 376 806.194 366.434L806.214 331.994L806.269 328.107L806.213 324.239L806.221 321.279L806.227 309.544L818.483 302.019L818.472 321.279H831.626L831.62 331.994H818.466L818.447 364.903C818.445 368.73 819.991 370.515 823.86 370.515H831.082L831.076 381.485H820.243Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -43,7 +43,7 @@
     const lbPrev  = document.getElementById('mlb-prev');
     const lbNext  = document.getElementById('mlb-next');
     const lbClose = document.getElementById('mlb-close');
-    let lbSlides = [], lbIndex = 0;
+    let lbSlides = [], lbIndex = 0, lbTrigger = null;
 
     function mediaEl(slide, cover) {
       if (slide.type === 'video') {
@@ -59,10 +59,11 @@
       return img;
     }
 
-    function openLightbox(slides, index) {
-      lbSlides = slides; lbIndex = index;
+    function openLightbox(slides, index, trigger) {
+      lbSlides = slides; lbIndex = index; lbTrigger = trigger || document.activeElement;
       renderLightbox();
       lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false');
+      lbClose.focus();
     }
     function renderLightbox() {
       lbStage.innerHTML = '';
@@ -70,16 +71,27 @@
       lbPrev.disabled = lbIndex <= 0;
       lbNext.disabled = lbIndex >= lbSlides.length - 1;
     }
-    function closeLightbox() { lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); lbStage.innerHTML = ''; }
+    function closeLightbox() {
+      lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); lbStage.innerHTML = '';
+      if (lbTrigger && typeof lbTrigger.focus === 'function') lbTrigger.focus();
+      lbTrigger = null;
+    }
     lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; renderLightbox(); } });
     lbNext.addEventListener('click', () => { if (lbIndex < lbSlides.length - 1) { lbIndex++; renderLightbox(); } });
     lbClose.addEventListener('click', closeLightbox);
     lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
     document.addEventListener('keydown', e => {
       if (!lb.classList.contains('on')) return;
-      if (e.key === 'Escape') closeLightbox();
-      else if (e.key === 'ArrowLeft') lbPrev.click();
-      else if (e.key === 'ArrowRight') lbNext.click();
+      if (e.key === 'Escape') { closeLightbox(); return; }
+      if (e.key === 'ArrowLeft') { lbPrev.click(); return; }
+      if (e.key === 'ArrowRight') { lbNext.click(); return; }
+      // Focus trap: Tab/Shift+Tab cycle between the three controls while the dialog is open.
+      if (e.key === 'Tab') {
+        const focusable = [lbClose, lbPrev, lbNext].filter(el => !el.disabled);
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
 
     document.querySelectorAll('.mcar[data-carousel]').forEach(car => {
@@ -97,8 +109,11 @@
 
       let idx = 0;
       const track = document.createElement('div'); track.className = 'mcar-track';
-      slides.forEach(s => {
+      slides.forEach((s, i) => {
         const sl = document.createElement('div'); sl.className = 'mcar-slide';
+        sl.setAttribute('role', 'group');
+        sl.setAttribute('aria-roledescription', 'slide');
+        sl.setAttribute('aria-label', (i + 1) + ' of ' + slides.length);
         sl.appendChild(mediaEl(s, true));
         track.appendChild(sl);
       });
@@ -113,38 +128,60 @@
       const dots = document.createElement('div'); dots.className = 'mcar-dots';
       const dotBtns = slides.map((_, i) => {
         const d = document.createElement('button');
-        d.addEventListener('click', () => go(i));
+        d.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ' of ' + slides.length);
+        d.addEventListener('click', () => { go(i); userTouched(); });
         dots.appendChild(d);
         return d;
       });
       car.append(prev, next, expand, dots);
 
+      // Manual navigation always has a clear start and end — it never wraps,
+      // even on an auto-rotating carousel (carousel.md: "never loop it automatically").
       function go(i) {
         idx = Math.max(0, Math.min(i, slides.length - 1));
         track.style.transform = 'translateX(' + (-idx * 100) + '%)';
         dotBtns.forEach((d, k) => d.classList.toggle('on', k === idx));
-        const wrap = !!car.dataset.auto;
-        prev.disabled = !wrap && idx === 0;
-        next.disabled = !wrap && idx === slides.length - 1;
+        prev.disabled = idx === 0;
+        next.disabled = idx === slides.length - 1;
       }
-      prev.addEventListener('click', () => { go(car.dataset.auto ? (idx - 1 + slides.length) % slides.length : idx - 1); userTouched(); });
-      next.addEventListener('click', () => { go(car.dataset.auto ? (idx + 1) % slides.length : idx + 1); userTouched(); });
-      dotBtns.forEach(d => d.addEventListener('click', userTouched));
-      expand.addEventListener('click', () => openLightbox(slides, idx));
+      prev.addEventListener('click', () => { go(idx - 1); userTouched(); });
+      next.addEventListener('click', () => { go(idx + 1); userTouched(); });
+      expand.addEventListener('click', () => openLightbox(slides, idx, expand));
       go(0);
 
-      // Optional auto-play: data-auto="ms". Wraps around, pauses on hover and after
-      // any manual input (resumes after 3 cycles), and only runs while on screen.
+      // Optional auto-play: data-auto="ms". The *autoplay timer* loops back to the
+      // first slide (a slideshow), but manual Prev/Next/dots above still stop at the
+      // real ends. Pauses on hover, on keyboard focus inside the carousel, and after
+      // any manual input (resumes after 3 cycles); only runs while on screen; carries
+      // its own stop/restart control (carousel.md: auto-rotation needs all three).
       const autoMs = parseInt(car.dataset.auto || '0', 10);
-      let hover = false, holdUntil = 0, visible = true;
+      let hover = false, focused = false, paused = false, holdUntil = 0, visible = true;
       function userTouched() { holdUntil = performance.now() + autoMs * 3; }
       if (autoMs > 0 && slides.length > 1) {
         car.addEventListener('mouseenter', () => { hover = true; });
         car.addEventListener('mouseleave', () => { hover = false; });
+        car.addEventListener('focusin', () => { focused = true; });
+        car.addEventListener('focusout', () => { focused = false; });
         if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: 0.3 }).observe(car);
+
+        const playPause = document.createElement('button');
+        playPause.className = 'mcar-playpause';
+        const pauseIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+        const playIcon  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7V5z"/></svg>';
+        playPause.innerHTML = pauseIcon;
+        playPause.setAttribute('aria-label', 'Pause autoplay');
+        playPause.setAttribute('aria-pressed', 'false');
+        playPause.addEventListener('click', () => {
+          paused = !paused;
+          playPause.innerHTML = paused ? playIcon : pauseIcon;
+          playPause.setAttribute('aria-label', paused ? 'Resume autoplay' : 'Pause autoplay');
+          playPause.setAttribute('aria-pressed', String(paused));
+        });
+        car.appendChild(playPause);
+
         setInterval(() => {
-          if (hover || !visible || document.hidden || performance.now() < holdUntil) return;
-          go((idx + 1) % slides.length);
+          if (paused || hover || focused || !visible || document.hidden || performance.now() < holdUntil) return;
+          go(idx + 1 >= slides.length ? 0 : idx + 1);
         }, autoMs);
       }
     });

@@ -92,10 +92,12 @@
   function toggleSection(id) {
     const items = document.getElementById('items-' + id);
     const chevron = document.getElementById('chevron-' + id);
+    const btn = chevron ? chevron.closest('.nav-section-btn') : null;
     if (!items) return;
     const isOpen = items.style.display !== 'none';
     items.style.display = isOpen ? 'none' : '';
     if (chevron) chevron.classList.toggle('open', !isOpen);
+    if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
   }
 
   /* ─── Active child link highlight on scroll ──────── */
@@ -131,4 +133,20 @@
   window.toggleMobileMenu = toggleMobileMenu;
   window.toggleSection = toggleSection;
   window.scalePxCanvases = scalePxCanvases;
+
+  /* ─── Agentation (local dev only) ───
+     Annotation toolbar for AI feedback. The site has no build step, so React
+     and Agentation load from esm.sh, and only on localhost, never in prod. */
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+    Promise.all([
+      import('https://esm.sh/react@18.3.1'),
+      import('https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1'),
+      import('https://esm.sh/agentation@3.1.2?deps=react@18.3.1,react-dom@18.3.1')
+    ]).then(([React, ReactDOM, mod]) => {
+      const root = document.createElement('div');
+      root.id = 'agentation-root';
+      document.body.appendChild(root);
+      ReactDOM.createRoot(root).render(React.createElement(mod.Agentation));
+    }).catch(err => console.warn('Agentation failed to load', err));
+  }
 })();

@@ -1,24 +1,20 @@
 (function () {
   function toggleClearspaceGrid() {
-    const gridOn  = document.getElementById('cs-grid-on');
-    const gridOff = document.getElementById('cs-grid-off');
-    const btn     = document.getElementById('clearspace-toggle-btn');
-    const isOn    = gridOn.style.display !== 'none';
-    gridOn.style.display  = isOn ? 'none' : '';
-    gridOff.style.display = isOn ? '' : 'none';
-    btn.classList.toggle('off', isOn);
-    btn.setAttribute('aria-checked', String(!isOn));
+    const wrap   = document.getElementById('cs-figure');
+    const btn    = document.getElementById('clearspace-toggle-btn');
+    const isActive = wrap.classList.contains('is-grid-active');
+    wrap.classList.toggle('is-grid-active', !isActive);
+    btn.classList.toggle('off', isActive);
+    btn.setAttribute('aria-checked', String(!isActive));
   }
 
   function toggleConstructionGrid() {
-    const gridOn  = document.getElementById('ic-grid-on');
-    const gridOff = document.getElementById('ic-grid-off');
-    const btn     = document.getElementById('ic-toggle-btn');
-    const isOn    = gridOn.style.display !== 'none';
-    gridOn.style.display  = isOn ? 'none' : '';
-    gridOff.style.display = isOn ? '' : 'none';
-    btn.classList.toggle('off', isOn);
-    btn.setAttribute('aria-checked', String(!isOn));
+    const wrap   = document.getElementById('ic-figure');
+    const btn    = document.getElementById('ic-toggle-btn');
+    const isActive = wrap.classList.contains('is-grid-active');
+    wrap.classList.toggle('is-grid-active', !isActive);
+    btn.classList.toggle('off', isActive);
+    btn.setAttribute('aria-checked', String(!isActive));
   }
 
   window.toggleClearspaceGrid = toggleClearspaceGrid;

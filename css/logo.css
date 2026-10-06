@@ -37,8 +37,8 @@
     .clearspace-wrap {
       position: relative;
       background: #f0f0f0;
-      border: 1px solid rgba(159,159,159,0.4);
-      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+      border-radius: 12px;
       overflow: hidden;
       aspect-ratio: 1254 / 489;
       width: 100%;
@@ -50,9 +50,105 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: opacity 0.2s ease;
     }
-    .clearspace-grid.hidden { opacity: 0; pointer-events: none; }
+
+    /* Icon construction: grid overlay builds around the fixed base logo.
+       Two stages — structure (boundary + grid lines) then detail (guides + anchors) —
+       sharing one duration and a gentle ease-out, so the reveal stays quiet. */
+    .ic-wrap {
+      position: relative;
+      --ic-ease: cubic-bezier(0.33, 1, 0.68, 1);
+      /* OFF state: detail fades first, structure last — ~20-25% faster than the build */
+      --d-structure: 108ms;
+      --d-detail: 0ms;
+      --t: 200ms;
+    }
+    .ic-wrap.is-grid-active {
+      /* ON state: structure appears first, detail follows */
+      --d-structure: 0ms;
+      --d-detail: 140ms;
+      --t: 260ms;
+    }
+    .ic-grid-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .ic-grid-overlay .construction-boundary,
+    .ic-grid-overlay .grid-lines {
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(0.96);
+      opacity: 0;
+      transition: transform var(--t) var(--ic-ease) var(--d-structure),
+                  opacity var(--t) var(--ic-ease) var(--d-structure);
+    }
+    .ic-wrap.is-grid-active .construction-boundary {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    .ic-wrap.is-grid-active .grid-lines {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .ic-grid-overlay .measurement-guides > *,
+    .ic-grid-overlay .anchor-points > rect {
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(0.96);
+      opacity: 0;
+      transition: transform var(--t) var(--ic-ease) var(--d-detail),
+                  opacity var(--t) var(--ic-ease) var(--d-detail);
+    }
+    .ic-wrap.is-grid-active .measurement-guides > *,
+    .ic-wrap.is-grid-active .anchor-points > rect {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .ic-grid-overlay .measurement-guides > :nth-child(n+5)  { transition-delay: calc(var(--d-detail) + 6ms); }
+    .ic-grid-overlay .measurement-guides > :nth-child(n+9)  { transition-delay: calc(var(--d-detail) + 12ms); }
+    .ic-grid-overlay .measurement-guides > :nth-child(n+13) { transition-delay: calc(var(--d-detail) + 18ms); }
+    .ic-grid-overlay .measurement-guides > :nth-child(n+17) { transition-delay: calc(var(--d-detail) + 24ms); }
+    @media (prefers-reduced-motion: reduce) {
+      .ic-grid-overlay * { transition: none !important; }
+    }
+
+    /* Logo clearspace: a measurement overlay, not a build sequence — the circles and
+       the dashed grid are one rule, so they fade in/out together, synchronized. */
+    .cs-wrap {
+      position: relative;
+      --cs-ease: cubic-bezier(0.33, 1, 0.68, 1);
+      --t: 200ms;
+    }
+    .cs-wrap.is-grid-active {
+      --t: 260ms;
+    }
+    .cs-grid-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .cs-grid-overlay .clearspace-circles,
+    .cs-grid-overlay .measurement-guides > * {
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(0.96);
+      opacity: 0;
+      transition: transform var(--t) var(--cs-ease),
+                  opacity var(--t) var(--cs-ease);
+    }
+    .cs-wrap.is-grid-active .clearspace-circles,
+    .cs-wrap.is-grid-active .measurement-guides > * {
+      transform: scale(1);
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cs-grid-overlay * { transition: none !important; }
+    }
     .clearspace-logo {
       position: absolute;
       top: 38%;
@@ -61,10 +157,12 @@
       bottom: 38%;
       object-fit: contain;
     }
+    .grid-toggle-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
     .clearspace-toggle {
-      position: absolute;
-      top: 14px;
-      right: 16px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -72,12 +170,15 @@
       border: none;
       cursor: pointer;
       font-family: var(--font);
-      font-size: 13.8px;
-      font-weight: 400;
-      color: var(--black);
-      padding: 0;
-      z-index: 10;
+      font-size: 14px;
+      font-weight: 300;
+      color: #222222;
+      /* Extend the hit area to the 24px switch.md floor (sizing.md: invisible padding,
+         never layout space) at every width, not only on touch */
+      padding: 12px 0;
+      margin: -12px 0;
     }
+    .clearspace-toggle:focus-visible { outline: 1px solid #330066; outline-offset: 2px; }
     .toggle-pill {
       display: inline-block;
       width: 38px;
@@ -109,23 +210,24 @@
 
     #page-logo { background: #fafafa; min-height: 100vh; }
 
-    /* ── Colour variants (Figma 6480:52882): 2-col grid, 21.6px col gap, 31.4px row gap ── */
-    .cv-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 21.6px; row-gap: 31.4px; }
+    /* ── Colour variants (Figma 6480:52882): 2-col grid, 20px col gap, 32px row gap ── */
+    .cv-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; row-gap: 32px; }
     /* ── Incorrect usage: 3-col grid, caption below each card ── */
-    .iu-grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 20px; row-gap: 32px; }
+    .iu-grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 24px; row-gap: 32px; }
     .iu-item { margin: 0; }
     .iu-card-type { aspect-ratio: 1635/1078; }
-    .iu-card { aspect-ratio: 1648/1087; border-radius: 8px; overflow: hidden; background: #f0f0f0; }
+    /* Same grid-tile treatment as .cv-card (12px radius, inset ring) — was missing its edge */
+    .iu-card { aspect-ratio: 1648/1087; border-radius: 12px; overflow: hidden; background: #f0f0f0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
     .iu-card > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .iu-item figcaption { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-family: var(--ht); font-weight: 300; font-size: 15px; line-height: 1.4; color: #000; }
-    .iu-x { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #E00000; position: relative; }
+    .iu-item figcaption { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-family: var(--ht); font-weight: 300; font-size: 15px; line-height: 24px; color: #222222; }
+    .iu-x { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #d60404; position: relative; }
     .iu-x::before, .iu-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 1.8px; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
     .iu-x::after { transform: translate(-50%,-50%) rotate(-45deg); }
     .cv-item-full { grid-column: 1 / -1; }
-    .cv-label { font-family: var(--ht); font-weight: 300; font-size: 13.76px; line-height: 1.4; color: #000; margin-bottom: 7.9px; }
+    .cv-label { font-family: var(--ht); font-weight: 500; font-size: 12px; line-height: 16px; color: #222222; margin-bottom: 8px; }
     .cv-card {
-      position: relative; height: 300px; border-radius: 7.86px; overflow: hidden;
-      border: 0.98px solid rgba(159,159,159,0.4);
+      position: relative; height: 300px; border-radius: 12px; overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
       display: flex; align-items: center; justify-content: center;
     }
     .cv-card-tall { height: 507px; }
@@ -137,10 +239,16 @@
     }
     .cv-logo-sm { width: 30.8%; }
     @media (max-width: 1023px) {
-      .cv-grid { grid-template-columns: 1fr; row-gap: 24px; }
-      .iu-grid { grid-template-columns: 1fr; row-gap: 28px; }
+      .cv-grid { grid-template-columns: 1fr; row-gap: 16px; }
+      .iu-grid { grid-template-columns: 1fr; row-gap: 16px; }
       .cv-card { height: auto; aspect-ratio: 616 / 300; }
       .cv-card-tall { aspect-ratio: 1254 / 507; }
+
+      /* Multi-panel header rows (text + CTA / text + image) stack into one column */
+      .qr-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .qr-row > img { width: 100%; max-width: none; }
+      .cb-row { flex-direction: column; gap: 24px; }
+      .cb-row > img { width: 100%; max-width: none; }
     }
 
     /* QR section: text left, graphic right */
@@ -149,7 +257,7 @@
     .qr-row > img { width: 367px; max-width: 38%; height: auto; flex-shrink: 0; }
 
     /* Co-brand: header column beside card */
-    .cb-row { display: flex; gap: 25px; align-items: flex-start; margin-bottom: 48px; }
+    .cb-row { display: flex; gap: 48px; align-items: flex-start; margin-bottom: 48px; }
     .cb-row .fig-head { flex: 1; margin-bottom: 0; }
-    .cb-row > img { width: 828px; max-width: 66%; height: auto; border-radius: 6.5px; }
+    .cb-row > img { width: 828px; max-width: 66%; height: auto; border-radius: 12px; }
 
