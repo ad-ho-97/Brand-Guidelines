@@ -14,13 +14,14 @@
     .cu-caption { font-family: var(--ht); font-weight: 300; font-size: 14px; line-height: 1.4; color: #333; margin-top: 24px; max-width: 401px; }
 
 
-    /* Reusable media carousel (black until images/videos are added) */
+    /* Reusable media carousel (grey until images/videos are added — matches
+       the Foundation empty-media-slot standard, same as .page-hero-ph) */
     .mcar {
       position: relative;
       width: 100%;
       aspect-ratio: 813 / 506;
-      background: #0d0d0f;
-      border-radius: 16px;
+      background: #f0f0f0;
+      border-radius: 8px;
       overflow: hidden;
     }
     .mcar-track { position: absolute; inset: 0; display: flex; transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); }
@@ -31,7 +32,7 @@
     .mcar-empty {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; text-align: center; color: rgba(255,255,255,0.5);
+      gap: 8px; text-align: center; color: rgba(0,0,0,0.4);
       font-family: var(--ht); font-size: 14px;
     }
     .mcar-empty svg { width: 30px; height: 30px; opacity: 0.55; }

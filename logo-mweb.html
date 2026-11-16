@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logo mweb</title>
+<style>
+@font-face{font-family:halyard-display;src:url("https://use.typekit.net/af/165087/00000000000000007735adc0/30/l?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n5&v=3") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:halyard-text;src:url("https://use.typekit.net/af/e40556/00000000000000007735adbc/30/l?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n3&v=3") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:halyard-text;src:url("https://use.typekit.net/af/2ed20c/00000000000000007735add1/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3") format("woff2");font-weight:600;font-display:swap}
+
+/* Foundation / Mobile grid: 6 cols · 16 margin · 16 gutter · 4px baseline */
+:root{
+  --m:16px; --g:16px; --cols:6;
+  --grey-1:#222; --grey-2:#444; --grey-3:#666; --grey-4:#9f9f9f; --tick:#c4c4c4;
+  --line:#f0f0f0; --hover:#f8f8f8; --surface:#fafafa; --white:#fff; --purps:#8000ff;
+  --ease-enter:cubic-bezier(0,0,.3,1); --ease-exit:cubic-bezier(.7,0,1,1); --ease-move:cubic-bezier(.7,0,.3,1);
+  --font:halyard-text,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-d:halyard-display,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --header:56px; --onpage:44px;
+  /* DialKit-tunable */
+  --speed:1; --sheet-in:320ms; --sheet-in-ease:cubic-bezier(.32,.72,0,1); --sheet-out:200ms; --tuck:240ms;
+  --sec-gap:56px; --h2:24px; --chip-h:36px; --prog-h:2px; --scrim:.32;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);font-weight:300;color:var(--grey-1);background:#e9e9e9;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none} ul{list-style:none} button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── audit shell (desktop only): a 375 × 812 frame + controls ── */
+.shell{min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;gap:24px;padding:32px 16px}
+.audit{position:sticky;top:32px;width:200px;font-size:12px;line-height:16px;color:var(--grey-2);display:flex;flex-direction:column;gap:8px}
+.audit b{font-weight:600;color:var(--grey-1);font-size:14px;line-height:20px}
+.audit label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.frame{position:relative;width:375px;height:812px;background:var(--white);border-radius:24px;overflow:hidden;overflow:clip;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 24px 48px rgba(0,0,0,.12);isolation:isolate}
+.scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scroll-padding-top:calc(var(--header) + var(--onpage) + 16px)}
+@media (max-width:440px){ body{background:var(--white)} .shell{padding:0;display:block} .audit{display:none} .frame{width:100%;height:100dvh;border-radius:0;box-shadow:none} }
+
+/* grid overlay (toggle) */
+.overlay{position:absolute;inset:0;pointer-events:none;z-index:50;display:none;
+  background:
+    repeating-linear-gradient(to bottom,rgba(0,26,255,.08) 0 2px,transparent 2px 4px),
+    linear-gradient(to right,transparent var(--m),transparent calc(100% - var(--m)),transparent);}
+.overlay i{position:absolute;top:0;bottom:0;background:rgba(239,4,4,.08)}
+.show-grid .overlay{display:block}
+.show-outlines .scroller *{outline:1px dashed rgba(128,0,255,.35);outline-offset:-1px}
+
+/* the grid as a utility: every content row is a 6-col grid */
+.g{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));column-gap:var(--g);padding:0 var(--m)}
+.c6{grid-column:1/-1} .c3{grid-column:span 3} .c4{grid-column:span 4} .c2{grid-column:span 2}
+
+/* ── sticky chrome: header (56) + section bar (44) move as one; header tucks away while reading down ── */
+.bars{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.8) blur(12px);-webkit-backdrop-filter:saturate(1.8) blur(12px);
+      transition:transform calc(var(--tuck) * var(--speed)) var(--ease-enter)}
+.bars.tuck{transform:translateY(calc(var(--header) * -1));transition:transform calc(var(--tuck) * .83 * var(--speed)) var(--ease-move)}
+.top{height:var(--header)}
+.top .g{height:100%;align-items:center}
+.brand{grid-column:1/4;font-family:var(--font-d);font-weight:500;font-size:20px;line-height:24px}
+.iconbtn{grid-column:6;justify-self:end;width:44px;height:44px;margin-right:-8px;display:grid;place-items:center;border-radius:12px}
+.iconbtn:active{background:var(--line)}
+.iconbtn svg{width:24px;height:24px}
+
+/* ── "on this page" bar (44) — the mobile form of the right index ── */
+.onpage{position:relative;height:var(--onpage);box-shadow:0 1px 0 var(--line)}
+.onpage button{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;height:100%;text-align:left;font-size:15px;line-height:20px}
+.onpage .v{color:var(--grey-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.onpage .v.page{color:var(--grey-3)}
+.onpage .chev{flex:none;width:16px;height:16px;color:var(--grey-3)}
+.onpage button:active{background:var(--hover)}
+/* reading progress: a 2px line along the bar's bottom edge */
+.onpage .prog{position:absolute;left:0;right:0;bottom:0;height:var(--prog-h);background:var(--grey-1);transform-origin:left;transform:scaleX(0);transition:transform 200ms var(--ease-move)}
+
+/* ── hero ── */
+.hero{padding-top:32px}
+.crumb{grid-column:1/-1;font-size:12px;line-height:16px;color:var(--grey-3)}
+h1{grid-column:1/-1;margin-top:8px;font-family:var(--font-d);font-weight:500;font-size:40px;line-height:48px;letter-spacing:.4px}
+.lead{grid-column:1/-1;margin-top:12px;font-size:17px;line-height:28px;color:var(--grey-2);text-wrap:pretty}
+.hero .row-actions{margin-top:20px}
+
+/* ── sections ── */
+section{padding-top:var(--sec-gap);scroll-margin-top:calc(var(--header) + var(--onpage))}
+h2{grid-column:1/-1;font-weight:600;font-size:var(--h2);line-height:calc(var(--h2) + 4px);outline:none}
+section .p{grid-column:1/-1;margin-top:8px;font-size:15px;line-height:24px;color:var(--grey-2);text-wrap:pretty}
+.media{grid-column:1/-1;margin-top:24px;border-radius:12px;background:linear-gradient(135deg,#f6f0ff,#f0f0f0);position:relative;display:grid;place-items:center;
+       font-size:12px;line-height:16px;color:var(--grey-4);text-align:center;padding:8px}
+.media.r1{aspect-ratio:1/1} .media.r43{aspect-ratio:4/3} .media.r32{aspect-ratio:3/2} .media.r169{aspect-ratio:16/9} .media.r45{aspect-ratio:4/5}
+.media.dark{background:linear-gradient(135deg,#2a1a40,#151515);color:#8a8a8a}
+.media.purps{background:var(--purps);color:rgba(255,255,255,.6)}
+.cap{grid-column:span 3;margin-top:8px;font-size:12px;line-height:16px;color:var(--grey-3)}
+.cap.c6{grid-column:1/-1}
+.pair .media{grid-column:span 3}
+.row-actions{grid-column:1/-1;margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+/* one button style for every download/toggle on the page; 36px visual, 44px hit area */
+.chip{position:relative;height:var(--chip-h);padding:0 12px;border-radius:calc(var(--chip-h) / 2);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);font-size:14px;line-height:20px;display:inline-flex;align-items:center;gap:4px;
+      transition:background-color 120ms var(--ease-move),color 120ms var(--ease-move),transform 160ms var(--ease-enter)}
+.chip::after{content:"";position:absolute;inset:min(0, calc((var(--chip-h) - 40px) / 2)) 0}
+.chip[aria-pressed="true"]{background:var(--grey-1);color:var(--white);box-shadow:none}
+.chip:active{background:var(--line);transform:scale(.97)}
+.chip[aria-pressed="true"]:active{background:var(--grey-2)}
+.chip svg{width:16px;height:16px}
+.sw-row{justify-content:flex-end}
+.sw{position:relative;height:20px;display:inline-flex;align-items:center;gap:8px;font-size:14px;line-height:20px;color:var(--grey-1)}
+.sw::after{content:"";position:absolute;inset:-12px -8px}
+.sw .track{position:relative;width:36px;height:20px;border-radius:8px;background:var(--tick);transition:background-color 160ms var(--ease-move)}
+.sw .track::before{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--white);box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform 160ms var(--ease-move)}
+.sw[aria-checked="true"] .track{background:var(--grey-1)}
+.sw[aria-checked="true"] .track::before{transform:translateX(16px)}
+.sw:focus-visible{outline:2px solid var(--grey-1);outline-offset:4px;border-radius:4px}
+.gridlines{position:absolute;inset:8%;border:1px dashed rgba(128,0,255,.5);border-radius:4px;opacity:0;transition:opacity 180ms var(--ease-enter)}
+.media.on .gridlines{opacity:1}
+.sub{grid-column:1/-1;margin-top:32px;font-weight:600;font-size:17px;line-height:24px}
+
+/* swipe rail for "Logo in action" — horizontal scroll that snaps to the grid */
+.rail{grid-column:1/-1;margin:24px calc(var(--m) * -1) 0;padding:0 var(--m);display:grid;grid-auto-flow:column;grid-auto-columns:calc(100% - 2 * var(--m));   /* each card fills the 6-col width; counter + dots signal the swipe */gap:var(--g);
+      overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--m);scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail .media{margin:0;scroll-snap-align:start}
+.count{grid-column:1/-1;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:12px;line-height:16px;color:var(--grey-3);font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:4px} .dots i{width:6px;height:6px;border-radius:50%;background:var(--tick);transition:background-color 200ms var(--ease-move)} .dots i.on{background:var(--grey-1)}
+/* minimum size: drawn to scale */
+.minsize{grid-column:span 3;margin-top:24px;aspect-ratio:1;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);display:grid;place-items:center;position:relative}
+.minsize .logo{width:80px;height:20px;border-radius:4px;background:var(--purps)}
+.minsize .spec{position:absolute;left:8px;bottom:8px;font-size:12px;line-height:16px;color:var(--grey-3);font-variant-numeric:tabular-nums}
+
+/* incorrect usage cards */
+.dont{grid-column:span 3;margin-top:16px}
+.dont .media{margin-top:0;aspect-ratio:1/1}
+.dont p{margin-top:8px;font-size:12px;line-height:16px;color:var(--grey-2);display:flex;gap:4px}
+/* red circle WITH a cross: shape + colour + text, never colour alone */
+.dont p::before{content:"";flex:none;width:12px;height:12px;margin-top:2px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='6' fill='%23e5484d'/%3E%3Cpath d='M4 4l4 4M8 4l-4 4' stroke='white' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") center/12px no-repeat}
+
+/* next page */
+.next{margin-top:64px;padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+.next a{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding:16px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.next small{display:block;font-size:12px;line-height:16px;color:var(--grey-3)}
+.next strong{display:block;font-weight:600;font-size:17px;line-height:24px}
+.next a:active{background:var(--line)}
+
+/* ── sheets: menu (pages) + on this page (sections) ── */
+.scrim{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,var(--scrim));opacity:0;pointer-events:none;transition:opacity calc(var(--sheet-out) * var(--speed)) var(--ease-exit)}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:41;max-height:80%;display:flex;flex-direction:column;background:var(--white);border-radius:20px 20px 0 0;
+       transform:translateY(100%);padding-bottom:env(safe-area-inset-bottom);visibility:hidden;
+       transition:transform calc(var(--sheet-out) * var(--speed)) var(--ease-exit),visibility 0s calc(var(--sheet-out) * var(--speed))}            /* hide only after the slide-down */
+.open .scrim{opacity:1;pointer-events:auto;transition:opacity calc(var(--sheet-in) * .875 * var(--speed)) var(--ease-enter)}
+.sheet.open{transform:none;visibility:visible;transition:transform calc(var(--sheet-in) * var(--speed)) var(--sheet-in-ease),visibility 0s}
+.sheet.dragging{transition:none}
+.sheet .grab{flex:none;height:24px;display:grid;place-items:center;touch-action:none;cursor:grab}
+.sheet .grab::before{content:"";width:36px;height:4px;border-radius:2px;background:#e2e2e2}
+.sheet h3{flex:none;padding:0 var(--m) 4px;font-weight:600;font-size:15px;line-height:20px;display:flex;justify-content:space-between;align-items:center;touch-action:none}
+.sheet h3 button{font-weight:300;font-size:14px;color:var(--grey-3);height:44px;padding:0 8px;margin-right:-8px;border-radius:8px}
+.sheet h3 button:active{background:var(--hover)}
+.sheet ul{overflow-y:auto;padding:0 8px 12px}
+.sheet li a,.sheet .grp{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:8px 8px;border-radius:8px;font-size:15px;line-height:24px;color:var(--grey-3)}
+.sheet li a:active{background:var(--hover)}
+.sheet li a[aria-current]{color:var(--grey-1)}
+.sheet li a[aria-current]::after{content:"";width:16px;height:2px;border-radius:2px;background:var(--grey-1);flex:none;margin-left:12px}
+.sheet .grp{min-height:36px;padding-top:16px;font-size:12px;line-height:16px;color:var(--grey-4);text-transform:uppercase;letter-spacing:.6px}
+.sheet .nest a{padding-left:8px}
+@media (prefers-reduced-motion:reduce){ .sheet,.sheet.open{transition:opacity 150ms!important;transform:none} .sheet:not(.open){opacity:0} }
+
+/* ── Variant B (Vevo-informed) ── */
+:root{--chrome:100px}
+.vpick{display:flex;gap:4px;padding:2px;border-radius:8px;background:#f0f0f0;width:fit-content}
+.vpick a{padding:4px 8px;border-radius:8px;font-size:12px;line-height:16px;color:var(--grey-3)}
+.vpick a[aria-current]{background:var(--white);color:var(--grey-1);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+/* segmented switcher: swaps one image in place instead of a stack of tiles */
+.seg{grid-column:1/-1;margin-top:16px;display:flex;gap:2px;padding:2px;border-radius:12px;background:var(--line);position:relative}
+.seg button{position:relative;flex:1;height:36px;border-radius:8px;font-size:14px;line-height:20px;color:var(--grey-3);transition:color 120ms var(--ease-move)}
+.seg button::after{content:"";position:absolute;inset:-4px 0}
+.seg button[aria-pressed="true"]{color:var(--grey-1)}
+.seg .ind{position:absolute;top:2px;bottom:2px;left:2px;border-radius:8px;background:var(--white);box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
+          transition:transform 200ms var(--ease-move),width 200ms var(--ease-move)}
+.swap{grid-column:1/-1;margin-top:12px;position:relative;display:grid}
+.swap > *{grid-area:1/1;margin-top:0;opacity:0;transition:opacity 180ms var(--ease-move)}
+.swap > .on{opacity:1}
+.swap-cap{grid-column:1/-1;margin-top:8px;font-size:12px;line-height:16px;color:var(--grey-3);min-height:32px}
+.media .gridlines{opacity:0}
+.media.on .gridlines{opacity:.5}
+/* related links */
+.related{grid-column:1/-1;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.related span{width:100%;font-size:12px;line-height:16px;color:var(--grey-3)}
+.related .chip{height:32px;font-size:14px}
+.related .chip svg{width:12px;height:12px}
+/* previous / next */
+.next a.pn{grid-column:span 3;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;padding:16px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.pn.nx{text-align:right}
+.pn:active{background:var(--line)}
+.pn small{font-size:12px;line-height:16px;color:var(--grey-3)} .pn strong{font-weight:600;font-size:17px;line-height:24px}
+
+/* ── Variant C: two scopes, two containers ── */
+/* pages: a full-height drawer from the hamburger's edge */
+.drawer{position:absolute;top:0;bottom:0;right:0;width:85%;z-index:41;display:flex;flex-direction:column;background:var(--white);
+        box-shadow:0 0 0 1px rgba(0,0,0,.04),-16px 0 48px rgba(0,0,0,.12);
+        transform:translateX(100%);visibility:hidden;transition:transform 200ms var(--ease-exit),visibility 0s 200ms}
+.drawer.open{transform:none;visibility:visible;transition:transform 280ms cubic-bezier(.32,.72,0,1),visibility 0s}
+.drawer.dragging{transition:none}
+.drawer .dhead{flex:none;height:var(--header);display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 var(--m)}
+.drawer .dhead b{font-family:var(--font-d);font-weight:500;font-size:20px;line-height:24px}
+.drawer ul{overflow-y:auto;padding:4px 8px calc(16px + env(safe-area-inset-bottom))}
+.drawer li a,.drawer .grp{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:8px 8px;border-radius:8px;font-size:15px;line-height:24px;color:var(--grey-3)}
+.drawer li a:active{background:var(--hover)}
+.drawer li a[aria-current]{color:var(--grey-1);font-weight:300}
+.drawer li a[aria-current]::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--grey-1);flex:none}
+.drawer .grp{min-height:36px;padding-top:16px;font-size:12px;line-height:16px;color:var(--grey-4);text-transform:uppercase;letter-spacing:.6px}
+@media (prefers-reduced-motion:reduce){ .drawer,.drawer.open{transform:none!important} .drawer:not(.open){opacity:0} }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dialkit@2.1.0/dist/vanilla/styles.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="audit" aria-label="Audit controls">
+    <b>Logo · mweb</b>
+    <nav class="vpick" aria-label="Variant"><a href="?v=a" id="vA">A · current</a><a href="?v=b" id="vB">B · Vevo-informed</a><a href="?v=c" id="vC">C · split nav</a></nav>
+    <span id="vNote"></span>
+    <span>375 × 812 · Foundation / Mobile<br>6 cols · 16 margin · 16 gutter · 4 baseline</span>
+    <label><input type="checkbox" id="tg"> Show grid</label>
+    <label><input type="checkbox" id="to"> Show box outlines</label>
+    <span id="meta"></span>
+  </aside>
+
+  <div class="frame" id="frame">
+    <div class="overlay" aria-hidden="true"></div>
+    <div class="scroller" id="scroller">
+
+      <div class="bars" id="bars">
+      <header class="top"><div class="g">
+        <a class="brand" href="#">headout</a>
+        <button class="iconbtn" id="menuBtn" aria-label="Open pages menu" aria-haspopup="dialog" aria-controls="menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div></header>
+
+      <div class="onpage"><div class="g" style="height:100%">
+        <button class="c6" id="onpageBtn" aria-haspopup="dialog" aria-controls="toc">
+          <span class="v page" id="curLabel">Logo</span>
+          <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </button>
+      </div><span class="prog" id="prog" aria-hidden="true"></span></div>
+      </div>
+
+      <main id="main">
+        <div class="hero g">
+          <span class="crumb">Foundations</span>
+          <h1>Logo</h1>
+          <p class="lead">The Headout blimp cuts through the noise — a mark travelers spot and trust in an instant. It's kinetic by design, echoing the spontaneity and movement at the heart of what we do.</p>
+          <div class="row-actions"><a class="chip" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0 3-3m-3 3L5 7M3 13h10"/></svg>Download logo kit</a></div>
+          <div class="media purps r169" style="margin-top:24px">▶ Logo reel · 16:9</div>>
+        </div>
+        <div id="sections"></div>
+        <div class="g" style="margin-top:var(--sec-gap)"><div class="media r169">Headout signage on a rooftop</div></div>
+        <div class="next g"><a href="#"><span><small>Next</small><strong>Colour</strong></span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l5 5-5 5"/></svg></a></div>
+      </main>
+    </div>
+
+    <div class="scrim" id="scrim"></div>
+
+    <div class="sheet" id="toc" role="dialog" aria-modal="true" aria-labelledby="tocT">
+      <div class="grab" aria-hidden="true"></div>
+      <h3><span id="tocT">On this page</span><button data-close>Close</button></h3>
+      <ul id="tocList"></ul>
+    </div>
+
+    <div class="sheet" id="menu" role="dialog" aria-modal="true" aria-labelledby="menuT">
+      <div class="grab" aria-hidden="true"></div>
+      <h3><span id="menuT">Pages</span><button data-close>Close</button></h3>
+      <ul>
+        <li><a href="#">Overview</a></li>
+        <li class="grp">Foundations</li>
+        <li class="nest"><a href="#" aria-current="page">Logo</a></li>
+        <li class="nest"><a href="#">Colour</a></li><li class="nest"><a href="#">Typography</a></li><li class="nest"><a href="#">Layout</a></li>
+        <li class="nest"><a href="#">Motion</a></li><li class="nest"><a href="#">Iconography</a></li><li class="nest"><a href="#">Voice and tone</a></li>
+        <li class="grp">Asset bank</li>
+        <li class="nest"><a href="#">Partners</a></li><li class="nest"><a href="#">Employees</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+/* runtime tunables (DialKit writes these) */
+const T = { flick: .11, dragDist: .25, tuckAfter: 120 };
+
+/* ── content (copy from the desktop D1 frame) ── */
+const DL = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0 3-3m-3 3L5 7M3 13h10"/></svg>';
+const S = [
+ ['Primary logo','This is our signature — how we write our name and use our mark. Whether it\'s pixel-sized on a screen or blown up at an airport gate, the primary logo is how people find us, and how they know it\'s really us.',
+  `<div class="media r43">Primary logo · 6 col · 4:3</div>`],
+ ['Icon construction','The blimp is built from a small set of circles and a single angle. Respect the construction and the mark stays balanced at any size.',
+  `<div class="row-actions sw-row"><button class="sw" role="switch" aria-checked="false" aria-pressed="false" data-grid><span class="track" aria-hidden="true"></span>Show grid</button></div><div class="media r1">Icon construction · 1:1<span class="gridlines"></span></div>`],
+ ['Logo clearspace','The blimp needs room to breathe. Clearspace keeps the logo from feeling crowded by text, edges, or other elements, so it always reads clean and stays unmistakably ours. Nothing — copy, imagery, UI — should cross into this zone.',
+  `<div class="row-actions sw-row"><button class="sw" role="switch" aria-checked="false" aria-pressed="false" data-grid><span class="track" aria-hidden="true"></span>Show grid</button></div><div class="media r43">Clearspace · 4:3<span class="gridlines"></span></div>`],
+ ['Minimum size','The logo has to stay legible, always. Never scale it below the minimum size — you\'ll lose detail and recognition before it even looks "off." If space is tight, fix it with layout or whitespace, not by shrinking the logo further.',
+  `<span class="cap" style="grid-column:span 3">Digital</span><span class="cap" style="grid-column:span 3">Print</span><div class="minsize"><span class="logo" role="img" aria-label="Logo at 80px, actual size"></span><span class="spec">80px · actual size</span></div><div class="minsize"><span class="spec">20mm wide</span><span class="logo" style="width:56px;height:14px" role="img" aria-label="Logo at print minimum"></span></div><span class="cap">Digital</span><span class="cap">Print</span>`],
+ ['Colour variants','Colour is the first thing people remember about a brand — ours is Purps. When Purps can\'t do its job (low contrast, busy backgrounds), fall back to monochrome. Always pick the variant that stays legible against whatever\'s behind it.',
+  `<div class="row-actions"><a class="chip" href="#">${DL}Download logo assets</a></div>
+   <span class="cap" style="grid-column:span 3">Coloured</span><span class="cap" style="grid-column:span 3">Monochrome</span>
+   <div class="media purps" style="grid-column:span 3;aspect-ratio:384/470">Coloured</div><div class="media" style="grid-column:span 3;aspect-ratio:384/470">Monochrome</div>`],
+ ['Sub-brand lockup','Headout Partners, Headout Hub, Headout Blog — every sub-brand locks up the same way. The blimp and wordmark stay untouched; the sub-brand name sits beside it in a lighter weight. One system, many voices, always recognisably Headout.',
+  `<div class="media r43">Lockup zoom</div><span class="cap c6">[Caption: what the lockup zoom shows]</span>
+   <div class="media r1" style="margin-top:16px">Sub-brand grid</div><span class="cap c6">[Caption: what the sub-brand grid shows]</span>`],
+ ['Co-brand lockup','When we share space with a partner — Mastercard, Broadway — our logo shares the frame, never the spotlight. Keep both marks equal in visual weight, separate them with a clean divider, and give each its full clearspace.',
+  `<div class="media r43">Headout | Partner</div><div class="media r169" style="margin-top:16px">▶ Co-brand in use · 16:9</div>`],
+ ['App tile and avatars','At app-icon and avatar scale, less is more. The blimp sits centered and slightly reduced, so it stays crisp and calm even at the smallest sizes.',
+  `<div class="row-actions"><a class="chip" href="#">${DL}Download avatar assets</a></div>
+   <div class="media purps c2" style="grid-column:span 2;aspect-ratio:1;border-radius:22%">App</div><div class="media" style="grid-column:span 2;aspect-ratio:1;border-radius:50%">Avatar</div><div class="media dark" style="grid-column:span 2;aspect-ratio:1;border-radius:50%">Dark</div>`],
+ ['Logo animation','Our animated logo shows up at key brand moments — video intros and outros, launch films, LinkedIn announcements, presentation openers — plus idle loops for anywhere it needs to hold, pause, or sit in the background.',
+  `<div class="row-actions"><a class="chip" href="#">${DL}Download animation kit</a></div><div class="media purps r169">▶ Logo animation · 16:9</div>`],
+ ['Logo in action','From city billboards to airport screens, the logo holds up in the wild — legible, confident, and unmistakably Headout at any scale or distance.',
+  `<div class="media r169">▶ Logo in action · 16:9</div>
+   <h3 class="sub">Our suggested combinations</h3><p class="p">Pair the mark with Purps, white or black — and nothing else. These are the combinations that hold up everywhere.</p>
+   <div class="rail" aria-label="Suggested combinations, swipe">${['Varsity jacket, New York','Flag at the Trevi Fountain','Headout podium'].map(t=>`<div class="media r32">${t}</div>`).join('')}</div>
+   <div class="count"><span class="n">1 / 3</span><span class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span></div>`],
+ ['Incorrect usage','The logo is our signature — it doesn\'t flex, stretch, recolor, or improvise. Here\'s what to avoid.',
+  ["Don't change the colour of the logo.","Don't reset the wordmark in another typeface.","Don't reset the wordmark in a serif.","Don't apply gradients to the logo.","Don't fill the logo with imagery.","Don't place the logo on busy imagery without contrast."]
+   .map(t=>`<div class="dont"><div class="media">✕</div><p>${t}</p></div>`).join('')]
+];
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+const VR = (new URLSearchParams(location.search).get('v') || 'a').toLowerCase();
+const VC = VR === 'c', V = (VR === 'b' || VC) ? 'b' : 'a';   // C = B's page + the split navigation
+document.getElementById(VC ? 'vC' : V === 'b' ? 'vB' : 'vA').setAttribute('aria-current', 'page');
+document.getElementById('vNote').textContent = V === 'b'
+  ? (VC ? 'C: B + sections in a bottom sheet; pages in a drawer from the right; header always pinned.' : 'B: in-place switchers, grid on by default, opens on #section links, Previous + Next.')
+  : 'A: the build as audited.';
+
+/* B: sections whose stacks of tiles become one switchable image */
+const seg = (name, opts, pin) => `<div class="seg${pin ? ' pin' : ''}" role="group" aria-label="${name}"><span class="ind" aria-hidden="true"></span>${
+  opts.map((o,i) => `<button aria-pressed="${i === 0}" data-k="${i}">${o[0]}</button>`).join('')}</div>`;
+const swap = (opts, ratio) => `<div class="swap">${opts.map((o,i) => `<div class="media ${ratio} ${o[2] || ''}${i ? '' : ' on'}" data-k="${i}">${o[0]} · ${o[1]}</div>`).join('')}</div>
+  <p class="swap-cap" aria-live="polite">${opts[0][3] || ''}</p>`;
+const ARROW = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5 8 6l-3.5 3.5"/></svg>';
+const rel = links => `<div class="related"><span>Related</span>${links.map(l => `<a class="chip" href="#">${l}${ARROW}</a>`).join('')}</div>`;
+const COLOURS = [
+  ['Purps','primary','purps','Primary. Use whenever Purps has the contrast to carry it.'],
+  ['White','on Purps or dark','dark','White logo on Purps or on dark imagery.'],
+  ['Black','on light','','Monochrome black when colour is unavailable or the background is light and busy.'],
+  ['Image','on photography','dark','On photography, only where the area behind the logo is calm and high-contrast.'],
+];
+const B = {
+  'Icon construction': { grid: true, related: ['Layout · Grid'] },
+  'Logo clearspace':   { grid: true, related: ['Layout · Margins', 'Layout · Grid'] },
+  'Colour variants': { related: ['Colour · Core palette', 'Colour · Contrast'],
+    body: `<div class="row-actions"><a class="chip" href="#">${DL}Download logo assets</a></div>
+      ${seg('Logo colour', COLOURS)}
+      ${swap(COLOURS, 'r43')}
+      <h3 class="sub">In use</h3>
+      ${['Social post','Billboard','App screen'].map((t,k) => `<div class="swap" data-follow>${COLOURS.map((o,i) => `<div class="media r43 ${o[2] || ''}${i ? '' : ' on'}" data-k="${i}">${t} · ${o[0]}</div>`).join('')}</div>`).join('')}` },
+  'Co-brand lockup': { related: ['Logo · Clearspace'],
+    body: `${seg('Lockup', [['Horizontal'],['Stacked']])}${swap([['Horizontal','Headout | Partner','','Side by side, divider between, equal visual weight.'],['Stacked','Headout / Partner','','Stacked when width is tight; divider becomes horizontal.']], 'r43')}` },
+  'App tile and avatars': { related: ['Iconography'],
+    body: `<div class="row-actions"><a class="chip" href="#">${DL}Download avatar assets</a></div>
+      ${seg('Format', [['App tile'],['Avatar'],['Dark']])}${swap([['App tile','rounded square','purps','Blimp centred, reduced to 60% of the tile.'],['Avatar','circle','','Circle crop on white; blimp centred.'],['Dark','circle','dark','For dark UIs and profile pictures on dark backgrounds.']], 'r1')}` },
+  'Logo animation': { related: ['Motion'] },
+  'Minimum size':   { related: ['Layout · Margins'] },
+};
+document.getElementById('sections').innerHTML = S.map(([t,p,body]) => {
+  const b = V === 'b' ? B[t] || {} : {};
+  let html = b.body || body;
+  if (b.grid) html = html.replace('aria-checked="false" aria-pressed="false" data-grid', 'aria-checked="true" aria-pressed="true" data-grid').replace(/class="media (r\w+)">/, 'class="media $1 on">');
+  return `<section id="${slug(t)}"><div class="g"><h2 tabindex="-1">${t}</h2><p class="p">${p}</p>${html}</div></section>`;
+}).join('');
+if (V === 'b') document.querySelector('.next').innerHTML =
+  `<a class="pn" href="#"><small>Previous</small><strong>Overview</strong></a><a class="pn nx" href="#"><small>Next</small><strong>Colour</strong></a>`;
+
+/* switchers: one control drives its image, its caption, and any "In use" images that follow it */
+document.querySelectorAll('.seg').forEach(g => {
+  const btns = [...g.querySelectorAll('button')], ind = g.querySelector('.ind'), wrap = g.closest('.g');
+  const place = b => { ind.style.width = b.offsetWidth + 'px'; ind.style.transform = `translateX(${b.offsetLeft - 2}px)`; };
+  const pick = k => {
+    btns.forEach((b,i) => b.setAttribute('aria-pressed', i === k)); place(btns[k]);
+    wrap.querySelectorAll('.swap').forEach(sw => [...sw.children].forEach((m,i) => m.classList.toggle('on', i === k)));
+    const cap = wrap.querySelector('.swap-cap'); if (cap) cap.textContent = (COLOURS_BY[g.getAttribute('aria-label')] || [])[k] || cap.textContent;
+  };
+  btns.forEach((b,i) => b.onclick = () => pick(i));
+  requestAnimationFrame(() => { ind.style.transition = 'none'; place(btns[0]); requestAnimationFrame(() => ind.style.transition = ''); });
+});
+var COLOURS_BY = { 'Logo colour': COLOURS.map(o => o[3]),
+  'Lockup': ['Side by side, divider between, equal visual weight.','Stacked when width is tight; divider becomes horizontal.'],
+  'Format': ['Blimp centred, reduced to 60% of the tile.','Circle crop on white; blimp centred.','For dark UIs and profile pictures on dark backgrounds.'] };
+
+/* ── audit controls ── */
+const frame = document.getElementById('frame'), scroller = document.getElementById('scroller');
+const ov = frame.querySelector('.overlay');
+function drawCols(){ ov.querySelectorAll('i').forEach(i=>i.remove()); const W = frame.clientWidth, m=16, g=16, c=(W-2*m-5*g)/6;
+  for (let k=0;k<6;k++){ const i=document.createElement('i'); i.style.left=(m+k*(c+g))+'px'; i.style.width=c+'px'; ov.appendChild(i); }
+  document.getElementById('meta').textContent = `column = ${c.toFixed(2)}px`; }
+drawCols(); addEventListener('resize', drawCols);
+document.getElementById('tg').onchange = e => frame.classList.toggle('show-grid', e.target.checked);
+document.getElementById('to').onchange = e => frame.classList.toggle('show-outlines', e.target.checked);
+
+/* show-grid chips */
+document.querySelectorAll('[data-grid]').forEach(b => b.onclick = () => {
+  const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); b.setAttribute('aria-checked', on);
+  b.closest('.g').querySelector('.media').classList.toggle('on', on);
+});
+
+/* swipe rail counter */
+document.querySelectorAll('.rail').forEach(r => {
+  const c = r.nextElementSibling, n = c.querySelector('.n'), dots = [...c.querySelectorAll('.dots i')], items = [...r.children];
+  r.addEventListener('scroll', () => {
+    const step = items[1].offsetLeft - items[0].offsetLeft, i = Math.min(items.length - 1, Math.round(r.scrollLeft / step));
+    n.textContent = `${i + 1} / ${items.length}`; dots.forEach((d,k) => d.classList.toggle('on', k === i));
+  }, { passive: true });
+});
+
+/* header tucks away while reading down, returns on any scroll up */
+const bars = document.getElementById('bars'); let lastY = 0;
+scroller.addEventListener('scroll', () => {
+  const y = scroller.scrollTop, dy = y - lastY;
+  if (VC) return;                                                     // C: header stays pinned
+  if (Math.abs(dy) > 4) { bars.classList.toggle('tuck', dy > 0 && y > T.tuckAfter); lastY = y;
+    document.documentElement.style.setProperty('--chrome', bars.classList.contains('tuck') ? '44px' : '100px'); }
+}, { passive: true });
+
+/* ── sheets ── */
+const scrim = document.getElementById('scrim'); let openSheet = null, opener = null;
+function open(sheet, from){ openSheet = sheet; opener = from; frame.classList.add('open'); sheet.style.transform = ''; sheet.classList.add('open');
+  scroller.inert = true;
+  const curEl = sheet.querySelector('[aria-current]');
+  // open on where you are. Scroll only the list: scrollIntoView also scrolled the clipped frame, pushing the page top out of reach
+  const list = sheet.querySelector('ul');
+  if (curEl) list.scrollTop = curEl.offsetTop - list.offsetTop - (list.clientHeight - curEl.offsetHeight) / 2;
+  (curEl || sheet.querySelector('a,button')).focus({preventScroll:true}); }
+function close(){ if (!openSheet) return; frame.classList.remove('open'); openSheet.classList.remove('open'); openSheet.style.transform = '';
+  scroller.inert = false; opener && opener.focus({preventScroll:true}); openSheet = null; }
+
+/* drag the handle/title down to dismiss: distance OR a quick flick */
+document.querySelectorAll('.sheet').forEach(sheet => {
+  let y0 = 0, t0 = 0, dy = 0, dragging = false;
+  sheet.querySelectorAll('.grab, h3').forEach(h => {
+    h.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; dragging = true; y0 = e.clientY; t0 = performance.now(); dy = 0;
+      h.setPointerCapture(e.pointerId); sheet.classList.add('dragging'); });
+    h.addEventListener('pointermove', e => { if (!dragging) return; dy = e.clientY - y0;
+      sheet.style.transform = `translateY(${dy > 0 ? dy : dy / 6}px)`; });      // friction when pulled up
+    const end = () => { if (!dragging) return; dragging = false; sheet.classList.remove('dragging');
+      const v = Math.abs(dy) / (performance.now() - t0);
+      if (dy > sheet.offsetHeight * T.dragDist || (dy > 0 && v > T.flick)) close(); else sheet.style.transform = ''; };
+    h.addEventListener('pointerup', end); h.addEventListener('pointercancel', end);
+  });
+});
+document.getElementById('menuBtn').onclick = e => open(document.getElementById('menu'), e.currentTarget);
+document.getElementById('onpageBtn').onclick = e => open(document.getElementById('toc'), e.currentTarget);
+scrim.onclick = close; document.querySelectorAll('[data-close]').forEach(b => b.onclick = close);
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+/* ── on this page: list, progress ticks, current tracking ── */
+const sections = [...document.querySelectorAll('section')];
+const tocList = document.getElementById('tocList'), prog = document.getElementById('prog'), cur = document.getElementById('curLabel');
+tocList.innerHTML = S.map(([t]) => `<li><a href="#${slug(t)}">${t}</a></li>`).join('');
+const links = [...tocList.querySelectorAll('a')];
+let current = -2, lock = false;
+function setCurrent(i){ if (i === current) return; current = i;   // -1 = still in the hero
+  links.forEach((a,k)=> k===i ? a.setAttribute('aria-current','location') : a.removeAttribute('aria-current'));
+  prog.style.transform = `scaleX(${(i + 1) / sections.length})`;
+  cur.textContent = i < 0 ? 'Logo' : S[i][0]; cur.classList.toggle('page', i < 0);
+  if (V === 'b') history.replaceState(null, '', location.search + (i < 0 ? '' : '#' + slug(S[i][0]))); }
+links.forEach((a,i) => a.onclick = e => { e.preventDefault(); setCurrent(i); lock = true;
+  close();
+  const top = sections[i].getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - (VC ? 100 : 44) - 16;  // under the section bar
+  scroller.scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  sections[i].querySelector('h2').focus({preventScroll:true}); setTimeout(()=>lock=false, 900); });
+if ('onscrollend' in scroller) scroller.addEventListener('scrollend', ()=>{ lock=false; spy(); });
+function spy(){ if (lock) return;
+  if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2) return setCurrent(sections.length-1);
+  const line = scroller.getBoundingClientRect().top + 100 + scroller.clientHeight * .25; let i = -1;
+  sections.forEach((s,k)=>{ if (s.getBoundingClientRect().top <= line) i = k; }); setCurrent(i); }
+/* ── Variant C wiring ── */
+if (VC) (() => {
+  const onBtn = document.getElementById('onpageBtn'), menuBtn = document.getElementById('menuBtn');
+  // sections keep the bottom sheet (thumb-reachable, frequent); only pages move to the drawer
+  // pages: a drawer from the right edge, where the hamburger lives
+  const dr = document.createElement('div'); dr.className = 'drawer'; dr.id = 'drawer';
+  dr.setAttribute('role', 'dialog'); dr.setAttribute('aria-modal', 'true'); dr.setAttribute('aria-label', 'Pages');
+  dr.innerHTML = `<div class="dhead"><b>headout</b><button class="iconbtn" style="margin:0" aria-label="Close pages menu" data-x>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
+  dr.appendChild(document.querySelector('#menu ul')); frame.appendChild(dr);
+  menuBtn.setAttribute('aria-controls', 'drawer');
+  const openDr = () => { dr.style.transform = ''; dr.classList.add('open'); frame.classList.add('open'); scroller.inert = true;
+    (dr.querySelector('[aria-current]') || dr.querySelector('[data-x]')).focus({ preventScroll: true }); };
+  const closeDr = () => { if (!dr.classList.contains('open')) return; dr.classList.remove('open'); frame.classList.remove('open'); dr.style.transform = '';
+    scroller.inert = false; menuBtn.focus({ preventScroll: true }); };
+  menuBtn.onclick = openDr; dr.querySelector('[data-x]').onclick = closeDr;
+  scrim.onclick = closeDr;
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeDr(); });
+  // swipe right to close: distance or a flick
+  let x0 = 0, t0 = 0, dx = 0, drag = false;
+  dr.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button) return; drag = true; x0 = e.clientX; t0 = performance.now(); dx = 0; });
+  dr.addEventListener('pointermove', e => { if (!drag) return; dx = e.clientX - x0; if (Math.abs(dx) < 6) return;
+    dr.classList.add('dragging'); dr.style.transform = `translateX(${dx > 0 ? dx : dx / 6}px)`; });
+  const endDr = () => { if (!drag) return; drag = false; dr.classList.remove('dragging');
+    if (dx > dr.offsetWidth * T.dragDist || (dx > 0 && dx / (performance.now() - t0) > T.flick)) closeDr(); else dr.style.transform = ''; };
+  dr.addEventListener('pointerup', endDr); dr.addEventListener('pointercancel', endDr);
+  dr.style.touchAction = 'pan-y';
+})();
+
+let raf = 0; scroller.addEventListener('scroll', ()=>{ if(!raf) raf = requestAnimationFrame(()=>{ spy(); raf=0; }); }, {passive:true});
+const startAt = V === 'b' && sections.findIndex(s => '#' + s.id === location.hash);
+if (startAt >= 0) { scroller.scrollTop = sections[startAt].getBoundingClientRect().top - scroller.getBoundingClientRect().top - (VC ? 100 : 44) - 16; if (!VC) bars.classList.add('tuck'); document.documentElement.style.setProperty('--chrome','44px'); }
+spy();
+</script>
+
+<!-- ── DialKit: live values (plain-JS build) ── -->
+<script src="https://cdn.jsdelivr.net/npm/dialkit@2.1.0/dist/vanilla/browser.global.js"></script>
+<script>
+(() => {
+  if (!window.DialKit) return;
+  const root = document.documentElement.style, ms = v => Math.round(v * 1000) + 'ms';
+  DialKit.createDialRoot({ position: 'top-right', theme: 'light' });
+  DialKit.createDialKit('Logo mweb', {
+    speed: { type: 'select', options: ['1x', '0.5x', '0.25x'] },
+    sheet: {
+      open:  { type: 'easing', duration: 0.32, ease: [0.32, 0.72, 0, 1] },
+      close: [200, 80, 400, 10],
+      scrim: [0.32, 0, 0.6, 0.02],
+      flickVelocity: [0.11, 0.03, 0.4, 0.01],
+      dragDistance: [0.25, 0.1, 0.6, 0.05],
+    },
+    header: { tuckDuration: [240, 100, 500, 10], tuckAfter: [120, 0, 400, 10] },
+    layout: { sectionGap: [56, 32, 96, 4], h2: [24, 17, 28, 1], chipHeight: [36, 28, 48, 2], progress: [2, 1, 4, 1] },
+  }, { id: 'logo-mweb', persist: true }).subscribe(v => {
+    root.setProperty('--speed', 1 / parseFloat(v.speed));
+    root.setProperty('--sheet-in', ms(v.sheet.open.duration));
+    root.setProperty('--sheet-in-ease', `cubic-bezier(${v.sheet.open.ease.join(',')})`);
+    root.setProperty('--sheet-out', v.sheet.close + 'ms');
+    root.setProperty('--scrim', v.sheet.scrim);
+    root.setProperty('--tuck', v.header.tuckDuration + 'ms');
+    root.setProperty('--sec-gap', v.layout.sectionGap + 'px');
+    root.setProperty('--h2', v.layout.h2 + 'px');
+    root.setProperty('--chip-h', v.layout.chipHeight + 'px');
+    root.setProperty('--prog-h', v.layout.progress + 'px');
+    T.flick = v.sheet.flickVelocity; T.dragDist = v.sheet.dragDistance; T.tuckAfter = v.header.tuckAfter;
+  });
+})();
+</script>
+
+<!-- ── Agentation: click-to-annotate feedback toolbar (bottom-right) ── -->
+<div id="agentation"></div>
+<script type="module">
+import React from 'https://esm.sh/react@18.3.1';
+import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
+import { Agentation } from 'https://esm.sh/agentation@3.1.2?deps=react@18.3.1,react-dom@18.3.1';
+createRoot(document.getElementById('agentation')).render(React.createElement(Agentation, { appName: 'Logo mweb' }));
+</script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+/* ------------------------------------------------------------------
+   App-open transition: Home screen → tap Headout icon → Ticket screen
+   Source frames: Figma "Generic Poster" · Home (2459:24676) · Ticket (2459:25317)
+
+   Everything is laid out in Figma's frame units (207 × 449) and
+   scaled up with `zoom`, so numbers below map 1:1 to the design file.
+   ------------------------------------------------------------------ */
+
+:root {
+  --phone-w: 207px;
+  --phone-h: 449px;
+  --speed: 1;                 /* 1 = real time, 4 = quarter speed */
+
+  /* Headout icon bounds on the home screen (measured from export) */
+  --icon-x: 158.75px;
+  --icon-y: 141.5px;
+  --icon-size: 33px;
+  --icon-radius: 9px;
+  --screen-radius: 29.46px;   /* display corner radius at 207px wide (iPhone 15 ≈ 55pt / 393pt) */
+
+  /* derived */
+  --open-scale: calc(207 / 33);          /* icon → full width   = 6.2727 */
+  --shrink-scale: calc(33 / 207);        /* full width → icon   = 0.1594 */
+  --clip-bottom: calc(449px - 207px);    /* app shown square while small */
+  --clip-radius: calc(9px / 0.15942);    /* 9px icon radius at shrink scale */
+
+  /* motion tokens */
+  --ease-open: cubic-bezier(0.32, 0.72, 0, 1);     /* iOS-style sheet curve */
+  --ease-out:  cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in:   cubic-bezier(0.4, 0, 1, 1);
+
+  --t-press: calc(120ms * var(--speed));
+  --t-open:  calc(520ms * var(--speed));
+  --t-close: calc(400ms * var(--speed));           /* ~25% faster than open */
+  --t-icon-fade: calc(140ms * var(--speed));
+  --t-home: calc(520ms * var(--speed));           /* paired with the open */
+  --t-content: calc(360ms * var(--speed));
+  --t-exit: calc(600ms * var(--speed));            /* loop exit: dissolve, not a reverse */
+  --d-status: calc(180ms * var(--speed));          /* status bar restyles once the app covers the top */
+  /* card stagger — purple base → white ticket → text + shield
+     base lands while the app is still expanding (no white→lilac wash),
+     white wipes down instead of fading (no lilac crossfade),
+     content only starts once the ticket under it is mostly white */
+  --t-base:  calc(200ms * var(--speed));
+  --t-wipe:  calc(300ms * var(--speed));
+  --t-band:  calc(280ms * var(--speed));
+  --d-header: calc(140ms * var(--speed));
+  --d-card:  0ms;           /* one shared slide for the whole card */
+  --d-band1: 0ms;                                  /* crossfades with the icon: purple → purple, never via white */
+  --d-band2: calc(160ms * var(--speed));
+  --d-band3: calc(300ms * var(--speed));           /* overlaps the wipe tail — no empty-ticket hold */
+  --d-row:   calc(45ms * var(--speed));            /* step between rows inside layer 3 */
+}
+
+.screen {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  border-radius: var(--screen-radius);
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.screen img { display: block; pointer-events: none; }
+.screen button { appearance: none; border: 0; padding: 0; background: none; font: inherit; }
+
+/* Layer 1 — home screen (flat export) */
+.home {
+  position: absolute; inset: 0;
+  width: var(--phone-w); height: var(--phone-h);
+  transform-origin: var(--icon-x-center) var(--icon-y-center);
+  --icon-x-center: calc(var(--icon-x) + var(--icon-size) / 2);
+  --icon-y-center: calc(var(--icon-y) + var(--icon-size) / 2);
+  transition:
+    transform var(--t-home) var(--ease-open),
+    opacity   var(--t-home) var(--ease-out);
+  will-change: transform, opacity;
+}
+
+/* Layer 2 — the tappable Headout icon (sits exactly over the flat one) */
+.app-icon {
+  position: absolute; top: 0; left: 0;
+  width: var(--icon-size); height: var(--icon-size);
+  border-radius: var(--icon-radius);
+  transform-origin: 0 0;
+  transform: translate(var(--icon-x), var(--icon-y)) scale(1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--t-press) var(--ease-out),
+    opacity   var(--t-icon-fade) var(--ease-out);
+  will-change: transform, opacity;
+  z-index: 3;
+}
+.app-icon img { width: 100%; height: 100%; }
+/* generous hit area without moving the visible icon */
+.app-icon::after { content: ""; position: absolute; inset: -6px; }
+
+/* Layer 3 — the app surface. Starts as the icon, grows to the screen. */
+.app {
+  position: absolute; top: 0; left: 0;
+  width: var(--phone-w); height: var(--phone-h);
+  background: #fff;
+  transform-origin: 0 0;
+  transform: translate(var(--icon-x), var(--icon-y)) scale(var(--shrink-scale));
+  clip-path: inset(0 0 var(--clip-bottom) 0 round var(--clip-radius));
+  transition:
+    transform var(--t-close) var(--ease-open),
+    clip-path var(--t-close) var(--ease-open);
+  will-change: transform, clip-path;
+  z-index: 2;
+}
+
+.app-header {
+  position: absolute; top: 0; left: 1px;
+  width: 206px; height: 55px;      /* Figma 2459:25453 SVG export bounds */
+  opacity: 0;
+  transform: translateY(-4px);
+  /* the export carries its own status row; it is cut off here so the fixed .statusbar is the
+     only "9:41" — otherwise two status bars converge as the app scales up (a visible jitter) */
+  clip-path: inset(24.05px 0 0 0);
+  transition:
+    opacity   var(--t-content) var(--ease-out),
+    transform var(--t-content) var(--ease-out);
+}
+.app-header img { width: 100%; height: 100%; }
+
+.app-card {
+  position: absolute; top: 65.95px; left: 6px;
+  width: 195px; height: 355px;   /* Figma 2459:25452 export, minus 14px of empty space below the shield */
+  /* the card moves as one so the stacked layers never drift against each other */
+  transform: translateY(10px);
+  transition: transform var(--t-open) var(--ease-open);   /* rides the app's own curve */
+  will-change: transform;
+}
+/* each band is a full-size layer of the card, stacked */
+.ticket-band {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-open);
+}
+/* the base takes over from the icon at the icon's own fade speed */
+.ticket-band--1 { transition-duration: var(--t-icon-fade); }
+/* white ticket wipes down from the logo — a reveal, never a semi-transparent white over purple.
+   The mask is 3× the card tall with a soft band (40–50%), so the leading edge is feathered
+   (~110px) instead of a hard cut; position 100% = fully hidden, 0% = fully shown. */
+.ticket-band--2 {
+  opacity: 1;
+  filter: drop-shadow(0 2.25px 1.12px rgba(0, 0, 0, 0.25));   /* Figma: Information container shadow */
+  -webkit-mask: linear-gradient(#000 40%, transparent 50%) 0 100% / 100% 300% no-repeat;
+          mask: linear-gradient(#000 40%, transparent 50%) 0 100% / 100% 300% no-repeat;
+  transition:
+    -webkit-mask-position var(--t-wipe) var(--ease-open),
+            mask-position var(--t-wipe) var(--ease-open);
+}
+/* text + shield resolve into focus */
+/* layer 3 itself is just a container; its rows animate */
+.ticket-band--3 { opacity: 1; }
+/* each row is the same full-card image clipped to one horizontal slice
+   (card units, measured from the export): 3 placeholder lines → shield → footer */
+.ticket-row {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity   var(--t-band) var(--ease-open),
+    transform var(--t-band) var(--ease-open);
+}
+.ticket-row > img { width: 100%; height: 100%; display: block; }
+/* vector rows (shield, footer) use the uncut 369-tall SVG; the footer row is lifted 14px
+   to skip the empty gap, instead of cutting the art (a cut seam shows as a hairline when rotated) */
+.ticket-row > img[src$=".svg"] { height: 369px; }
+.ticket-row--5 > img[src$=".svg"] { margin-top: -14px; }
+.ticket-row--1 { clip-path: inset(68px    0 273.5px 0); }  /* line 1   (68–81.5)  */
+.ticket-row--2 { clip-path: inset(81.5px  0 261px   0); }  /* line 2   (81.5–94)  */
+.ticket-row--3 { clip-path: inset(98px    0 241px   0); }  /* line 3   (98–114)   */
+.ticket-row--4 { clip-path: inset(114px   0 47px    0); }  /* divider + shield + arrows (114–308) */
+.ticket-row--5 { clip-path: inset(308px   0 0       0); }  /* divider + offline footer (308–355) */
+.ticket-band > img { width: 100%; height: 100%; display: block; }
+/* layered, not sliced: 1 = purple base + logo, 2 = white ticket, 3 = text + shield */
+
+/* ---------- shield + shimmer ---------- */
+/* The shield is drawn in ticket-content.svg; this box sits exactly over its
+   silhouette (Figma 2459:25452) so only the masked band moves. */
+.shield {
+  position: absolute;
+  left: 47.3px; top: 161.8px;
+  width: 99.4px; height: 126.2px;
+  /* no containment here: the shine must blend with the shield pixels
+     in the row image underneath (same .ticket-row group) */
+}
+
+.shield-shine {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjY4Ljk4MTkiIGhlaWdodD0iODcuNjI1MyIgdmlld0JveD0iMCAwIDY4Ljk4MTkgODcuNjI1MyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTMyLjkwMTMgMC4zMTM3MzNDMzMuOTE5OCAtMC4xMDQ1NzcgMzUuMDYyMSAtMC4xMDQ1NzggMzYuMDgwNiAwLjMxMzczM0w2Ni4zODczIDEyLjc2MTFDNjcuOTU3IDEzLjQwNTggNjguOTgxOSAxNC45MzQ3IDY4Ljk4MTkgMTYuNjMxNlY1My4xNzYzQzY4Ljk4MTkgNzEuNjQ0NSA1Mi45OTM4IDgyLjA4NyAzNS42NzM1IDg3LjQ0NjVDMzQuOTAzIDg3LjY4NDkgMzQuMDc4OSA4Ny42ODQ5IDMzLjMwODQgODcuNDQ2NUMxNS45ODgxIDgyLjA4NyAwIDcxLjY0NDUgMCA1My4xNzYzVjE2LjYzMTZDMCAxNC45MzQ3IDEuMDI0ODggMTMuNDA1OCAyLjU5NDU3IDEyLjc2MTFMMzIuOTAxMyAwLjMxMzczM1oiIGZpbGw9IiNmZmYiLz4KCjwvc3ZnPgo=") 0 0 / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjY4Ljk4MTkiIGhlaWdodD0iODcuNjI1MyIgdmlld0JveD0iMCAwIDY4Ljk4MTkgODcuNjI1MyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTMyLjkwMTMgMC4zMTM3MzNDMzMuOTE5OCAtMC4xMDQ1NzcgMzUuMDYyMSAtMC4xMDQ1NzggMzYuMDgwNiAwLjMxMzczM0w2Ni4zODczIDEyLjc2MTFDNjcuOTU3IDEzLjQwNTggNjguOTgxOSAxNC45MzQ3IDY4Ljk4MTkgMTYuNjMxNlY1My4xNzYzQzY4Ljk4MTkgNzEuNjQ0NSA1Mi45OTM4IDgyLjA4NyAzNS42NzM1IDg3LjQ0NjVDMzQuOTAzIDg3LjY4NDkgMzQuMDc4OSA4Ny42ODQ5IDMzLjMwODQgODcuNDQ2NUMxNS45ODgxIDgyLjA4NyAwIDcxLjY0NDUgMCA1My4xNzYzVjE2LjYzMTZDMCAxNC45MzQ3IDEuMDI0ODggMTMuNDA1OCAyLjU5NDU3IDEyLjc2MTFMMzIuOTAxMyAwLjMxMzczM1oiIGZpbGw9IiNmZmYiLz4KCjwvc3ZnPgo=") 0 0 / 100% 100% no-repeat;
+  mix-blend-mode: plus-lighter; /* adds light like a reflection; band alphas kept low to suit */
+  pointer-events: none;
+}
+/* specular glint: a wide soft halo around a thin bright core, softened with a
+   7px blur, a touch softer than the design's highlight bands */
+.shield-shine-band {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 44px; height: 200px;
+  margin: -100px 0 0 -22px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0)    0%,
+    rgba(255,255,255,0.08) 28%,
+    rgba(255,255,255,0.18) 42%,
+    rgba(255,255,255,0.38) 47%,
+    rgba(255,255,255,0.38) 53%,
+    rgba(255,255,255,0.18) 58%,
+    rgba(255,255,255,0.08) 72%,
+    rgba(255,255,255,0)    100%);
+  filter: blur(7px);            /* soft edges, a little softer than the design bands */
+  opacity: 0;
+  transform: rotate(45deg) translateX(-84px);
+  will-change: transform, opacity;
+}
+/* one 3.4 s cycle = 1.1 s sweep + rest; looped, the rest is the delay between glints.
+   The glint grows in at the leading edge and fades at the trailing edge, like light
+   catching a surface as the angle changes. */
+@keyframes shield-shimmer {
+  0%    { transform: rotate(45deg) translateX(-84px); opacity: 0;
+          animation-timing-function: cubic-bezier(0.45, 0, 0.3, 1); }
+  9%    { opacity: 1; }
+  25%   { opacity: 1; }
+  32.4% { transform: rotate(45deg) translateX(84px); opacity: 0; }
+  100%  { transform: rotate(45deg) translateX(84px); opacity: 0; }
+}
+.screen[data-state="open"] .shield-shine-band {
+  animation: shield-shimmer calc(3400ms * var(--speed)) linear infinite both;   /* 1.1 s glint, 2.3 s rest, repeat */
+  /* first sweep starts once the card has settled */
+  animation-delay: calc(var(--d-band3) + var(--d-row) * 3 + var(--t-band) + 120ms * var(--speed));
+}
+
+/* ---------- fixed chrome: status bar + badge ---------- */
+/* iOS keeps the status bar pinned while an app opens; only its style changes.
+   Light = the top 24px of the home export; dark = the header SVG's status row on white. */
+.statusbar {
+  position: absolute; top: 0; left: 0;
+  width: 207px; height: 24.05px;
+  pointer-events: none;            /* no z-index: each bar sets its own place in the screen's stack */
+}
+.statusbar > * {
+  position: absolute; inset: 0; overflow: hidden;
+  transition: opacity var(--t-icon-fade) var(--ease-out);
+}
+/* The light bar is a slab of the home wallpaper with the glyphs on it, so it must sit UNDER the
+   app (z 1, above .home at 0): the growing app covers it, as on iOS. Above the app it left a
+   translucent dark band over the white top-left corner while it faded. */
+.statusbar-light { z-index: 1; background: url("../assets/motion/app-open/home.svg") 0 0 / 207px 449px no-repeat; }
+.statusbar-dark  { z-index: 5; opacity: 0; }   /* no white backing: the app surface supplies the white once it has reached the top */
+.statusbar-dark img { position: absolute; top: 0; left: 1px; width: 206px; height: 55px; }
+/* The light bar dims with the home screen (same curve, no delay) but stays pinned; the dark
+   glyphs fade in 160ms only after the app has covered the top (ease-open is ~95% done at 62%). */
+/* The light bar dims with a black overlay, not opacity: it stays opaque, so the home layer's own
+   "9:41" (which drifts as .home scales) can never ghost through it. 0.6 black = home's 0.4 over #000. */
+.statusbar-light::after {
+  content: ""; position: absolute; inset: 0; background: #000; opacity: 0;
+  transition: opacity var(--t-home) var(--ease-out) calc(160ms * var(--speed));
+}
+.statusbar-dark  { transition: opacity calc(120ms * var(--speed)) var(--ease-out); }
+.screen[data-state="open"] .statusbar-light::after { opacity: 0.6; transition-delay: 0s; }
+.screen[data-state="open"] .statusbar-dark  {
+  opacity: 1;
+  transition: opacity calc(160ms * var(--speed)) var(--ease-out) calc(var(--t-open) * 0.62);
+}
+/* exit / close mirror it: dark out first, light back in after */
+.screen[data-state="exit"] .statusbar-dark,
+.screen[data-state="idle"] .statusbar-dark  { transition-delay: 0s; }
+
+/* Badge (2459:24318) — above the tappable tile, which otherwise covers its corner */
+.badge {
+  position: absolute; left: 186px; top: 135px;
+  width: 13.5px; height: 13.5px; border-radius: 50%;
+  background: url("../assets/motion/app-open/home.svg") -186px -135px / 207px 449px no-repeat;
+  z-index: 4; pointer-events: none;
+  transition: opacity calc(100ms * var(--speed)) var(--ease-out), transform var(--t-press) var(--ease-out);
+}
+.screen[data-state="press"] .badge { transform: translate(0.5px, 0.5px) scale(0.94); }
+.screen[data-state="open"]  .badge { opacity: 0; }
+.screen[data-state="exit"]  .badge { transition-delay: calc(var(--t-exit) * 0.4); }
+
+/* back-arrow hit target inside the opened app */
+.app-back {
+  position: absolute; top: 24px; left: 0;
+  width: 36px; height: 31px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- states ---------- */
+
+/* press: icon dips (and nothing else moves yet) */
+.screen[data-state="press"] .app-icon {
+  transform:
+    translate(calc(var(--icon-x) + var(--icon-size) * 0.03),
+              calc(var(--icon-y) + var(--icon-size) * 0.03))
+    scale(0.94);
+}
+
+/* open */
+.screen[data-state="open"] .app {
+  transform: translate(0, 0) scale(1);
+  clip-path: inset(0 0 0 0 round var(--screen-radius));   /* iOS keeps the display's corner radius on the app */
+  transition-duration: var(--t-open), var(--t-open);
+}
+.screen[data-state="open"] .app-icon {
+  transform: translate(0, 0) scale(var(--open-scale));
+  opacity: 0;
+  transition:
+    transform var(--t-open) var(--ease-open),
+    opacity   var(--t-icon-fade) var(--ease-out);
+}
+.screen[data-state="open"] .home {
+  transform: scale(1.12);
+  opacity: 0.4;
+}
+/* close: home settles with the app, not 120ms after it */
+.screen[data-state="idle"] .home { transition-duration: var(--t-close), var(--t-close); }
+.screen[data-state="open"] .app-header {
+  opacity: 1; transform: translateY(0);
+  transition-delay: var(--d-header);
+}
+.screen[data-state="open"] .app-card { transform: translateY(0); transition-delay: var(--d-card); }
+.screen[data-state="open"] .ticket-band { opacity: 1; }
+.screen[data-state="open"] .ticket-band--2 { -webkit-mask-position: 0 0; mask-position: 0 0; }
+.screen[data-state="open"] .ticket-band--1 { transition-delay: var(--d-band1); }
+.screen[data-state="open"] .ticket-band--2 { transition-delay: var(--d-band2); }
+.screen[data-state="open"] .ticket-row { opacity: 1; transform: none; }
+.screen[data-state="open"] .ticket-row--1 { transition-delay: var(--d-band3); }
+.screen[data-state="open"] .ticket-row--2 { transition-delay: calc(var(--d-band3) + var(--d-row)); }
+.screen[data-state="open"] .ticket-row--3 { transition-delay: calc(var(--d-band3) + var(--d-row) * 2); }
+.screen[data-state="open"] .ticket-row--4 { transition-delay: calc(var(--d-band3) + var(--d-row) * 3); }
+.screen[data-state="open"] .ticket-row--5 { transition-delay: calc(var(--d-band3) + var(--d-row) * 4); }
+
+/* closing: the icon reappears late, app content leaves first & faster */
+.screen[data-state="idle"] .app-icon {
+  transition:
+    transform var(--t-close) var(--ease-open),
+    opacity   var(--t-icon-fade) var(--ease-out) calc(var(--t-close) - var(--t-icon-fade));
+}
+.screen[data-state="idle"] .app-header,
+.screen[data-state="idle"] .app-card,
+.screen[data-state="idle"] .ticket-row,
+.screen[data-state="idle"] .ticket-band {
+  transition-duration: calc(160ms * var(--speed));
+  transition-timing-function: var(--ease-out);
+}
+/* exit (used by the loop): the ticket dissolves in place and the home screen
+   settles back underneath — no reverse morph into the icon, so a loop never
+   reads as to-and-fro. The app surface snaps to its idle transform only after
+   the fade, so the next press starts from the right place. */
+.screen[data-state="exit"] .app {
+  transform: translate(var(--icon-x), var(--icon-y)) scale(var(--shrink-scale));
+  clip-path: inset(0 0 var(--clip-bottom) 0 round var(--clip-radius));
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity   var(--t-exit) var(--ease-out),
+    filter    var(--t-exit) var(--ease-out),
+    transform 0s linear var(--t-exit),
+    clip-path 0s linear var(--t-exit);
+}
+.screen[data-state="exit"] .app-icon {
+  transform: translate(var(--icon-x), var(--icon-y)) scale(1);
+  opacity: 1;
+  transition: opacity var(--t-exit) var(--ease-out) calc(var(--t-exit) * 0.4), transform 0s;
+}
+.screen[data-state="exit"] .home {
+  transform: scale(1);
+  opacity: 1;
+  transition:
+    transform calc(var(--t-exit) * 1.25) var(--ease-out),
+    opacity   var(--t-exit) var(--ease-out);
+}
+.screen[data-state="exit"] .app-header { opacity: 1; transform: translateY(0); }   /* content rides the dissolve, it doesn't leave first */
+.screen[data-state="exit"] .app-card   { transform: translateY(0); }
+.screen[data-state="exit"] .ticket-band { opacity: 1; }
+.screen[data-state="exit"] .ticket-band--2 { -webkit-mask-position: 0 0; mask-position: 0 0; }
+.screen[data-state="exit"] .ticket-row  { opacity: 1; transform: none; }
+
+/* idle after exit: the app is already at its idle transform, so opacity/blur restore instantly */
+.screen[data-state="idle"] .app { transition-property: transform, clip-path; }
+
+/* press state should snap back to idle instantly on cancel, not animate the whole open */
+.screen[data-state="press"] .app { transition: none; }
+
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .home, .app-icon, .app, .app-header, .app-card, .ticket-band, .ticket-row, .statusbar > *, .badge {
+    transition: opacity 150ms ease !important;
+    transition-delay: 0ms !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .app { clip-path: none !important; opacity: 0; }
+  .shield-shine-band { animation: none !important; }
+  .screen[data-state="open"] .app { opacity: 1; }
+  .app-icon { transform: translate(var(--icon-x), var(--icon-y)) !important; }
+}
+
+  

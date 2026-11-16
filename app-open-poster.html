@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout — App open motion · Generic Poster</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app-open-poster.css" />
+  <style>
+    :root { --poster-zoom: 1.4; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--ht, 'Halyard Text', system-ui, sans-serif);
+      background: #fff;
+      color: #222;
+      -webkit-font-smoothing: antialiased;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      justify-items: center;
+      gap: 28px;
+      padding: 32px 16px;
+      transition: background 200ms ease, color 200ms ease;
+    }
+    body[data-bg="dark"] { background: #111; color: #fff; }
+
+    /* `zoom`, not transform: a transformed iframe is rasterised at its natural size and
+       stretched, which pixelates. With zoom the frame's box grows and the embedded page
+       lays itself out at that size (it fits itself to its viewport). */
+    .aop { zoom: var(--poster-zoom); }
+
+    /* ---------- controls ---------- */
+    .controls {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 8px; max-width: 640px; font-size: 13px;
+    }
+    .controls button, .controls label {
+      padding: 7px 12px; border-radius: 999px; cursor: pointer; color: inherit;
+      border: 0.5px solid rgba(127,127,127,0.4); background: rgba(127,127,127,0.08);
+      transition: background 150ms ease, transform 150ms ease-out;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .controls button:hover, .controls label:hover { background: rgba(127,127,127,0.18); }
+    }
+    .controls button:active, .controls label:active { transform: scale(0.96); }
+    .controls button[aria-pressed="true"], .controls label:has(input:checked) {
+      background: var(--purple, #8000ff); border-color: transparent; color: #fff;
+    }
+    .controls input { appearance: none; margin: 0; }
+    .controls .sep { width: 1px; height: 18px; background: rgba(127,127,127,0.3); margin: 0 4px; }
+    .controls .hint { width: 100%; text-align: center; font-size: 12px; opacity: 0.55; }
+    .controls kbd { font: inherit; padding: 0 5px; border: 0.5px solid rgba(127,127,127,0.5); border-radius: 4px; }
+
+  </style>
+</head>
+<body data-bg="light">
+
+  <!-- Figma: Group 2085663674 (2465:27343) -->
+  <div class="aop">
+    <img class="aop-plate" src="assets/shared/app-open/poster/plate@4x.webp" alt="" aria-hidden="true" />
+    <div class="aop-backing" aria-hidden="true"></div>
+    <div class="aop-masked">
+    <div class="aop-screen">
+      <!-- the motion itself lives in app-open-motion.html; ?embed=1 renders just the 207 × 449 screen -->
+      <iframe class="aop-motion" id="motion" src="app-open-motion.html?embed=1" width="207" height="449.052"
+              title="App open motion" scrolling="no" loading="eager"></iframe>
+      <img class="aop-icon-shadow" src="assets/shared/app-open/poster/icon-shadow.svg" alt="" aria-hidden="true" />
+    </div>
+    </div>
+    <img class="aop-icon" src="assets/shared/app-open/poster/floating-icon.svg" alt="" aria-hidden="true" />
+  </div>
+
+  <div class="controls">
+    <button id="play">Play once</button>
+    <label><input type="checkbox" id="loop" /> Loop</label>
+    <span class="sep"></span>
+    <button data-speed="1" aria-pressed="true">1×</button>
+    <button data-speed="2">½×</button>
+    <button data-speed="4">¼×</button>
+    <span class="sep"></span>
+    <button id="bg">Dark background</button>
+    <span class="hint">Tap the Headout icon to open · tap the back arrow to close · <kbd>Space</kbd> plays</span>
+  </div>
+
+  <script>
+    // Fit the poster to the viewport. Capped at 2× so the 4× rasters (home screen,
+    // ticket, plate) are never upscaled on a 2× display; floored for phones.
+    const fitPoster = () => {
+      const controls = document.querySelector('.controls').offsetHeight + 28 + 64;  // gap + body padding
+      const z = Math.min((innerHeight - controls) / 587.292, (innerWidth - 32) / 460.306);
+      document.documentElement.style.setProperty('--poster-zoom', Math.max(0.6, Math.min(2, z)).toFixed(3));
+    };
+    fitPoster();
+    addEventListener('resize', fitPoster);
+
+    // drive the embedded motion (same protocol as AppOpenMotion.bindMessages)
+    const frame = document.getElementById('motion');
+    const send = (cmd, value) => frame.contentWindow.postMessage({ type: 'app-open-motion', cmd, value }, '*');
+    const play = document.getElementById('play'), loop = document.getElementById('loop');
+    play.addEventListener('click', () => send('start'));
+    loop.addEventListener('change', () => send('loop', loop.checked));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ' && e.target === document.body) { e.preventDefault(); send('start'); }
+    });
+    document.querySelectorAll('[data-speed]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        send('speed', btn.dataset.speed);
+      });
+    });
+    const bg = document.getElementById('bg');
+    bg.addEventListener('click', () => {
+      const dark = document.body.dataset.bg !== 'dark';
+      document.body.dataset.bg = dark ? 'dark' : 'light';
+      bg.textContent = dark ? 'Light background' : 'Dark background';
+    });
+  </script>
+</body>
+</html>

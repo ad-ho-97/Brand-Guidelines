@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="195" height="355" viewBox="0 0 195 355" fill="none">
+<!-- White ticket (Figma 2459:25452 "Information container") rebuilt as ONE path: rounded card with the
+     two side notches, 14px shorter than the export (the empty space below the shield is dropped), (the drop
+     shadow is a CSS drop-shadow on the band, so the SVG itself has no filter). One shape = no seams between the title panel, dividers and footer. -->
+<path d="M4.49,0 H174.70999999999998 A4.49,4.49 0 0 1 179.2,4.49 V62.0 A5.94,5.94 0 0 0 179.2,73.88 V251.0 A5.94,5.94 0 0 0 179.2,262.88 V283.15999999999997 A4.49,4.49 0 0 1 174.70999999999998,287.65 H4.49 A4.49,4.49 0 0 1 0,283.15999999999997 V262.88 A5.94,5.94 0 0 0 0,251.0 V73.88 A5.94,5.94 0 0 0 0,62.0 V4.49 A4.49,4.49 0 0 1 4.49,0 Z" fill="white" transform="translate(7.111 60.003) rotate(-0.208442)"/>
+</svg>

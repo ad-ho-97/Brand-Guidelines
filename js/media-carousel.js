@@ -6,34 +6,34 @@
      Leave an array empty to show the black placeholder.            */
   const CAROUSELS = {
     purps: [
-      { type: 'image', src: 'assets/images/purps-use-hero.jpg', alt: 'Headout tote bag on the street' },
-      { type: 'video', src: 'assets/video/purps-use-tabs.mp4' },
-      { type: 'image', src: 'assets/images/purps-use-suitcase.jpg', alt: 'Traveller with a Headout-branded suitcase' },
-      { type: 'image', src: 'assets/images/purps-use-jeep.jpg', alt: 'Headout-branded SUV on a desert dune safari' },
-      { type: 'image', src: 'assets/images/purps-use-pocketguide.jpg', alt: 'Headout Purps pocket guide in a jacket pocket' },
-      { type: 'video', src: 'assets/video/purps-use-appicon-loop.mp4' },
-      { type: 'video', src: 'assets/video/purps-use-3.mp4' }
+      { type: 'image', src: 'assets/color/purps-use-hero.jpg', alt: 'Headout tote bag on the street' },
+      { type: 'video', src: 'assets/color/purps-use-tabs.mp4' },
+      { type: 'image', src: 'assets/color/purps-use-suitcase.jpg', alt: 'Traveller with a Headout-branded suitcase' },
+      { type: 'image', src: 'assets/color/purps-use-jeep.jpg', alt: 'Headout-branded SUV on a desert dune safari' },
+      { type: 'image', src: 'assets/color/purps-use-pocketguide.jpg', alt: 'Headout Purps pocket guide in a jacket pocket' },
+      { type: 'video', src: 'assets/color/purps-use-appicon-loop.mp4' },
+      { type: 'video', src: 'assets/color/purps-use-3.mp4' }
     ],
     logoaction: [
-      { type: 'image', src: 'assets/images/logo-action-1.jpg', alt: 'Friends on a New York street, one in a Headout varsity jacket' },
-      { type: 'image', src: 'assets/images/logo-action-2.jpg', alt: 'Headout flag held up at the Trevi Fountain' },
-      { type: 'image', src: 'assets/images/logo-action-3.jpg', alt: 'Speaker at a Headout-branded podium' }
+      { type: 'image', src: 'assets/logo/logo-action-1.jpg', alt: 'Friends on a New York street, one in a Headout varsity jacket' },
+      { type: 'image', src: 'assets/logo/logo-action-2.jpg', alt: 'Headout flag held up at the Trevi Fountain' },
+      { type: 'image', src: 'assets/logo/logo-action-3.jpg', alt: 'Speaker at a Headout-branded podium' }
     ],
     secondary: [
-      { type: 'video', src: 'assets/video/secondary-use-1.mp4' },
-      { type: 'video', src: 'assets/video/secondary-use-2.mp4' },
-      { type: 'video', src: 'assets/video/secondary-use-3.mp4' },
-      { type: 'video', src: 'assets/video/secondary-use-4.mp4' },
-      { type: 'video', src: 'assets/video/secondary-use-5.mp4' }
+      { type: 'video', src: 'assets/color/secondary-use-1.mp4' },
+      { type: 'video', src: 'assets/color/secondary-use-2.mp4' },
+      { type: 'video', src: 'assets/color/secondary-use-3.mp4' },
+      { type: 'video', src: 'assets/color/secondary-use-4.mp4' },
+      { type: 'video', src: 'assets/color/secondary-use-5.mp4' }
     ],
     typesetting: [],
     alignment: [
-      { type: 'image', src: 'assets/images/alignment-5.jpg' },
-      { type: 'image', src: 'assets/images/alignment-3.jpg' },
-      { type: 'image', src: 'assets/images/alignment-1.jpg' },
-      { type: 'image', src: 'assets/images/alignment-4.jpg' },
-      { type: 'image', src: 'assets/images/alignment-2.jpg' },
-      { type: 'image', src: 'assets/images/alignment-6.jpg' }
+      { type: 'image', src: 'assets/typography/alignment-5.jpg' },
+      { type: 'image', src: 'assets/typography/alignment-3.jpg' },
+      { type: 'image', src: 'assets/typography/alignment-1.jpg' },
+      { type: 'image', src: 'assets/typography/alignment-4.jpg' },
+      { type: 'image', src: 'assets/typography/alignment-2.jpg' },
+      { type: 'image', src: 'assets/typography/alignment-6.jpg' }
     ]
   };
 

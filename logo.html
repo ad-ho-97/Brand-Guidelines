@@ -18,7 +18,7 @@
     /* Content rail: Figma measures 819px content + 96px gutter (1011px total), not the
        1200px --content-max every other page shares — scoped here rather than changing
        the shared token, which would resize color.html/typography.html/etc. too. */
-    #page-logo .fig-stack { max-width: calc(819px + var(--px) * 2); padding-top: 110px; }
+    #page-logo .fig-stack { max-width: calc(819px + var(--px) * 2); padding-top: 96px; }
     /* No trailing footer anymore — the last section shouldn't leave its bottom gap dangling */
     #page-logo .fig-stack > .fig-sec:last-child { margin-bottom: 0; }
     /* Heading-to-asset gap is 24px by default — confirmed against Figma on every section
@@ -75,7 +75,11 @@
     #page-logo .fig-pagehead h1 {
       font-weight: 500; font-size: 60px; line-height: 72px; letter-spacing: 0.8px; color: #222222;
     }
-    #page-logo .fig-pagehead { gap: 24px; }
+    /* Pagehead row capped to match the page's own 819px content rail — stated
+       explicitly (not just inherited from .fig-stack) so Color/Typography,
+       which run the wider 1200px rail, can cap their pagehead to this same
+       819px for a consistent title/intro width across all three pages. */
+    #page-logo .fig-pagehead { gap: 24px; max-width: 819px; }
     #page-logo .fig-pagehead .intro {
       font-weight: 300; font-size: 17px; line-height: 28px; letter-spacing: 0; color: #222222;
       max-width: 464px;
@@ -91,7 +95,7 @@
 
     /* ── Per-section Figma overrides (measured values — see visual-parity audit) ── */
     /* Hero video sits tight under the intro (24px), not at full section rhythm */
-    #page-logo #logo-intro .page-hero-ph { margin-top: 24px; }
+    #page-logo #logo-intro .page-hero-ph { margin-top: 96px; }
 
     /* Primary Logo: 24px row gap; card proportioned 232:563 with Figma's own aspect
        ratio instead of a fixed height */
@@ -200,14 +204,14 @@
 ═══════════════════════════════════════════════════════════ -->
 <!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
 <div class="m-topbar" id="m-topbar">
-  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/shared/brand/logo-mark.svg" alt="" /></a>
   <a class="m-title" href="/">Brand guidelines</a>
   <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
 </div>
 
 <nav class="sidebar" id="site-nav" aria-label="Brand guidelines">
   <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
-    <img src="assets/svg/logo-full.svg" alt="Headout"
+    <img src="assets/shared/brand/logo-full.svg" alt="Headout"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
     <span class="sidebar-logo-text">headout</span>
   </a>
@@ -228,7 +232,7 @@
     <div class="nav-items" id="items-foundations">
 
       <!-- Logo -->
-      <a class="nav-parent active-section" id="nav-logo-parent" href="/logo" aria-current="page"><span>Logo</span></a>
+      <a class="nav-parent active-section" id="nav-logo-parent" href="/v2/logo-fluid.html" aria-current="page"><span>Logo</span></a>
       <div class="nav-children" id="nav-logo-children">
         <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
         <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
@@ -245,7 +249,7 @@
       </div>
 
       <!-- Color -->
-      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span></a>
+      <a class="nav-parent" id="nav-color-parent" href="/v2/color.html"><span>Color</span></a>
       <div class="nav-children" id="nav-color-children" style="display:none;">
         <a class="nav-child" href="/color#color-primary">Primary palette</a>
         <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
@@ -257,7 +261,7 @@
         <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
       </div>
       <!-- Typography -->
-      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span></a>
+      <a class="nav-parent" id="nav-typography-parent" href="/v2/typography.html"><span>Typography</span></a>
       <div class="nav-children" id="nav-typography-children" style="display:none;">
         <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
         <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
@@ -269,7 +273,7 @@
         <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
       </div>
       <!-- Layout -->
-      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span></a>
+      <a class="nav-parent" id="nav-layout-parent" href="/v2/layout.html"><span>Layout</span></a>
       <div class="nav-children" id="nav-layout-children" style="display:none;">
         <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
         <a class="nav-child" href="/layout#layout-grid">The grid system</a>
@@ -286,7 +290,7 @@
         <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
       </div>
       <!-- Iconography -->
-      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <a class="nav-parent" id="nav-iconography-parent" href="/v2/iconography.html"><span>Iconography</span></a>
       <!-- Voice & Tone -->
       <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
         <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -332,12 +336,12 @@
         </div>
         <div class="page-hero-ph">
           <video autoplay loop muted playsinline>
-            <source src="assets/video/logo-hero.mp4" type="video/mp4" />
+            <source src="assets/logo/logo-hero.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      <hr class="fig-divider" style="margin:56px 0;" />
+      <hr class="fig-divider" style="margin:80px 0;" />
 
       <div class="fig-sec fig-row" id="primary-logo">
         <div class="fig-head">
@@ -347,7 +351,7 @@
         <!-- Full-bleed looping video card -->
         <div class="fig-rounded" style="position:relative; overflow:hidden; height:300px; background:#f0f0f0;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center;">
-            <source src="assets/video/primary-logo.mp4" type="video/mp4" />
+            <source src="assets/logo/primary-logo.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -436,12 +440,12 @@
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/465; background:#fafafa;">
           <img src="https://www.figma.com/api/mcp/asset/71b51079-b0b0-48e1-abea-14c70b31a71d.png" alt="Sub-brand lockup" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-            <source src="assets/video/headout_subbrand_lockup_zoom.mp4" type="video/mp4" />
+            <source src="assets/logo/headout_subbrand_lockup_zoom.mp4" type="video/mp4" />
           </video>
         </div>
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1154; background:#fafafa; margin-top:24px;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-            <source src="assets/video/subbrand-grid.mp4" type="video/mp4" />
+            <source src="assets/logo/subbrand-grid.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -452,11 +456,11 @@
             <h2>Co-brand lockup</h2>
             <p class="fh-desc">When we share space with a partner — Mastercard, Broadway — our logo shares the frame, never the spotlight. Keep both marks equal in visual weight, separate them with a clean divider, and give each its full clearspace.</p>
           </div>
-          <img class="fig-rounded" src="assets/images/cobrand-lockup.jpg" alt="Co-brand lockup — Headout and Mastercard with the clearspace divider" />
+          <img class="fig-rounded" src="assets/logo/cobrand-lockup.jpg" alt="Co-brand lockup — Headout and Mastercard with the clearspace divider" />
         </div>
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:4096/1598; background:#f0f0f0;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-            <source src="assets/video/cobrand-examples.mp4" type="video/mp4" />
+            <source src="assets/logo/cobrand-examples.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -467,8 +471,8 @@
           <p class="fh-desc">The logo has to stay legible, always. Never scale it below the minimum size — you'll lose detail and recognition before it even looks "off." If space is tight, fix it with layout or whitespace, not by shrinking the logo further.</p>
         </div>
         <div class="fig-grid cols-2" style="row-gap:0;">
-          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-digital.jpg" alt="Minimum size — digital, min width 120px" /></div>
-          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/images/minsize-print.jpg" alt="Minimum size — print, min width 120px" /></div>
+          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/logo/minsize-digital.jpg" alt="Minimum size — digital, min width 120px" /></div>
+          <div class="cv-card" style="height:auto; aspect-ratio:1902/2149; border:none;"><img src="assets/logo/minsize-print.jpg" alt="Minimum size — print, min width 120px" /></div>
         </div>
       </div>
 
@@ -482,7 +486,7 @@
         </div>
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:16/9; background:#8000FF;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-            <source src="assets/video/logo-animation.mp4" type="video/mp4" />
+            <source src="assets/logo/logo-animation.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -627,7 +631,7 @@
           </div>
           <a class="fig-btn" href="#">Download avatar assets</a>
         </div>
-        <img class="fig-rounded" src="assets/images/app-tile-avatars.png" alt="App tile and avatars — circle, rounded square and square tiles" />
+        <img class="fig-rounded" src="assets/logo/app-tile-avatars.png" alt="App tile and avatars — circle, rounded square and square tiles" />
       </div>
 
       <div class="fig-sec" id="logo-in-action">
@@ -638,7 +642,7 @@
         <!-- Full-width banner: looping video -->
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:1254/650; background:#111111;">
           <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-            <source src="assets/video/logo-in-action.mp4" type="video/mp4" />
+            <source src="assets/logo/logo-in-action.mp4" type="video/mp4" />
           </video>
         </div>
         <!-- Below: text left, media right (placeholder until the asset lands) -->
@@ -658,7 +662,7 @@
             <h2>QR code</h2>
             <p class="fh-desc">QR codes aren't just utility — they're an extension of our brand. Treat them with the same rigor as the logo: keep clearspace intact, keep the dot pattern untouched, and never let the mark compromise the scan.</p>
           </div>
-          <img src="assets/images/qr-code.png" alt="Branded QR code — Headout mark in the centre" style="border-radius:12px;" />
+          <img src="assets/logo/qr-code.png" alt="Branded QR code — Headout mark in the centre" style="border-radius:12px;" />
         </div>
       </div>
 
@@ -668,18 +672,18 @@
           <p class="fh-desc" style="max-width:610px;">The logo is our signature — it doesn't flex, stretch, recolor, or improvise. Here's what to avoid.</p>
         </div>
         <div class="fig-grid cols-3">
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-1-gold.jpg" alt="Logo recoloured gold" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't change the colour of the logo.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-2-font.jpg" alt="Logo set in a different sans-serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in another typeface.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-3-serif.jpg" alt="Logo set in a serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in a serif.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-4-gradient.jpg" alt="Logo filled with a gradient" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't apply gradients to the logo.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-5-photofill.jpg" alt="Logo filled with a photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't fill the logo with imagery.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card"><img src="assets/images/incorrect-6-onphoto.jpg" alt="Logo placed on a busy photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't place the logo on busy imagery without contrast.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-1-gold.jpg" alt="Logo recoloured gold" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't change the colour of the logo.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-2-font.jpg" alt="Logo set in a different sans-serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in another typeface.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-3-serif.jpg" alt="Logo set in a serif" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't reset the wordmark in a serif.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-4-gradient.jpg" alt="Logo filled with a gradient" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't apply gradients to the logo.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-5-photofill.jpg" alt="Logo filled with a photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't fill the logo with imagery.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card"><img src="assets/logo/incorrect-6-onphoto.jpg" alt="Logo placed on a busy photograph" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Don't place the logo on busy imagery without contrast.</figcaption></figure>
         </div>
       </div>
 
       <div class="fig-sec" id="logo-end">
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2393/1336; background:#f0f0f0;">
-          <img src="assets/images/logo-end-image.jpg" alt="Headout signage on a rooftop against a blue sky" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+          <img src="assets/logo/logo-end-image.jpg" alt="Headout signage on a rooftop against a blue sky" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
         </div>
       </div>
 

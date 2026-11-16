@@ -28,30 +28,30 @@
      featured card. A custom cursor (dot + pill) rides the stage.        */
   const RING_ROWS = {
     mid: [
-      { src: 'assets/images/cv-purps-on-white.png',    label: 'Primary logo',         cat: 'Logo',       page: 'logo',       anchor: 'primary-logo' },
-      { src: 'assets/images/type-halyard-display.jpg', label: 'Halyard Display',      cat: 'Typography', page: 'typography', anchor: 'our-typeface' },
-      { src: 'assets/images/purps-use-jeep.jpg',       label: 'Purps in use',         cat: 'Colour',     page: 'color',      anchor: 'color-purps-in-use' },
-      { src: 'assets/images/logo-action-1.jpg',        label: 'Logo in action',       cat: 'Logo',       page: 'logo',       anchor: 'logo-in-action' },
-      { src: 'assets/images/combo-pink-top.jpg',       label: 'Suggested combinations', cat: 'Colour',   page: 'color',      anchor: 'color-combinations' },
-      { src: 'assets/images/type-setting.jpg',         label: 'Type setting',         cat: 'Typography', page: 'typography', anchor: 'type-setting' },
-      { src: 'assets/images/app-tile-avatars.png',     label: 'App tile & avatars',   cat: 'Logo',       page: 'logo',       anchor: 'app-tile' },
-      { src: 'assets/images/alignment-3.jpg',          label: 'Brand in the wild',    cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
-      { src: 'assets/images/cv-white-on-image.jpg',    label: 'Colour variants',      cat: 'Logo',       page: 'logo',       anchor: 'colour-variants' },
-      { src: 'assets/images/cobrand-lockup.jpg',       label: 'Co-brand lockup',      cat: 'Logo',       page: 'logo',       anchor: 'co-brand-lockup' }
+      { src: 'assets/overview/cv-purps-on-white.png',    label: 'Primary logo',         cat: 'Logo',       page: 'logo',       anchor: 'primary-logo' },
+      { src: 'assets/typography/type-halyard-display.jpg', label: 'Halyard Display',      cat: 'Typography', page: 'typography', anchor: 'our-typeface' },
+      { src: 'assets/color/purps-use-jeep.jpg',       label: 'Purps in use',         cat: 'Colour',     page: 'color',      anchor: 'color-purps-in-use' },
+      { src: 'assets/logo/logo-action-1.jpg',        label: 'Logo in action',       cat: 'Logo',       page: 'logo',       anchor: 'logo-in-action' },
+      { src: 'assets/color/combo-pink-top.jpg',       label: 'Suggested combinations', cat: 'Colour',   page: 'color',      anchor: 'color-combinations' },
+      { src: 'assets/typography/type-setting.jpg',         label: 'Type setting',         cat: 'Typography', page: 'typography', anchor: 'type-setting' },
+      { src: 'assets/logo/app-tile-avatars.png',     label: 'App tile & avatars',   cat: 'Logo',       page: 'logo',       anchor: 'app-tile' },
+      { src: 'assets/typography/alignment-3.jpg',          label: 'Brand in the wild',    cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
+      { src: 'assets/overview/cv-white-on-image.jpg',    label: 'Colour variants',      cat: 'Logo',       page: 'logo',       anchor: 'colour-variants' },
+      { src: 'assets/logo/cobrand-lockup.jpg',       label: 'Co-brand lockup',      cat: 'Logo',       page: 'logo',       anchor: 'co-brand-lockup' }
     ],
     top: [
-      { src: 'assets/images/combo-green-bot.jpg',      label: 'Green mood',           cat: 'Colour',     page: 'color',      anchor: 'color-combinations' },
-      { src: 'assets/images/alignment-5.jpg',          label: 'App empty states',     cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
-      { src: 'assets/images/purps-use-pocketguide.jpg',label: 'Pocket guide',         cat: 'Colour',     page: 'color',      anchor: 'color-purps-in-use' },
-      { src: 'assets/images/minsize-digital.jpg',      label: 'Minimum size',         cat: 'Logo',       page: 'logo',       anchor: 'minimum-size' },
-      { src: 'assets/images/alignment-1.jpg',          label: 'YouTube channel',      cat: 'Typography', page: 'typography', anchor: 'typo-alignment' }
+      { src: 'assets/color/combo-green-bot.jpg',      label: 'Green mood',           cat: 'Colour',     page: 'color',      anchor: 'color-combinations' },
+      { src: 'assets/typography/alignment-5.jpg',          label: 'App empty states',     cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
+      { src: 'assets/color/purps-use-pocketguide.jpg',label: 'Pocket guide',         cat: 'Colour',     page: 'color',      anchor: 'color-purps-in-use' },
+      { src: 'assets/logo/minsize-digital.jpg',      label: 'Minimum size',         cat: 'Logo',       page: 'logo',       anchor: 'minimum-size' },
+      { src: 'assets/typography/alignment-1.jpg',          label: 'YouTube channel',      cat: 'Typography', page: 'typography', anchor: 'typo-alignment' }
     ],
     bottom: [
-      { src: 'assets/images/combo-yellow-top.jpg',     label: 'Yellow mood',          cat: 'Colour',     page: 'color',      anchor: 'color-combinations' },
-      { src: 'assets/images/alignment-4.jpg',          label: 'Homies Day',           cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
-      { src: 'assets/images/cv-white-on-purps.png',    label: 'White on Purps',       cat: 'Logo',       page: 'logo',       anchor: 'colour-variants' },
-      { src: 'assets/images/alignment-6.jpg',          label: 'Dex keynote',          cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
-      { src: 'assets/images/type-halyard-text.jpg',    label: 'Halyard Text',         cat: 'Typography', page: 'typography', anchor: 'our-typeface' }
+      { src: 'assets/color/combo-yellow-top.jpg',     label: 'Yellow mood',          cat: 'Colour',     page: 'color',      anchor: 'color-combinations' },
+      { src: 'assets/typography/alignment-4.jpg',          label: 'Homies Day',           cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
+      { src: 'assets/overview/cv-white-on-purps.png',    label: 'White on Purps',       cat: 'Logo',       page: 'logo',       anchor: 'colour-variants' },
+      { src: 'assets/typography/alignment-6.jpg',          label: 'Dex keynote',          cat: 'Typography', page: 'typography', anchor: 'typo-alignment' },
+      { src: 'assets/typography/type-halyard-text.jpg',    label: 'Halyard Text',         cat: 'Typography', page: 'typography', anchor: 'our-typeface' }
     ]
   };
   const RING_TOTAL = RING_ROWS.mid.length + RING_ROWS.top.length + RING_ROWS.bottom.length;

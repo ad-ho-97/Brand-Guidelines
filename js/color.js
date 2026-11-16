@@ -39,28 +39,28 @@
     // Per-mood media for the two cards (index matches VERTS). null = placeholder.
     const MOOD_MEDIA = [
       {     // 0 Purps
-        top: { type: 'image', src: 'assets/images/combo-purps-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-purps-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-purps-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-purps-bot.jpg' }
       },
       {     // 1 Candy (pink)
-        top: { type: 'image', src: 'assets/images/combo-pink-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-pink-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-pink-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-pink-bot.jpg' }
       },
       {     // 2 Orange
-        top: { type: 'image', src: 'assets/images/combo-orange-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-orange-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-orange-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-orange-bot.jpg' }
       },
       {     // 3 Yellow
-        top: { type: 'image', src: 'assets/images/combo-yellow-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-yellow-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-yellow-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-yellow-bot.jpg' }
       },
       {     // 4 Green
-        top: { type: 'image', src: 'assets/images/combo-green-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-green-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-green-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-green-bot.jpg' }
       },
       {     // 5 Blue
-        top: { type: 'image', src: 'assets/images/combo-blue-top.jpg' },
-        bot: { type: 'image', src: 'assets/images/combo-blue-bot.jpg' }
+        top: { type: 'image', src: 'assets/color/combo-blue-top.jpg' },
+        bot: { type: 'image', src: 'assets/color/combo-blue-bot.jpg' }
       }
     ];
     function setCard(card, media) {

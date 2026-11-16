@@ -1,0 +1,342 @@
+/* ════════════════════════════════════════════════════════════════
+   Foundation tokens — GENERATED from the Figma "Foundation" library
+   (collection "Headout", key 7962f434…). Do not edit by hand:
+   re-export when Foundation changes. Names: --f-<figma path>.
+   Exported 2026-11-15.
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  /* Border Radius */
+  --f-border-radius-2: 2px;
+  --f-border-radius-4: 4px;
+  --f-border-radius-6: 6px;
+  --f-border-radius-8: 8px;
+  --f-border-radius-12: 12px;
+  --f-border-radius-16: 16px;
+  --f-border-radius-20: 20px;
+  --f-border-radius-50pct: 1000px;
+
+  /* Space */
+  --f-space-1: 1px;
+  --f-space-2: 2px;
+  --f-space-4: 4px;
+  --f-space-6: 6px;
+  --f-space-8: 8px;
+  --f-space-10: 10px;
+  --f-space-12: 12px;
+  --f-space-14: 14px;
+  --f-space-16: 16px;
+  --f-space-20: 20px;
+  --f-space-24: 24px;
+  --f-space-32: 32px;
+  --f-space-40: 40px;
+  --f-space-48: 48px;
+  --f-space-64: 64px;
+  --f-space-80: 80px;
+  --f-space-96: 96px;
+  --f-space-128: 128px;
+
+  /* Opacity */
+  --f-opacity-10: 0.1;
+  --f-opacity-20: 0.2;
+  --f-opacity-40: 0.4;
+  --f-opacity-60: 0.6;
+  --f-opacity-80: 0.8;
+
+  /* Font */
+  --f-font-font-size-10: 10px;
+  --f-font-font-size-12: 12px;
+  --f-font-font-size-14: 14px;
+  --f-font-font-size-15: 15px;
+  --f-font-font-size-16: 16px;
+  --f-font-font-size-17: 17px;
+  --f-font-font-size-18: 18px;
+  --f-font-font-size-21: 21px;
+  --f-font-font-size-24: 24px;
+  --f-font-font-size-30: 30px;
+  --f-font-font-size-36: 36px;
+  --f-font-font-size-48: 48px;
+  --f-font-font-size-60: 60px;
+  --f-font-font-size-75: 75px;
+  --f-font-font-weight-300: 300;
+  --f-font-font-weight-500: 500;
+  --f-font-font-weight-600: 600;
+  --f-font-font-weight-700: 700;
+  --f-font-letter-spacing-ls-0: 0px;
+  --f-font-letter-spacing-ls-2: 0.4px;
+  --f-font-letter-spacing-ls-4: 0.6px;
+  --f-font-letter-spacing-ls-8: 0.8px;
+  --f-font-letter-spacing-ls-10: 1px;
+  --f-font-line-height-lh-12: 12px;
+  --f-font-line-height-lh-16: 16px;
+  --f-font-line-height-lh-20: 20px;
+  --f-font-line-height-lh-24: 24px;
+  --f-font-line-height-lh-28: 28px;
+  --f-font-line-height-lh-38: 38px;
+  --f-font-line-height-lh-44: 44px;
+  --f-font-line-height-lh-54: 54px;
+  --f-font-line-height-lh-72: 72px;
+  --f-font-line-height-lh-90: 90px;
+
+  /* Color / Core / Neutrals */
+  --f-core-neutrals-grey-50: #fafafa;
+  --f-core-neutrals-grey-100: #f8f8f8;
+  --f-core-neutrals-grey-200: #f0f0f0;
+  --f-core-neutrals-grey-300: #e2e2e2;
+  --f-core-neutrals-grey-400: #c4c4c4;
+  --f-core-neutrals-grey-500: #9f9f9f;
+  --f-core-neutrals-grey-600: #888888;
+  --f-core-neutrals-grey-700: #666666;
+  --f-core-neutrals-grey-800: #444444;
+  --f-core-neutrals-grey-900: #222222;
+
+  /* Color / Core / Translucent */
+  --f-core-black-translucent-black-a05: rgb(0 0 0 / 0.05);
+  --f-core-black-translucent-black-a10: rgb(0 0 0 / 0.1);
+  --f-core-black-translucent-black-a20: rgb(0 0 0 / 0.2);
+  --f-core-black-translucent-black-a30: rgb(0 0 0 / 0.3);
+  --f-core-black-translucent-black-a50: rgb(0 0 0 / 0.5);
+  --f-core-black-translucent-black-a80: rgb(0 0 0 / 0.8);
+  --f-core-black-translucent-black-a100: #111111;
+  --f-core-white-translucent-white-a05: rgb(255 255 255 / 0.05);
+  --f-core-white-translucent-white-a10: rgb(255 255 255 / 0.1);
+  --f-core-white-translucent-white-a20: rgb(255 255 255 / 0.2);
+  --f-core-white-translucent-white-a30: rgb(255 255 255 / 0.3);
+  --f-core-white-translucent-white-a50: rgb(255 255 255 / 0.5);
+  --f-core-white-translucent-white-a80: rgb(255 255 255 / 0.8);
+  --f-core-white-translucent-white-a100: #ffffff;
+
+  /* Color / Core / Purps */
+  --f-core-purps-variants-purps-10: #f8f6ff;
+  --f-core-purps-variants-purps-20: #f3e9ff;
+  --f-core-purps-variants-purps-30: #ecd9ff;
+  --f-core-purps-variants-purps-35: #e6d1ff;
+  --f-core-purps-variants-purps-40: #e6ccff;
+  --f-core-purps-variants-purps-45: #dfbfff;
+  --f-core-purps-variants-purps-50: #d9b3ff;
+  --f-core-purps-variants-purps-100: #cc99ff;
+  --f-core-purps-variants-purps-200: #c68cff;
+  --f-core-purps-variants-purps-300: #b266ff;
+  --f-core-purps-variants-purps-400: #9933ff;
+  --f-core-purps-variants-purps-500: #8000ff;
+  --f-core-purps-variants-purps-600: #7300e5;
+  --f-core-purps-variants-purps-700: #6600cc;
+  --f-core-purps-variants-purps-800: #330066;
+  --f-core-purps-variants-purps-900: #150029;
+
+  /* Color / Core / Secondary (500s) */
+  --f-core-secondary-candy-500: #ff007a;
+  --f-core-secondary-dreamypale-500: #ffc5bb;
+  --f-core-secondary-holayellow-500: #ffe900;
+  --f-core-secondary-joymustard-500: #ffbc00;
+  --f-core-secondary-linkblue-500: #1355f0;
+  --f-core-secondary-oceanblue-500: #00c4eb;
+  --f-core-secondary-okaygreen-500: #15d676;
+  --f-core-secondary-peachyorange-500: #ff9d7c;
+  --f-core-secondary-subtlegreen-500: #d2f260;
+  --f-core-secondary-warningred-500: #ef0404;
+
+  /* Color / Core / Candy */
+  --f-core-candy-variants-candy-100: #fff2f8;
+  --f-core-candy-variants-candy-200: #ffe5f2;
+  --f-core-candy-variants-candy-300: #ff66af;
+  --f-core-candy-variants-candy-400: #fe3394;
+  --f-core-candy-variants-candy-600: #e5006e;
+  --f-core-candy-variants-candy-700: #cc0062;
+  --f-core-candy-variants-candy-800: #660031;
+
+  /* Color / Core / Dreamy Pale */
+  --f-core-dreamy-pale-variants-dreamypale-300: #fff4f2;
+  --f-core-dreamy-pale-variants-dreamypale-400: #ffdad4;
+  --f-core-dreamy-pale-variants-dreamypale-600: #e5b1a8;
+  --f-core-dreamy-pale-variants-dreamypale-700: #cc9e96;
+  --f-core-dreamy-pale-variants-dreamypale-800: #a4766e;
+
+  /* Color / Core / Hola Yellow */
+  --f-core-holla-yellow-variants-holayellow-200: #fffde5;
+  --f-core-holla-yellow-variants-holayellow-300: #fffbcc;
+  --f-core-holla-yellow-variants-holayellow-400: #fff266;
+  --f-core-holla-yellow-variants-holayellow-600: #e5d200;
+  --f-core-holla-yellow-variants-holayellow-700: #ccba00;
+  --f-core-holla-yellow-variants-holayellow-800: #807400;
+
+  /* Color / Core / Joy Mustard */
+  --f-core-joy-mustard-variants-joymustard-200: #fff8e5;
+  --f-core-joy-mustard-variants-joymustard-300: #fff2cc;
+  --f-core-joy-mustard-variants-joymustard-400: #ffd766;
+  --f-core-joy-mustard-variants-joymustard-600: #e5a900;
+  --f-core-joy-mustard-variants-joymustard-700: #cc9600;
+  --f-core-joy-mustard-variants-joymustard-800: #9f6b00;
+
+  /* Color / Core / Link Blue */
+  --f-core-link-blue-variants-linkblue-200: #adc6ff;
+  --f-core-link-blue-variants-linkblue-300: #7ba3ff;
+  --f-core-link-blue-variants-linkblue-400: #4377f0;
+  --f-core-link-blue-variants-linkblue-600: #114cd6;
+  --f-core-link-blue-variants-linkblue-700: #0f43bd;
+  --f-core-link-blue-variants-linkblue-800: #071f57;
+
+  /* Color / Core / Ocean Blue */
+  --f-core-ocean-blue-variants-oceanblue-200: #d6f8ff;
+  --f-core-ocean-blue-variants-oceanblue-300: #a4f0ff;
+  --f-core-ocean-blue-variants-oceanblue-400: #2fcceb;
+  --f-core-ocean-blue-variants-oceanblue-600: #00afd1;
+  --f-core-ocean-blue-variants-oceanblue-700: #009ab8;
+  --f-core-ocean-blue-variants-oceanblue-800: #02819c;
+  --f-core-ocean-blue-variants-oceanblue-900: #004452;
+
+  /* Color / Core / Okay Green */
+  --f-core-okay-green-variants-okaygreen-100: #f1fff2;
+  --f-core-okay-green-variants-okaygreen-200: #deffee;
+  --f-core-okay-green-variants-okaygreen-300: #aaffd4;
+  --f-core-okay-green-variants-okaygreen-400: #49ee9c;
+  --f-core-okay-green-variants-okaygreen-600: #10a35a;
+  --f-core-okay-green-variants-okaygreen-700: #078842;
+  --f-core-okay-green-variants-okaygreen-800: #095730;
+
+  /* Color / Core / Peachy Orange */
+  --f-core-peachy-orange-variants-peachyorange-200: #ffece5;
+  --f-core-peachy-orange-variants-peachyorange-300: #ffe7ce;
+  --f-core-peachy-orange-variants-peachyorange-400: #ffc4b0;
+  --f-core-peachy-orange-variants-peachyorange-600: #e58d70;
+  --f-core-peachy-orange-variants-peachyorange-700: #cc7e63;
+  --f-core-peachy-orange-variants-peachyorange-800: #a4563b;
+
+  /* Color / Core / Subtle Green */
+  --f-core-subtle-green-variants-subtlegreen-200: #f9ffe5;
+  --f-core-subtle-green-variants-subtlegreen-300: #f4ffcc;
+  --f-core-subtle-green-variants-subtlegreen-400: #e6ff8b;
+  --f-core-subtle-green-variants-subtlegreen-600: #bcd956;
+  --f-core-subtle-green-variants-subtlegreen-700: #a6bf4c;
+  --f-core-subtle-green-variants-subtlegreen-800: #64732e;
+
+  /* Color / Core / Warning Red */
+  --f-core-warning-red-variants-warningred-100: #ffe5e5;
+  --f-core-warning-red-variants-warningred-200: #ffd8d8;
+  --f-core-warning-red-variants-warningred-300: #ef9494;
+  --f-core-warning-red-variants-warningred-400: #ef4c4c;
+  --f-core-warning-red-variants-warningred-600: #d60404;
+  --f-core-warning-red-variants-warningred-700: #bd0303;
+  --f-core-warning-red-variants-warningred-800: #570101;
+
+  /* Color / Semantic / Border */
+  --f-semantic-border-candy: #cc0062;
+  --f-semantic-border-destructive: #bd0303;
+  --f-semantic-border-disabled-1: #9f9f9f;
+  --f-semantic-border-disabled-2: #c4c4c4;
+  --f-semantic-border-holayellow: #807400;
+  --f-semantic-border-linkblue: #114cd6;
+  --f-semantic-border-oceanblue: #00afd1;
+  --f-semantic-border-peachyorange: #a4563b;
+  --f-semantic-border-primary: #7300e5;
+  --f-semantic-border-subtlegreen: #64732e;
+  --f-semantic-border-success: #078842;
+  --f-semantic-border-warning: #9f6b00;
+
+  /* Color / Semantic / CTA */
+  --f-semantic-cta-black: #222222;
+  --f-semantic-cta-destructive: #d60404;
+  --f-semantic-cta-disabled-primary: #c4c4c4;
+  --f-semantic-cta-disabled-tertiary: #f0f0f0;
+  --f-semantic-cta-positive: #078842;
+  --f-semantic-cta-primary: #8000ff;
+  --f-semantic-cta-tertiary: #f3e9ff;
+  --f-semantic-cta-white: #ffffff;
+
+  /* Color / Semantic / Dividers */
+  --f-semantic-dividers-dark: #e2e2e2;
+  --f-semantic-dividers-light: #f8f8f8;
+  --f-semantic-dividers-primary: #f0f0f0;
+
+  /* Color / Semantic / Icon */
+  --f-semantic-icon-black-translucent: rgb(0 0 0 / 0.8);
+  --f-semantic-icon-candy: #ff007a;
+  --f-semantic-icon-error: #d60404;
+  --f-semantic-icon-grey-1: #444444;
+  --f-semantic-icon-grey-2: #666666;
+  --f-semantic-icon-grey-disabled-1: #9f9f9f;
+  --f-semantic-icon-grey-disabled-2: #c4c4c4;
+  --f-semantic-icon-linkblue: #1355f0;
+  --f-semantic-icon-peachyorange: #a4563b;
+  --f-semantic-icon-primary: #8000ff;
+  --f-semantic-icon-success: #078842;
+  --f-semantic-icon-warning: #9f6b00;
+  --f-semantic-icon-white: #ffffff;
+  --f-semantic-icon-white-translucent: rgb(255 255 255 / 0.8);
+
+  /* Color / Semantic / Link */
+  --f-semantic-link-candy: #e5006e;
+  --f-semantic-link-destructive: #d60404;
+  --f-semantic-link-linkblue: #0f43bd;
+  --f-semantic-link-positive: #078842;
+  --f-semantic-link-primary: #6600cc;
+  --f-semantic-link-warning: #9f6b00;
+
+  /* Color / Semantic / Overlay */
+  --f-semantic-overlay-dark: rgb(0 0 0 / 0.8);
+  --f-semantic-overlay-light: rgb(0 0 0 / 0.3);
+  --f-semantic-overlay-primary: rgb(0 0 0 / 0.5);
+
+  /* Color / Semantic / Primary */
+  --f-semantic-primary-black-primary: #111111;
+  --f-semantic-primary-purps-primary: #8000ff;
+  --f-semantic-primary-white-primary: #ffffff;
+
+  /* Color / Semantic / Surface dark */
+  --f-semantic-surface-dark-black: #222222;
+  --f-semantic-surface-dark-candy: #e5006e;
+  --f-semantic-surface-dark-error: #d60404;
+  --f-semantic-surface-dark-holayellow: #ffe900;
+  --f-semantic-surface-dark-joymustard: #ffbc00;
+  --f-semantic-surface-dark-linkblue-1: #071f57;
+  --f-semantic-surface-dark-linkblue-2: #0f43bd;
+  --f-semantic-surface-dark-oceanblue-1: #004452;
+  --f-semantic-surface-dark-oceanblue-2: #02819c;
+  --f-semantic-surface-dark-peachyorange: #a4563b;
+  --f-semantic-surface-dark-primary-1: #150029;
+  --f-semantic-surface-dark-primary-2: #330066;
+  --f-semantic-surface-dark-primary-3: #6600cc;
+  --f-semantic-surface-dark-subtlegreen-1: #64732e;
+  --f-semantic-surface-dark-subtlegreen-2: #d2f260;
+  --f-semantic-surface-dark-success-1: #078842;
+  --f-semantic-surface-dark-success-2: #095730;
+  --f-semantic-surface-dark-warning: #9f6b00;
+
+  /* Color / Semantic / Surface light */
+  --f-semantic-surface-light-candy-1: #fff2f8;
+  --f-semantic-surface-light-candy-2: #ffe5f2;
+  --f-semantic-surface-light-dreamypale: #fff4f2;
+  --f-semantic-surface-light-error-1: #ffe5e5;
+  --f-semantic-surface-light-error-2: #ffd8d8;
+  --f-semantic-surface-light-grey-1: #fafafa;
+  --f-semantic-surface-light-grey-2: #f8f8f8;
+  --f-semantic-surface-light-grey-3: #f0f0f0;
+  --f-semantic-surface-light-holayellow: #fffde5;
+  --f-semantic-surface-light-oceanblue: #d6f8ff;
+  --f-semantic-surface-light-peachyorange: #ffece5;
+  --f-semantic-surface-light-primary-1: #f3e9ff;
+  --f-semantic-surface-light-primary-2: #ecd9ff;
+  --f-semantic-surface-light-subtlegreen: #f9ffe5;
+  --f-semantic-surface-light-success-1: #f1fff2;
+  --f-semantic-surface-light-success-2: #deffee;
+  --f-semantic-surface-light-warning: #fff8e5;
+  --f-semantic-surface-light-white: #ffffff;
+
+  /* Color / Semantic / Text */
+  --f-semantic-text-black-translucent: rgb(0 0 0 / 0.8);
+  --f-semantic-text-candy: #e5006e;
+  --f-semantic-text-destructive: #d60404;
+  --f-semantic-text-disabled: #888888;
+  --f-semantic-text-grey-1: #222222;
+  --f-semantic-text-grey-2: #444444;
+  --f-semantic-text-grey-3: #666666;
+  --f-semantic-text-holayellow: #807400;
+  --f-semantic-text-linkblue: #0f43bd;
+  --f-semantic-text-oceanblue: #02819c;
+  --f-semantic-text-peachyorange: #a4563b;
+  --f-semantic-text-positive: #078842;
+  --f-semantic-text-primary: #6600cc;
+  --f-semantic-text-subtlegreen: #64732e;
+  --f-semantic-text-warning: #9f6b00;
+  --f-semantic-text-white: #ffffff;
+  --f-semantic-text-white-translucent: rgb(255 255 255 / 0.8);
+}

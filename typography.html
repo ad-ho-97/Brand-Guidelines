@@ -14,6 +14,44 @@
   <link rel="stylesheet" href="css/shell.css" />
   <link rel="stylesheet" href="css/media-carousel.css" />
   <link rel="stylesheet" href="css/typography.css" />
+  <style>
+    /* Type hierarchy standardized against logo.html's system (brand guidelines
+       §5 heading hierarchy) — propagated here as a page-scoped override rather
+       than edited into shell.css, since shell.css is shared by every other
+       guideline page not in scope for this pass. */
+    /* Pagehead row (h1 + intro) capped to logo.html's content width (819px, not
+       the page's full 1200px rail) so the title/intro block reads at the same
+       width across Logo/Color/Typography regardless of each page's grid rail. */
+    #page-typography .fig-stack { padding-top: 96px; }
+    #page-typography .fig-pagehead { gap: 24px; max-width: 819px; }
+    #page-typography .fig-pagehead h1 {
+      font-weight: 500; font-size: 60px; line-height: 72px; letter-spacing: 0.8px; color: #222222;
+    }
+    #page-typography .fig-pagehead .intro {
+      font-weight: 300; font-size: 17px; line-height: 28px; letter-spacing: 0; color: #222222; max-width: 464px;
+    }
+    #page-typography .fig-head h2,
+    #page-typography .cu-text h2 {
+      font-weight: 500; font-size: 30px; line-height: 38px; letter-spacing: 0.4px; color: #111111;
+    }
+    #page-typography .fig-head .fh-desc {
+      font-weight: 300; font-size: 15px; line-height: 24px; letter-spacing: 0; color: #222222; margin-top: 8px;
+    }
+
+    @media (max-width: 1023px) {
+      #page-typography .fig-pagehead h1 { font-size: 30px; line-height: 38px; letter-spacing: 0.4px; }
+      #page-typography .fig-pagehead .intro { font-size: 15px; line-height: 24px; }
+      #page-typography .fig-head h2,
+      #page-typography .cu-text h2 { font-size: 24px; line-height: 28px; letter-spacing: 0.4px; }
+      #page-typography .fig-head .fh-desc { font-size: 14px; line-height: 20px; }
+    }
+
+    /* Section rhythm (spacing.md §3): space.64 desktop — scoped inside a width
+       query so it cannot out-specificity the shared mobile rhythm in shell.css */
+    @media (min-width: 1024px) {
+      #page-typography .fig-stack.gap-48 .fig-sec { margin-bottom: 80px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -25,14 +63,14 @@
 ═══════════════════════════════════════════════════════════ -->
 <!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
 <div class="m-topbar" id="m-topbar">
-  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/shared/brand/logo-mark.svg" alt="" /></a>
   <a class="m-title" href="/">Brand guidelines</a>
   <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
 </div>
 
 <aside class="sidebar" id="site-nav">
   <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
-    <img src="assets/svg/logo-full.svg" alt="Headout"
+    <img src="assets/shared/brand/logo-full.svg" alt="Headout"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
     <span class="sidebar-logo-text">headout</span>
   </a>
@@ -53,7 +91,7 @@
     <div class="nav-items" id="items-foundations">
 
       <!-- Logo -->
-      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span></a>
+      <a class="nav-parent" id="nav-logo-parent" href="/v2/logo-fluid.html"><span>Logo</span></a>
       <div class="nav-children" id="nav-logo-children" style="display:none;">
         <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
         <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
@@ -70,7 +108,7 @@
       </div>
 
       <!-- Color -->
-      <a class="nav-parent" id="nav-color-parent" href="/color"><span>Color</span></a>
+      <a class="nav-parent" id="nav-color-parent" href="/v2/color.html"><span>Color</span></a>
       <div class="nav-children" id="nav-color-children" style="display:none;">
         <a class="nav-child" href="/color#color-primary">Primary palette</a>
         <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
@@ -82,7 +120,7 @@
         <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
       </div>
       <!-- Typography -->
-      <a class="nav-parent active-section" id="nav-typography-parent" href="/typography"><span>Typography</span></a>
+      <a class="nav-parent active-section" id="nav-typography-parent" href="/v2/typography.html"><span>Typography</span></a>
       <div class="nav-children" id="nav-typography-children">
         <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
         <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
@@ -94,7 +132,7 @@
         <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
       </div>
       <!-- Layout -->
-      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span></a>
+      <a class="nav-parent" id="nav-layout-parent" href="/v2/layout.html"><span>Layout</span></a>
       <div class="nav-children" id="nav-layout-children" style="display:none;">
         <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
         <a class="nav-child" href="/layout#layout-grid">The grid system</a>
@@ -111,7 +149,7 @@
         <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
       </div>
       <!-- Iconography -->
-      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <a class="nav-parent" id="nav-iconography-parent" href="/v2/iconography.html"><span>Iconography</span></a>
       <!-- Voice & Tone -->
       <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
         <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -153,16 +191,16 @@
       <div class="fig-sec" id="typo-intro">
         <div class="fig-pagehead">
           <h1>Typography</h1>
-          <p class="intro" style="max-width:579px;">Typography is a core part of the Headout brand system. It helps us communicate with clarity and consistency across every product, campaign, and customer touchpoint. This system gives every team a shared foundation, so every experience feels recognizably Headout.</p>
+          <p class="intro">Typography is a core part of the Headout brand system. It helps us communicate with clarity and consistency across every product, campaign, and customer touchpoint. This system gives every team a shared foundation, so every experience feels recognizably Headout.</p>
         </div>
       </div>
 
-      <hr class="fig-divider" />
+      <hr class="fig-divider" style="margin:80px 0 96px;" />
 
       <div class="fig-sec" id="typo-hero">
         <div class="page-hero-ph">
           <video autoplay loop muted playsinline>
-            <source src="assets/video/Halyard_type_header.mp4" type="video/mp4" />
+            <source src="assets/typography/Halyard_type_header.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -174,8 +212,8 @@
         </div>
         <!-- Row 1: two specimen cards. Row 2: two live HTML animations (Osaka slant, New York flyer). -->
         <div class="tf-grid">
-          <div class="tf-card" id="halyard-display"><img src="assets/images/type-halyard-display.jpg" alt="Halyard Display — we use it for titles that inspire people to go somewhere. 8 weights, 2 styles." /></div>
-          <div class="tf-card" id="halyard-text"><img src="assets/images/type-halyard-text.jpg" alt="Halyard Text — carries the details that help people move from inspiration to action. 8 weights, 2 styles." /></div>
+          <div class="tf-card" id="halyard-display"><img src="assets/typography/type-halyard-display.jpg" alt="Halyard Display — we use it for titles that inspire people to go somewhere. 8 weights, 2 styles." /></div>
+          <div class="tf-card" id="halyard-text"><img src="assets/typography/type-halyard-text.jpg" alt="Halyard Text — carries the details that help people move from inspiration to action. 8 weights, 2 styles." /></div>
         </div>
         <div class="tf-row">
           <div class="tf-card tf-osaka"><iframe src="widgets/type-osaka/index.html" title="Halyard Display — Osaka slant animation" loading="lazy" scrolling="no"></iframe></div>
@@ -191,11 +229,11 @@
           <p class="fh-desc" style="max-width:756px;">Good typesetting requires a discerning eye. Below are some universal principles to follow when setting type that helps ensure consistency and high legibility.</p>
         </div>
         <div class="fig-rounded" style="position:relative; overflow:hidden; aspect-ratio:2508/1458; background:#f0f0f0;">
-          <img src="assets/images/type-setting.jpg" alt="Type setting — title, subtitle, body and small body specimens with size, leading and tracking" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+          <img src="assets/typography/type-setting.jpg" alt="Type setting — title, subtitle, body and small body specimens with size, leading and tracking" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Type setting — leading / spacing examples (carousel) -->
       <div class="fig-sec" id="type-setting-examples">
@@ -210,7 +248,7 @@
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Alignment — carousel with caption -->
       <div class="fig-sec" id="typo-alignment">
@@ -226,7 +264,7 @@
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Colour in typography -->
       <div class="fig-sec" id="colour-in-typography">
@@ -242,7 +280,7 @@
                 loading="lazy"></iframe>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Suggested text/background combinations -->
       <div class="fig-sec" id="type-colour-combinations">
@@ -252,7 +290,7 @@
             <p>Black type carries every tint and mid-tone; white type takes over on the deep shades. On the brightest hues — green, blue, yellow and orange — drop black to 70% opacity so it sits in the colour rather than on top of it.</p>
           </div>
           <div class="cu-media">
-            <img src="assets/images/type-colour-combinations.png" alt="Grid of Aa specimens showing recommended text colours on every palette tint and shade" style="display:block; width:100%; height:auto; border-radius:16px;" />
+            <img src="assets/typography/type-colour-combinations.png" alt="Grid of Aa specimens showing recommended text colours on every palette tint and shade" style="display:block; width:100%; height:auto; border-radius:16px;" />
           </div>
         </div>
       </div>
@@ -264,12 +302,12 @@
           <p class="fh-desc" style="max-width:756px;">Avoid altering Halyard in ways that affect clarity, consistency, or readability. Keep casing, colour, spacing, weight, line height, and effects aligned with the Headout type system.</p>
         </div>
         <div class="iu-grid">
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-1.jpg" alt="All-caps headline with all-lowercase body" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid all caps and all lowercase.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-2.jpg" alt="Headline in one colour vs gradient and mixed colours" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Use one solid colour. Avoid gradients or mixed colours.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-3.jpg" alt="Comfortable, too-tight and too-loose letter spacing" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid letter spacing that is too tight or too loose.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-4.jpg" alt="Headline mixing regular and bold weights" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid mixing font weights within the same block of text.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-5.jpg" alt="Paragraph with comfortable vs cramped line height" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Keep enough space between lines for clear reading.</figcaption></figure>
-          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/images/type-incorrect-6.jpg" alt="Headline with a drop shadow" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Do not apply shadows or effects to type.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-1.jpg" alt="All-caps headline with all-lowercase body" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid all caps and all lowercase.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-2.jpg" alt="Headline in one colour vs gradient and mixed colours" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Use one solid colour. Avoid gradients or mixed colours.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-3.jpg" alt="Comfortable, too-tight and too-loose letter spacing" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid letter spacing that is too tight or too loose.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-4.jpg" alt="Headline mixing regular and bold weights" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Avoid mixing font weights within the same block of text.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-5.jpg" alt="Paragraph with comfortable vs cramped line height" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Keep enough space between lines for clear reading.</figcaption></figure>
+          <figure class="iu-item"><div class="iu-card iu-card-type"><img src="assets/typography/type-incorrect-6.jpg" alt="Headline with a drop shadow" /></div><figcaption><span class="iu-x" aria-hidden="true"></span>Do not apply shadows or effects to type.</figcaption></figure>
         </div>
       </div>
 

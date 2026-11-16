@@ -1,0 +1,11 @@
+<svg width="596" height="674" viewBox="0 0 596 674" fill="none" overflow="hidden" xmlns="http://www.w3.org/2000/svg">
+<!-- Figma 2466:31581 "Image" frame (clips) · Ellipse 31416 vector, frame-local transform · #E58D70 @ 68% (Figma had 50%; lifted to 85%, then eased 20%) · layer blur 85.66 -->
+<defs>
+<filter id="blur" filterUnits="userSpaceOnUse" x="-400" y="-400" width="1400" height="1500" color-interpolation-filters="sRGB">
+<feGaussianBlur stdDeviation="42.83"/>
+</filter>
+</defs>
+<g filter="url(#blur)">
+<path transform="matrix(0.497015 0.867742 -0.867742 0.497015 427.607 76.4067)" fill="#E58D70" fill-opacity="0.68" d="M 0 6.0106 C 0 86.1988 415.3686 502.7877 360.0851 502.7877 C 304.8016 502.7877 259.9857 437.7826 259.9857 357.5951 C 259.9857 277.4065 304.8016 212.4014 360.0851 212.4014 C 622.3781 682.7485 0 -74.1773 0 6.0106 Z"/>
+</g>
+</svg>

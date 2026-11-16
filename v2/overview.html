@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Overview · Headout brand guidelines</title>
+  <meta name="description" content="Headout brand guidelines: logo, colour, typography, layout, motion and iconography." />
+  <link rel="preload" href="../assets/shared/fonts/HalyardText-Book.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    @font-face { font-family:'Halyard Text'; font-weight:400; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Book.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-weight:300; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Light.woff2') format('woff2'); }
+    :root { --bg:#fff; --ink:#111; --muted:#767676; --purple:#8000ff; --ht:'Halyard Text', system-ui, sans-serif; --ease-out:cubic-bezier(.23,1,.32,1); --pad:32px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--ht); -webkit-font-smoothing: antialiased; overflow: hidden; height: 100svh; }
+    body.is-grid { overflow: auto; height: auto; }
+    a { color: inherit; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ─── Frame (shared by both views): top bar + bottom bar, fixed ─── */
+    .bar { position: fixed; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: var(--pad); pointer-events: none; }
+    .bar > * { pointer-events: auto; }
+    .bar.top { top: 0; }
+    .bar.bottom { bottom: 0; align-items: flex-end; }
+    .site-logo { display: block; line-height: 0; }
+    .site-logo img { height: 19px; width: auto; }
+
+    /* Frosted pill toggle, centred on the viewport */
+    .seg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; gap: 4px; padding: 4px; border-radius: 999px;
+      background: rgb(128 0 255 / .08); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+    .seg button { height: 36px; padding: 0 20px; border-radius: 999px; background: transparent; color: var(--purple); font-size: 14px; letter-spacing: -.01em; }
+    .seg button[aria-pressed="true"] { background: var(--purple); color: #fff; }
+
+    button { font: inherit; border: 0; cursor: pointer; transition: background .2s ease, color .2s ease, transform .12s ease, opacity .2s ease; }
+    button:active { transform: scale(.96); }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+
+    /* Bottom: live caption (left) · progress (centre) · links (right) */
+    /* Bottom centre: the front tile's name, with the progress ticks under it. */
+    .now { position: absolute; left: 50%; bottom: calc(var(--pad) + 20px); transform: translateX(-50%); margin: 0; font-size: 14px; line-height: 1.2; white-space: nowrap; text-align: center;
+      transition: opacity .18s ease, filter .18s ease; }
+    .now.swap { opacity: 0; filter: blur(2px); }
+    body.is-grid .now { opacity: 0; }
+    .progress { position: absolute; left: 50%; bottom: calc(var(--pad) + 4px); transform: translateX(-50%); display: flex; gap: 6px; transition: opacity .2s ease; }
+    .progress i { width: 22px; height: 3px; border-radius: 3px; background: var(--ink); opacity: .12; }
+    body.is-grid .progress { opacity: 0; }
+    .links { width: 260px; display: flex; justify-content: flex-end; gap: 16px; font-size: 12px; }
+    .links a { text-decoration: none; color: var(--muted); transition: color .2s ease; }
+
+    @media (hover: hover) and (pointer: fine) {
+      .seg button[aria-pressed="false"]:hover { background: rgb(128 0 255 / .1); }
+      .links a:hover { color: var(--ink); }
+    }
+
+    /* ─── Ring: GL canvas behind, invisible DOM cards on top for pointer/focus/AT ─── */
+    .stage { position: fixed; inset: 0; perspective: 1400px; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; outline: none; }
+    .stage.dragging { cursor: grabbing; }
+    .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .track { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(-3deg) rotateZ(-4deg); }
+    .card { position: absolute; left: 50%; top: 50%; width: min(calc(var(--card-vw, 52) * 1vw), calc(var(--card-svh, 78) * 1svh)); aspect-ratio: 4 / 3; backface-visibility: hidden; text-decoration: none; color: inherit; cursor: inherit; border-radius: 4px; }
+    .track .card.is-front { cursor: pointer; }
+    .stage.dragging .card { cursor: grabbing; }
+    .stage:focus-visible .card.is-front { outline: 2px solid var(--purple); outline-offset: 3px; }
+    .gl .track .media, .track .cap { visibility: hidden; }
+    body.is-grid .stage { display: none; }
+
+    .media { position: absolute; inset: 0; overflow: hidden; border-radius: 4px; background: #f2f2f2; }
+    .media > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; opacity: 0; transition: opacity .4s ease, transform .5s var(--ease-out); }
+    .media.loaded > *, .media.mask > * { opacity: 1; }
+    .media.mask { background: #f0f0f0; }
+
+    /* ─── Ring cursor: an arrow that follows the pointer (mouse/trackpad only) ─── */
+    /* Just the arrow. White + difference blend so it inverts against whatever is under it
+       (dark on the white page, light on a dark image). */
+    .ring-cursor { --size: 96px; position: fixed; left: 0; top: 0; z-index: 30; width: var(--size); height: var(--size); margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2); pointer-events: none;
+      display: none; mix-blend-mode: difference; }
+    .ring-cursor .dot { width: 100%; height: 100%; display: grid; place-items: center; color: #fff;
+      opacity: 0; transform: scale(.6); transition: opacity .18s ease, transform .22s var(--ease-out); }
+    .ring-cursor.on .dot { opacity: 1; transform: scale(1); }
+    .ring-cursor.down .dot { transform: scale(.88); }
+    .ring-cursor svg { width: var(--size); height: var(--size); transition: transform .28s var(--ease-out); }
+    .ring-cursor[data-dir="prev"] svg { transform: rotate(180deg); }
+    .ring-cursor[data-dir="open"] svg { transform: rotate(-45deg); }
+    @media (hover: hover) and (pointer: fine) {
+      .ring-cursor { display: block; }
+      .stage, .stage .card, .stage.dragging, .stage.dragging .card, .track .card.is-front { cursor: none; }
+    }
+    body.is-grid .ring-cursor { display: none; }
+
+    /* ─── Grid ─── */
+    .grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 104px var(--pad) 120px; }
+    body.is-grid .grid { display: grid; }
+    .grid .card { position: relative; left: auto; top: auto; width: auto; border-radius: 6px;
+      transition: opacity .3s ease, transform .16s var(--ease-out); animation: ov-in .35s var(--ease-out) backwards; }
+    .grid .card:active { transform: scale(.985); }
+    .grid .card:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+    .grid .card:nth-child(2) { animation-delay: 30ms } .grid .card:nth-child(3) { animation-delay: 60ms }
+    .grid .card:nth-child(4) { animation-delay: 90ms } .grid .card:nth-child(5) { animation-delay: 120ms } .grid .card:nth-child(6) { animation-delay: 150ms }
+    .grid .media { border-radius: 6px; }
+    /* Hairline keeps light tiles (Layout, Iconography) from dissolving into the white page. */
+    .grid .media::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .06); pointer-events: none; }
+
+    /* Caption lives inside the card: a soft scrim + text that rises in on hover. */
+    .cap { position: absolute; inset: auto 0 0 0; z-index: 1; display: flex; flex-direction: column; gap: 4px; padding: 56px 20px 18px;
+      border-radius: 0 0 6px 6px; color: #fff; pointer-events: none;
+      background: linear-gradient(to top, rgb(0 0 0 / .55), rgb(0 0 0 / .28) 50%, rgb(0 0 0 / 0));
+      opacity: 0; transition: opacity .15s ease; }
+    .cap b { font-weight: 400; font-size: 16px; line-height: 1.2; display: inline-flex; gap: 6px; align-items: baseline; }
+    .cap > span { font-weight: 300; font-size: 13px; line-height: 1.35; color: rgb(255 255 255 / .82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cap b, .cap > span { transform: translateY(6px); opacity: 0; transition: transform .15s ease, opacity .15s ease; }
+    .go { display: inline-block; transform: translateX(-3px); transition: transform .22s var(--ease-out); }
+    @media (hover: hover) and (pointer: fine) {
+      .grid:hover .card:not(:hover) { opacity: .6; }
+      .grid .card:hover .cap { opacity: 1; transition-duration: .22s; }
+      .grid .card:hover .cap b, .grid .card:hover .cap > span { transform: none; opacity: 1; transition: transform .26s var(--ease-out), opacity .22s ease; }
+      .grid .card:hover .cap > span { transition-delay: 40ms; }
+      .grid .card:hover .go { transform: none; }
+      .grid .card:hover .media > * { transform: scale(1.03); }
+    }
+    /* Touch: no hover, so the caption is always there. Keyboard focus shows it too. */
+    @media (hover: none) { .grid .cap, .grid .cap b, .grid .cap > span { opacity: 1; transform: none; } }
+    .grid .card:focus-visible .cap, .grid .card:focus-visible .cap b, .grid .card:focus-visible .cap > span { opacity: 1; transform: none; }
+    @keyframes ov-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+    @media (max-width: 767px) {
+      :root { --pad: 16px; }
+      .card { width: 84vw; }
+      .track { transform: rotateX(-2deg) rotateZ(-2deg); }
+      .grid { grid-template-columns: 1fr; padding-top: 80px; }
+      .links { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .grid .card { animation: ov-fade .2s ease backwards; }
+      @keyframes ov-fade { from { opacity: 0; } }
+    }
+  </style>
+</head>
+<body>
+<h1 class="sr">Headout brand guidelines</h1>
+
+<header class="bar top">
+  <a class="site-logo" href="/" aria-label="Headout guidelines — Overview"><img src="../assets/shared/brand/logo-full.svg" alt="" /></a>
+  <div class="seg" role="group" aria-label="View">
+    <button type="button" aria-pressed="true" data-view="ring">Ring</button>
+    <button type="button" aria-pressed="false" data-view="grid">Grid</button>
+  </div>
+</header>
+
+<div class="ring-cursor" id="ring-cursor" aria-hidden="true"><div class="dot"><svg viewBox="0 0 18 18" fill="none"><path d="M3 9h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<main>
+  <div class="stage" id="stage" tabindex="0" aria-roledescription="carousel" aria-label="Brand guidelines sections">
+    <span class="sr" id="ring-status" aria-live="polite"></span>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="track" id="track"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer class="bar bottom">
+  <span></span>
+  <p class="now" id="now-title" aria-hidden="true"></p>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <nav class="links" aria-label="Elsewhere"><a href="https://www.headout.com" target="_blank" rel="noopener">headout.com</a></nav>
+</footer>
+
+<script>
+(function () {
+  const MASK = '<svg viewBox="0 0 505 630" preserveAspectRatio="xMidYMid meet" fill="none"><path d="M254.071 386.708C278.592 386.708 299.188 370.158 304.972 347.783C307.663 337.372 303.756 334.982 293.462 334.982H214.68C204.386 334.982 200.48 337.372 203.171 347.783C208.955 370.158 229.551 386.708 254.071 386.708Z" stroke="#000" stroke-width="20.418" stroke-linecap="round" stroke-linejoin="round"/><path d="M189.385 276.775C189.385 266.062 198.069 257.378 208.782 257.378C219.495 257.378 228.179 266.062 228.179 276.775M279.904 276.775C279.904 266.062 288.589 257.378 299.301 257.378C310.014 257.378 318.699 266.062 318.699 276.775" stroke="#000" stroke-width="20.418" stroke-linecap="round" stroke-linejoin="round"/><path d="M351.039 189.652C369.375 187.286 385.223 202.434 383.688 220.858L373.541 342.608C368.291 405.604 315.63 454.06 252.416 454.061C189.202 454.061 136.54 405.605 131.29 342.608L120.911 218.065C119.505 201.193 134.099 187.365 150.871 189.679C215.02 198.527 280.06 198.811 344.284 190.524L351.039 189.652Z" stroke="#000" stroke-width="20.418"/></svg>';
+  const SECTIONS = [
+    { name: 'Logo',        desc: 'The blimp and wordmark, and how to use them.',          href: '/v2/logo-fluid.html',   img: '../assets/logo/logo-action-2.jpg' },
+    { name: 'Colour',      desc: 'Purps, the supporting palette and how they combine.',    href: '/v2/color.html',        video: '../assets/overview/color-tile-loop.mp4' },
+    { name: 'Typography',  desc: 'Halyard Display and Text, set with care.',               href: '/v2/typography.html',   video: '../assets/overview/type-tile-loop.mp4' },
+    { name: 'Layout',      desc: 'Grids and templates that keep every surface consistent.', href: '/v2/layout.html',      img: '../assets/overview/layout-tile.jpg' },
+    { name: 'Motion',      desc: 'How the brand moves — from the logo to the interface.',  href: '/motion',               video: '../assets/logo/logo-animation.mp4' },
+    { name: 'Iconography', desc: 'Icons, tiles and avatars in the Headout style.',         href: '/v2/iconography.html',  svg: MASK },
+  ];
+  const BG = [1, 1, 1];          // matches --bg
+  // Background photo, drawn inside the GL frame so the edge lens bends it too.
+  // horizon = where the horizon sits in the image (0 top → 1 bottom); place = where it lands on screen.
+  // Off for now — set enabled: true to bring the photo back.
+  const BG_IMAGE = { enabled: false, src: '../assets/overview/overview-bg.jpg', horizon: 0.657, place: 0.6 };
+
+  const stage = document.getElementById('stage'), track = document.getElementById('track'), grid = document.getElementById('grid');
+  const status = document.getElementById('ring-status'), nowTitle = document.getElementById('now-title'), progress = document.getElementById('progress');
+
+  function makeCard(s, withMedia) {
+    const a = document.createElement('a');
+    a.className = 'card'; a.href = s.href; a.draggable = false; a.setAttribute('aria-label', s.name);
+    if (withMedia) {
+      const m = s.img ? `<img src="${s.img}" alt="" draggable="false">`
+              : s.video ? `<video src="${s.video}#t=0.1" autoplay loop muted playsinline preload="metadata"></video>` : s.svg;
+      a.innerHTML = `<div class="media${s.svg ? ' mask' : ''}">${m}</div><div class="cap"><b>${s.name}<span class="go" aria-hidden="true">→</span></b><span>${s.desc}</span></div>`;
+      const media = a.firstElementChild, el = media.firstElementChild;
+      const done = () => media.classList.add('loaded');
+      if (el.tagName === 'IMG') el.complete ? done() : el.addEventListener('load', done, { once: true });
+      else if (el.tagName === 'VIDEO') el.readyState >= 2 ? done() : el.addEventListener('loadeddata', done, { once: true });
+    }
+    return a;
+  }
+  SECTIONS.forEach(s => grid.appendChild(makeCard(s, true)));
+
+  // Ring: the sections twice, so the wrap point sits behind the viewer and is never seen.
+  // These DOM cards are invisible hit targets; the visuals are drawn in WebGL underneath.
+  const RING = SECTIONS.concat(SECTIONS);
+  const cards = RING.map(s => { const c = track.appendChild(makeCard(s, false)); c.tabIndex = -1; c.setAttribute('aria-hidden', 'true'); return c; });
+  SECTIONS.forEach(() => progress.appendChild(document.createElement('i')));
+  const ticks = [...progress.children];
+
+  const N = cards.length, M = SECTIONS.length;
+  // `let` so the DialKit panel (dev only) can retune them live.
+  let STEP = 34, VISIBLE = 2.35, FADE = 0.75;
+  let THROW_TAU = 0.3, MAX_THROW = 3, STOP_SPEED = 0.6, MIN_LANDING = 0.22;
+  const VEL_WINDOW = 80, NOTCH_PX = 60; let WHEEL_RESPONSE = 0.14;
+  let PERSPECTIVE = 1400, STEP_DURATION = 0.35, CURSOR_LAG = 0.05, HOVER_ZOOM = 0.03;
+  let TILT = { x: -3, z: -4 }, TILT_MOBILE = { x: -2, z: -2 };
+  // Liquid-glass edges (ported from the disc reel's edge lens).
+  const LENS = { band: 0.32, stretch: 0.14, swell: 0.23, dispersionPx: 3.5, blurPx: 13 };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ringVisible = true, hover = 0, hoverTarget = false;
+
+  // ─── Layout ───
+  let w = 0, h = 0, R = 0, pxPerCard = 1, tilt = { x: -3, z: -4 };
+  function measure() {
+    w = cards[0].offsetWidth; h = cards[0].offsetHeight;
+    R = (w * 1.05) / (2 * Math.sin(STEP * Math.PI / 360));
+    pxPerCard = w * 1.05;
+    tilt = innerWidth < 768 ? TILT_MOBILE : TILT;
+    track.style.transform = `rotateX(${tilt.x}deg) rotateZ(${tilt.z}deg)`;
+    stage.style.perspective = PERSPECTIVE + 'px';
+    gl && resizeGL();
+  }
+  const wrap = o => ((o % N) + N + N / 2) % N - N / 2;
+  const smooth = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+  const cardMatrix = o => `translateZ(${(R - w * 0.15).toFixed(2)}px) rotateY(${(o * STEP).toFixed(3)}deg) translateZ(${(-R).toFixed(2)}px)`;
+
+  let pos = 0, rendered = NaN, front = -1;
+  function render() {
+    if (pos === rendered) return;
+    rendered = pos;
+    const near = Math.round(pos);
+    cards.forEach((c, i) => {
+      const o = wrap(i - pos), d = Math.abs(o);
+      const op = smooth((VISIBLE - d) / FADE);
+      c._o = o; c._op = op;
+      if (op <= 0) { if (c._shown !== false) { c.style.visibility = 'hidden'; c._shown = false; } return; }
+      if (c._shown !== true) { c.style.visibility = ''; c._shown = true; }
+      c.style.transform = `translate3d(-50%,-50%,0) ${cardMatrix(o)}`;
+      c.style.pointerEvents = d < 1.5 ? '' : 'none';
+      if (!gl) c.style.opacity = op.toFixed(3);
+    });
+    // Progress: each tick lights by its distance from the current position, continuously.
+    ticks.forEach((t, i) => {
+      const d = Math.abs(((i - pos) % M + M + M / 2) % M - M / 2);
+      t.style.opacity = (0.12 + 0.88 * Math.max(0, 1 - d)).toFixed(3);
+    });
+    const f = ((near % N) + N) % N;
+    if (f !== front) {
+      if (cards[front]) { cards[front].classList.remove('is-front'); cards[front].setAttribute('aria-hidden', 'true'); }
+      front = f; cards[front].classList.add('is-front'); cards[front].removeAttribute('aria-hidden');
+      const s = RING[front];
+      status.textContent = `${s.name}, ${(front % M) + 1} of ${M}. Press Enter to open.`;
+      setCaption(s);
+    }
+  }
+  let capTimer = 0;
+  function setCaption(s) {
+    clearTimeout(capTimer);
+    if (!nowTitle.textContent) { nowTitle.textContent = s.name; return; }
+    nowTitle.classList.add('swap');
+    capTimer = setTimeout(() => { nowTitle.textContent = s.name; nowTitle.classList.remove('swap'); }, 140);
+  }
+
+  // ─── WebGL: cards as perspective-correct quads, then the edge lens over the frame ───
+  const canvas = document.getElementById('gl');
+  let gl = null;
+  try { gl = canvas.getContext('webgl', { antialias: true, alpha: false, premultipliedAlpha: false }); } catch (e) {}
+  let bgTex = null, cardProg, lensProg, quadBuf, cardBuf, fbo, fboTex, texs = [], W = 0, H = 0, dpr = 1;
+
+  function shader(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
+  function program(vs, fs) {
+    const p = gl.createProgram();
+    gl.attachShader(p, shader(gl.VERTEX_SHADER, vs)); gl.attachShader(p, shader(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw gl.getProgramInfoLog(p);
+    p.u = n => p[n] || (p[n] = gl.getUniformLocation(p, n));
+    return p;
+  }
+  function initGL() {
+    cardProg = program(`
+      attribute vec4 aPos; attribute vec2 aUV; varying vec2 vUV;
+      void main() { vUV = aUV; gl_Position = aPos; }`, `
+      precision mediump float;
+      varying vec2 vUV;
+      uniform sampler2D uTex; uniform vec2 uCover; uniform vec2 uShift; uniform float uZoom; uniform float uAlpha;
+      uniform vec2 uSize; uniform float uRadius; uniform float uReady;
+      void main() {
+        // object-fit: cover, plus a slight zoom on hover.
+        vec2 uv = (vUV - 0.5) * uCover / uZoom + 0.5 + uShift;
+        vec3 c = mix(vec3(0.949), texture2D(uTex, uv).rgb, uReady);
+        // Rounded corners (px), anti-aliased.
+        vec2 q = abs(vUV - 0.5) * uSize - (uSize * 0.5 - uRadius);
+        float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;   // signed: negative inside
+        float a = (1.0 - smoothstep(-0.75, 0.75, d)) * uAlpha;
+        if (a <= 0.0) discard;
+        gl_FragColor = vec4(c * a, a);   // premultiplied
+      }`);
+    lensProg = program(`
+      attribute vec2 aPos; void main() { gl_Position = vec4(aPos, 0.0, 1.0); }`, `
+      precision highp float;
+      uniform sampler2D uFrame; uniform vec2 uResolution; uniform float uPixelRatio;
+      uniform float uBand, uStretch, uSwell, uDispersion, uBlur, uSlope;
+      const int TAPS = 10;
+      void main() {
+        vec2 p = gl_FragCoord.xy; float W = uResolution.x, H = uResolution.y;
+        float bandPx = max(uBand * W, 1.0);
+        float fromLeft = (bandPx - p.x) / bandPx, fromRight = (p.x - (W - bandPx)) / bandPx;
+        float e = max(fromLeft, fromRight);
+        if (e <= 0.0) { gl_FragColor = texture2D(uFrame, p / uResolution); return; }
+        float t = smoothstep(0.0, 1.0, e), t2 = t * t;
+        float inward = fromLeft > fromRight ? 1.0 : -1.0;
+        float pull = uStretch * bandPx * t2;
+        float lineY = H * 0.5 + (p.x - W * 0.5) * uSlope;
+        float sy = lineY + (p.y - lineY) / (1.0 + uSwell * t2);
+        float blur = uBlur * uPixelRatio * t2, split = uDispersion * uPixelRatio * t2;
+        float jitter = fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))) - 0.5;
+        vec3 acc = vec3(0.0); float accA = 0.0;
+        for (int i = 0; i < TAPS; i++) {
+          float k = (float(i) + 0.5 + jitter) / float(TAPS) - 0.5;
+          float x = p.x + inward * pull + k * blur;
+          acc.r += texture2D(uFrame, vec2(x + inward * split, sy) / uResolution).r;
+          vec4 g = texture2D(uFrame, vec2(x, sy) / uResolution);
+          acc.g += g.g; accA += g.a;
+          acc.b += texture2D(uFrame, vec2(x - inward * split, sy) / uResolution).b;
+        }
+        gl_FragColor = vec4(acc, accA) / float(TAPS);   // premultiplied card layer
+      }`);
+    quadBuf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    cardBuf = gl.createBuffer();
+    fbo = gl.createFramebuffer(); fboTex = gl.createTexture();
+
+    // One texture per section; duplicates in the ring share it.
+    texs = SECTIONS.map(s => {
+      const t = { tex: gl.createTexture(), w: 4, h: 3, ready: false, video: null };
+      gl.bindTexture(gl.TEXTURE_2D, t.tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([242, 242, 242, 255]));
+      [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(k => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      const upload = (src, sw, sh) => { gl.bindTexture(gl.TEXTURE_2D, t.tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); t.w = sw; t.h = sh; t.ready = true; };
+      if (s.img) { const im = new Image(); im.onload = () => upload(im, im.naturalWidth, im.naturalHeight); im.src = s.img; }
+      else if (s.video) {
+        const v = document.createElement('video');
+        Object.assign(v, { src: s.video, muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto' });
+        v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
+        v.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none';
+        document.body.appendChild(v);
+        v.play().catch(() => {});
+        t.video = v;
+      } else {
+        // Rasterise the mask SVG onto its tile colour, contained like the DOM version.
+        const cv = document.createElement('canvas'); cv.width = 1200; cv.height = 900;
+        const cx = cv.getContext('2d'); cx.fillStyle = '#f0f0f0'; cx.fillRect(0, 0, 1200, 900);
+        const im = new Image();
+        im.onload = () => { const s2 = Math.min(1200 / 505, 900 / 630); cx.drawImage(im, (1200 - 505 * s2) / 2, (900 - 630 * s2) / 2, 505 * s2, 630 * s2); upload(cv, 1200, 900); };
+        im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s.svg.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="505" height="630" '));
+      }
+      return t;
+    });
+    bgTex = { tex: gl.createTexture(), w: 4, h: 3, ready: false };
+    gl.bindTexture(gl.TEXTURE_2D, bgTex.tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
+    [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(k => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    const bim = new Image();
+    bim.onload = () => { gl.bindTexture(gl.TEXTURE_2D, bgTex.tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bim); bgTex.w = bim.naturalWidth; bgTex.h = bim.naturalHeight; bgTex.ready = true; };
+    if (BG_IMAGE.enabled) bim.src = BG_IMAGE.src;
+    document.documentElement.classList.add('gl');
+  }
+  function resizeGL() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    const cw = Math.round(innerWidth * dpr), ch = Math.round(innerHeight * dpr);
+    if (cw === W && ch === H) return;
+    W = cw; H = ch; canvas.width = W; canvas.height = H;
+    gl.bindTexture(gl.TEXTURE_2D, fboTex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(k => gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE));
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fboTex, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  }
+
+  // Same transform chain as the CSS cards: stage perspective → track tilt → card on the cylinder.
+  function corners(o) {
+    const m = new DOMMatrix().rotateSelf(tilt.x, 0, 0).rotateSelf(0, 0, tilt.z)
+      .translateSelf(0, 0, R - w * 0.15).rotateSelf(0, o * STEP, 0).translateSelf(0, 0, -R);
+    const hw = innerWidth / 2, hh = innerHeight / 2, out = [];
+    [[-1, -1, 0, 0], [1, -1, 1, 0], [-1, 1, 0, 1], [1, 1, 1, 1]].forEach(([sx, sy, u, v]) => {
+      const p = m.transformPoint(new DOMPoint(sx * w / 2, sy * h / 2, 0));
+      const cw = (PERSPECTIVE - p.z) / PERSPECTIVE;           // clip w = CSS perspective divide
+      out.push(p.x / hw, -p.y / hh, 0, cw, u, v);
+    });
+    return { data: out, z: m.transformPoint(new DOMPoint(0, 0, 0)).z };
+  }
+
+  function draw() {
+    texs.forEach(t => {
+      const v = t.video;
+      if (v && v.readyState >= 2 && v.videoWidth) {
+        gl.bindTexture(gl.TEXTURE_2D, t.tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, v);
+        t.w = v.videoWidth; t.h = v.videoHeight; t.ready = true;
+      }
+    });
+    // Pass 1: cards into the frame buffer, back to front.
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.viewport(0, 0, W, H);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);   // cards-only layer
+    gl.useProgram(cardProg);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.bindBuffer(gl.ARRAY_BUFFER, cardBuf);
+    const aPos = gl.getAttribLocation(cardProg, 'aPos'), aUV = gl.getAttribLocation(cardProg, 'aUV');
+    gl.enableVertexAttribArray(aPos); gl.enableVertexAttribArray(aUV);
+    gl.vertexAttribPointer(aPos, 4, gl.FLOAT, false, 24, 0); gl.vertexAttribPointer(aUV, 2, gl.FLOAT, false, 24, 16);
+    gl.uniform2f(cardProg.u('uSize'), w, h);
+    gl.uniform1f(cardProg.u('uRadius'), 4);
+    gl.uniform1i(cardProg.u('uTex'), 0); gl.activeTexture(gl.TEXTURE0);
+    const list = [];
+    cards.forEach((c, i) => { if (c._op > 0) list.push({ i, c, ...corners(c._o) }); });
+    list.sort((a, b) => a.z - b.z);
+    list.forEach(({ i, c, data }) => {
+      const t = texs[i % M];
+      const cardAR = w / h, texAR = t.w / t.h;
+      gl.uniform2f(cardProg.u('uCover'), texAR > cardAR ? cardAR / texAR : 1, texAR > cardAR ? 1 : texAR / cardAR);
+      gl.uniform1f(cardProg.u('uZoom'), 1 + (i === front ? HOVER_ZOOM * hover : 0));
+      gl.uniform1f(cardProg.u('uAlpha'), c._op);
+      gl.uniform1f(cardProg.u('uReady'), t.ready ? 1 : 0);
+      gl.bindTexture(gl.TEXTURE_2D, t.tex);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.DYNAMIC_DRAW);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    });
+    // Pass 2: background photo straight to screen — not distorted.
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, W, H);
+    gl.clearColor(BG[0], BG[1], BG[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    if (bgTex && bgTex.ready) {
+      const sAR = innerWidth / innerHeight, iAR = bgTex.w / bgTex.h;
+      const cx = iAR > sAR ? sAR / iAR : 1, cy = iAR > sAR ? 1 : iAR / sAR;
+      const lim = 0.5 - cy / 2;
+      const shift = Math.max(-lim, Math.min(lim, (BG_IMAGE.horizon - 0.5) - (BG_IMAGE.place - 0.5) * cy));
+      gl.uniform2f(cardProg.u('uCover'), cx, cy);
+      gl.uniform2f(cardProg.u('uShift'), 0, shift);
+      gl.uniform2f(cardProg.u('uSize'), innerWidth, innerHeight);
+      gl.uniform1f(cardProg.u('uRadius'), 0);
+      gl.uniform1f(cardProg.u('uZoom'), 1);
+      gl.uniform1f(cardProg.u('uAlpha'), 1);
+      gl.uniform1f(cardProg.u('uReady'), 1);
+      gl.bindTexture(gl.TEXTURE_2D, bgTex.tex);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,0,1,0,0, 1,1,0,1,1,0, -1,-1,0,1,0,1, 1,-1,0,1,1,1]), gl.DYNAMIC_DRAW);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      gl.uniform2f(cardProg.u('uSize'), w, h);
+      gl.uniform1f(cardProg.u('uRadius'), 4);
+      gl.uniform2f(cardProg.u('uShift'), 0, 0);
+    }
+    gl.disableVertexAttribArray(aUV);
+    // Pass 3: the card layer over it, through the liquid-glass edges.
+    gl.useProgram(lensProg);
+    gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+    const lp = gl.getAttribLocation(lensProg, 'aPos');
+    gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
+    gl.bindTexture(gl.TEXTURE_2D, fboTex);
+    gl.uniform1i(lensProg.u('uFrame'), 0);
+    gl.uniform2f(lensProg.u('uResolution'), W, H);
+    gl.uniform1f(lensProg.u('uPixelRatio'), dpr);
+    const narrow = innerWidth < 768;
+    gl.uniform1f(lensProg.u('uBand'), reduce ? 0.001 : narrow ? 0.14 : LENS.band);
+    gl.uniform1f(lensProg.u('uStretch'), LENS.stretch);
+    gl.uniform1f(lensProg.u('uSwell'), LENS.swell);
+    gl.uniform1f(lensProg.u('uDispersion'), LENS.dispersionPx);
+    gl.uniform1f(lensProg.u('uBlur'), LENS.blurPx);
+    gl.uniform1f(lensProg.u('uSlope'), Math.tan(-tilt.z * Math.PI / 180)); // ring rises to the right; GL y is up
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.disable(gl.BLEND);
+  }
+
+  if (gl) { try { initGL(); } catch (e) { console.warn('Overview: WebGL off', e); gl = null; } }
+  if (!gl) {
+    // Fallback: show media in the DOM cards.
+    cards.forEach((c, i) => { const g = makeCard(RING[i], true); c.append(...g.childNodes); });
+  }
+  canvas.addEventListener('webglcontextlost', e => { e.preventDefault(); location.reload(); });
+
+  // ─── Motion: one physical state (pos, vel) in card units, stepped by real time ───
+  let vel = 0, target = null, omega = 0, landing = null, last = 0, raf = 0;
+
+  function step(dt) {
+    if (landing) {
+      // Quintic Hermite from (pos, v0) to (to, 0): starts at release speed, eases speed and
+      // deceleration to zero, ends exactly on time, never overshoots.
+      landing.t = Math.min(landing.t + dt, landing.T);
+      const { p0, v0, to, T } = landing, u = landing.t / T;
+      const u2 = u*u, u3 = u2*u, u4 = u3*u, u5 = u4*u;
+      const h1 = u - 6*u3 + 8*u4 - 3*u5, h5 = 10*u3 - 15*u4 + 6*u5;
+      const dh1 = 1 - 18*u2 + 32*u3 - 15*u4, dh5 = 30*u2 - 60*u3 + 30*u4;
+      pos = p0 + T * v0 * h1 + (to - p0) * h5;
+      vel = v0 * dh1 + (to - p0) * dh5 / T;
+      if (u >= 1) { pos = to; vel = 0; landing = null; }
+      return true;
+    }
+    if (target !== null) {
+      // Critically damped spring, sub-stepped at 240Hz so it's identical at any refresh rate.
+      const n = Math.ceil(dt * 240), h = dt / n;
+      for (let k = 0; k < n; k++) { vel += (omega * omega * (target - pos) - 2 * omega * vel) * h; pos += vel * h; }
+      if (Math.abs(target - pos) < 1e-4 && Math.abs(vel) < 1e-3) { pos = target; vel = 0; target = null; }
+      return true;
+    }
+    return false;
+  }
+  // One loop drives physics, the DOM hit layer and the GL draw (videos need every frame).
+  function frame(t) {
+    const dt = Math.min(0.05, (t - last) / 1000 || 1 / 60); // clamp after tab switches
+    last = t;
+    step(dt);
+    render();
+    hover += ((hoverTarget ? 1 : 0) - hover) * (1 - Math.exp(-dt / 0.12));
+    if (cur.on) {
+      const k = reduce ? 1 : 1 - Math.exp(-dt / Math.max(CURSOR_LAG, 1e-3));       // light lag so it glides, not snaps
+      cur.x += (cur.tx - cur.x) * k; cur.y += (cur.ty - cur.y) * k;
+      cursorEl.style.transform = `translate3d(${cur.x.toFixed(1)}px, ${cur.y.toFixed(1)}px, 0)`;
+    }
+    gl && draw();
+    raf = ringVisible && !document.hidden ? requestAnimationFrame(frame) : 0;
+  }
+  function wake() { if (!raf && ringVisible) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function startLanding(to, v0, T) {
+    target = null;
+    if (reduce) { pos = to; vel = 0; landing = null; render(); return; }
+    if (Math.abs(to - pos) < 1e-4) { pos = to; vel = 0; render(); return; }
+    landing = { p0: pos, v0, to, T, t: 0 }; vel = v0; wake();
+  }
+  function springTo(to) {
+    landing = null;
+    if (reduce) { pos = to; render(); return; }
+    target = to; omega = 2 * Math.PI / WHEEL_RESPONSE; wake();
+  }
+
+  // Release speed from position samples over a short window (0 if the hand paused first).
+  let samples = [];
+  function sample() {
+    const now = performance.now();
+    samples.push({ t: now, pos });
+    while (samples.length > 2 && samples[0].t < now - VEL_WINDOW * 2) samples.shift();
+  }
+  function sampledVelocity() {
+    const now = performance.now(), lastS = samples[samples.length - 1];
+    if (!lastS || now - lastS.t > VEL_WINDOW) return 0;
+    const from = samples.find(s => s.t >= now - VEL_WINDOW) || samples[0];
+    const span = (lastS.t - from.t) / 1000;
+    return span > 0.008 ? (lastS.pos - from.pos) / span : 0;
+  }
+
+  // One decision, one motion, never reverses.
+  function settle(v) {
+    clearTimeout(wheelTimer);
+    v = Math.max(-10, Math.min(10, v));
+    if (Math.abs(v) < STOP_SPEED) {
+      const to = Math.round(pos), dist = Math.abs(to - pos);
+      const T = Math.min(0.26, Math.max(0.14, 0.14 + 0.3 * dist));
+      const toward = v * Math.sign(to - pos);
+      startLanding(to, toward > 0 ? Math.sign(v) * Math.min(Math.abs(v), 2.5 * dist / T) : 0, T);
+      return;
+    }
+    const dir = Math.sign(v);
+    let to = Math.round(pos + Math.max(-MAX_THROW, Math.min(MAX_THROW, v * THROW_TAU)));
+    if ((to - pos) * dir <= 0) to = dir > 0 ? Math.ceil(pos) : Math.floor(pos);
+    if (2.5 * Math.abs(to - pos) / Math.abs(v) < MIN_LANDING) to += dir;   // too close to stop smoothly
+    const dist = Math.abs(to - pos);
+    const T = Math.min(0.6, Math.max(MIN_LANDING, 2.2 * dist / Math.abs(v)));
+    startLanding(to, v, Math.min(T, 2.5 * dist / Math.abs(v)));
+  }
+
+  // Buttons / keys: stack onto wherever the ring is already heading, keeping its speed.
+  function go(d) {
+    if (dragging) return;
+    const from = landing ? landing.to : target !== null ? target : Math.round(pos);
+    const to = Math.round(from) + d;
+    const toward = vel * Math.sign(to - pos);
+    startLanding(to, toward > 0 ? vel : 0, STEP_DURATION);
+  }
+  stage.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'Enter' && front >= 0) location.href = cards[front].href;
+  });
+
+  // ─── Wheel / trackpad ───
+  let wheelTimer = 0, lastWheelT = 0, lastWheelPx = 0, peakPx = 0, ignoringTail = false, wasTrackpad = false;
+  stage.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (dragging) return;
+    const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    const raw = (horizontal ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 16 : 1);
+    const now = performance.now(), gap = now - lastWheelT, abs = Math.abs(raw);
+    lastWheelT = now;
+    // Only a real pause or a clearly bigger push starts a new gesture; OS momentum wobbles.
+    if (gap > 120 || (abs > lastWheelPx * 3 + 10 && abs > 15)) { ignoringTail = false; peakPx = 0; }
+    lastWheelPx = abs;
+    if (ignoringTail) return;
+    peakPx = Math.max(peakPx, abs);
+    const du = raw * 1.3 / pxPerCard;
+
+    wasTrackpad = !(e.deltaMode === 1 || abs >= NOTCH_PX);
+    if (!wasTrackpad) {
+      springTo((target !== null ? target : pos) + du);   // mouse notch: glide, don't step
+    } else {
+      // Trackpad is already smooth and carries OS momentum — follow it directly.
+      landing = null; target = null;
+      pos += du; sample(); wake();
+      if (abs < 4 && peakPx > 20) { ignoringTail = true; settle(sampledVelocity()); return; }
+    }
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => {
+      if (wasTrackpad) { ignoringTail = true; settle(sampledVelocity()); }
+      else { springTo(Math.round(target !== null ? target : pos)); }
+    }, 90);
+  }, { passive: false });
+
+  // ─── Drag ───
+  let dragging = false, pointerId = -1, startX = 0, lastX = 0, moved = false;
+  stage.addEventListener('pointerdown', e => {
+    if (dragging || e.button !== 0) return;               // ignore extra fingers
+    dragging = true; pointerId = e.pointerId; moved = false;
+    landing = null; target = null; vel = 0;               // catch: the ring stops under the finger
+    startX = lastX = e.clientX; samples = []; sample();
+    clearTimeout(wheelTimer); wake();
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!dragging || e.pointerId !== pointerId) return;
+    if (!moved) {
+      if (Math.abs(e.clientX - startX) < 6) return;
+      moved = true; stage.classList.add('dragging'); document.body.classList.add('is-dragging'); stage.setPointerCapture(e.pointerId);
+    }
+    pos -= (e.clientX - lastX) / pxPerCard; lastX = e.clientX; sample();
+  });
+  const up = e => {
+    if (!dragging || e.pointerId !== pointerId) return;
+    dragging = false; stage.classList.remove('dragging'); document.body.classList.remove('is-dragging');
+    if (moved) settle(sampledVelocity()); else if (!landing && target === null) settle(0);
+  };
+  stage.addEventListener('pointerup', up);
+  stage.addEventListener('pointercancel', up);
+
+
+  // Arrow cursor: ← on the left half, → on the right, ↗ over the front card (opens it).
+  const cursorEl = document.getElementById('ring-cursor');
+  const cur = { x: 0, y: 0, tx: 0, ty: 0, on: false };
+  const sideOf = (e) => (e.target.closest && e.target.closest('.card.is-front')) ? 'open' : (e.clientX < innerWidth / 2 ? 'prev' : 'next');
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    stage.addEventListener('pointermove', e => {
+      cur.tx = e.clientX; cur.ty = e.clientY;
+      if (!cur.on) { cur.x = cur.tx; cur.y = cur.ty; cur.on = true; cursorEl.classList.add('on'); wake(); }
+      const d = dragging && moved ? cursorEl.dataset.dir : sideOf(e);
+      if (cursorEl.dataset.dir !== d) cursorEl.dataset.dir = d;
+    });
+    stage.addEventListener('pointerleave', () => { cur.on = false; cursorEl.classList.remove('on'); });
+    stage.addEventListener('pointerdown', () => cursorEl.classList.add('down'));
+    addEventListener('pointerup', () => cursorEl.classList.remove('down'));
+  }
+  // Clicking empty space steps the ring the way the arrow points.
+  stage.addEventListener('click', e => {
+    if (e.target.closest && e.target.closest('.card')) return;
+    if (moved) { moved = false; return; }
+    go(e.clientX < innerWidth / 2 ? -1 : 1);
+  });
+
+  // Hover zoom on the front card (drawn in GL), mouse/trackpad only.
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    cards.forEach(c => {
+      c.addEventListener('pointerenter', () => { if (c.classList.contains('is-front')) hoverTarget = true; });
+      c.addEventListener('pointerleave', () => { hoverTarget = false; });
+    });
+  }
+
+  // Side cards come forward on click; only the front card navigates.
+  cards.forEach((c, i) => c.addEventListener('click', e => {
+    if (moved) { e.preventDefault(); moved = false; return; }
+    if (!c.classList.contains('is-front')) { e.preventDefault(); hoverTarget = false; go(Math.round(wrap(i - pos))); }
+  }));
+
+  // Ring / Grid, remembered for this tab so Back returns to the same view and card.
+  const store = {
+    get(k) { try { return sessionStorage.getItem('ov:' + k); } catch (e) { return null; } },
+    set(k, v) { try { sessionStorage.setItem('ov:' + k, v); } catch (e) {} },
+  };
+  const buttons = document.querySelectorAll('.seg button');
+  function setView(view) {
+    buttons.forEach(x => x.setAttribute('aria-pressed', String(x.dataset.view === view)));
+    document.body.classList.toggle('is-grid', view === 'grid');
+    store.set('view', view);
+    ringVisible = view === 'ring';
+    if (ringVisible) { measure(); rendered = NaN; render(); wake(); }
+    texs.forEach(t => t.video && (ringVisible ? t.video.play().catch(() => {}) : t.video.pause()));
+    grid.querySelectorAll('video').forEach(v => ringVisible ? v.pause() : v.play().catch(() => {}));
+  }
+  buttons.forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+
+  const savedPos = parseInt(store.get('pos'), 10);
+  if (!isNaN(savedPos)) pos = ((savedPos % N) + N) % N;
+  const savePos = () => store.set('pos', String(((Math.round(pos) % N) + N) % N));
+  addEventListener('pagehide', savePos);
+  cards.forEach(c => c.addEventListener('click', savePos));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) wake(); });
+  addEventListener('pageshow', () => wake());
+
+  // ─── DialKit (dev only: localhost or ?dial) ───
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has('dial')) {
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'vendor/dialkit/styles.css'; document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = 'vendor/dialkit/browser.global.js';
+    js.onload = () => {
+      const { createDialRoot, createDialKit } = window.DialKit;
+      try { localStorage.removeItem('dialkit:overview-ring'); } catch (e) {}   // drop the old key's values
+      createDialRoot({ position: 'bottom-right' });
+      const kit = createDialKit('Overview ring', {
+        layout: {
+          cardWidthVw: [52, 30, 80, 1], cardMaxSvh: [78, 40, 95, 1],
+          step: [34, 18, 60, 0.5], perspective: [1400, 500, 3000, 10],
+          tiltX: [-3, -15, 15, 0.5], tiltZ: [-4, -15, 15, 0.5],
+          visible: [2.35, 1, 4, 0.05], fade: [0.75, 0.1, 2, 0.05],
+        },
+        motion: {
+          stepDuration: [0.35, 0.1, 0.8, 0.01], throwTau: [0.3, 0.05, 1, 0.01], maxThrow: [3, 1, 6, 1],
+          stopSpeed: [0.6, 0.1, 3, 0.05], minLanding: [0.22, 0.08, 0.6, 0.01], wheelResponse: [0.14, 0.04, 0.5, 0.01],
+        },
+        lens: { band: [0.32, 0, 0.5, 0.01], stretch: [0.14, 0, 0.6, 0.01], swell: [0.23, 0, 1, 0.01], dispersionPx: [3.5, 0, 20, 0.5], blurPx: [13, 0, 60, 1] },
+        cursor: { size: [96, 16, 160, 1], lag: [0.05, 0, 0.3, 0.01], hoverZoom: [0.03, 0, 0.1, 0.005] },
+        reset: { type: 'action' },
+      }, { id: 'overview-ring-2', persist: true, onAction: path => { if (path === 'reset') kit.resetValues(); } });
+      kit.subscribe(v => {
+        document.documentElement.style.setProperty('--card-vw', v.layout.cardWidthVw);
+        document.documentElement.style.setProperty('--card-svh', v.layout.cardMaxSvh);
+        STEP = v.layout.step; PERSPECTIVE = v.layout.perspective;
+        TILT = { x: v.layout.tiltX, z: v.layout.tiltZ };
+        VISIBLE = v.layout.visible; FADE = v.layout.fade;
+        STEP_DURATION = v.motion.stepDuration; THROW_TAU = v.motion.throwTau; MAX_THROW = v.motion.maxThrow;
+        STOP_SPEED = v.motion.stopSpeed; MIN_LANDING = v.motion.minLanding; WHEEL_RESPONSE = v.motion.wheelResponse;
+        Object.assign(LENS, v.lens);
+        cursorEl.style.setProperty('--size', v.cursor.size + 'px');
+        CURSOR_LAG = v.cursor.lag; HOVER_ZOOM = v.cursor.hoverZoom;
+        measure(); rendered = NaN; render(); wake();
+      });
+    };
+    document.head.appendChild(js);
+  }
+
+  addEventListener('resize', () => { measure(); rendered = NaN; render(); });
+  measure();
+  setView(store.get('view') === 'grid' ? 'grid' : 'ring');
+  render(); wake();
+})();
+</script>
+</body>
+</html>

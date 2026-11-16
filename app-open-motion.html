@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headout — App open motion</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app-open-motion.css" />
+  <style>
+    /* page chrome only — the motion itself lives in css/app-open-motion.css + js/app-open-motion.js */
+    :root { --phone-zoom: 2; }            /* render scale (assets are 4×) */
+    html, body { height: 100%; }
+    body {
+      font-family: var(--ht, 'Halyard Text', system-ui, sans-serif);
+      background: #111;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+      justify-items: center;
+      gap: 28px;
+      padding: 32px 16px;
+    }
+
+    /* ---------- device ---------- */
+    .stage {
+      zoom: var(--phone-zoom);
+      padding: 7px;
+      border-radius: 31px;
+      background: #0a0a0a;
+      box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.14),
+        0 12px 32px rgba(0,0,0,0.6);
+    }
+
+    /* ---------- controls ---------- */
+    .controls {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+    }
+    .controls button, .controls label {
+      font: inherit;
+      color: inherit;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: background 150ms ease, transform 150ms ease-out;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .controls button:hover, .controls label:hover { background: rgba(255,255,255,0.1); }
+    }
+    .controls button:active, .controls label:active { transform: scale(0.96); }
+    .controls button[aria-pressed="true"], .controls label:has(input:checked) {
+      background: var(--purple, #8000ff); border-color: transparent; color: #fff;
+    }
+    .controls input { appearance: none; margin: 0; }
+    .controls .sep { width: 1px; height: 18px; background: rgba(255,255,255,0.14); margin: 0 4px; }
+    .controls .hint { width: 100%; text-align: center; font-size: 12px; color: rgba(255,255,255,0.45); }
+    .controls kbd { font: inherit; padding: 0 5px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 4px; }
+
+    @media (max-width: 520px) { :root { --phone-zoom: 1.5; } }
+
+    /* ?embed=1 — bare 207 × 449 screen for embedding (see app-open-poster.html) */
+    body[data-embed] { display: block; height: auto; padding: 0; background: transparent; overflow: hidden; }
+    body[data-embed] .stage { position: absolute; left: 0; top: 0; zoom: var(--embed-zoom, 1); padding: 0; border-radius: 0; background: none; box-shadow: none; }
+    body[data-embed] .screen { border-radius: 0; }
+    body[data-embed] .controls { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="screen" id="screen" data-state="idle">
+      <img class="home" src="assets/motion/app-open/home.svg" width="207" height="449" alt="iOS home screen" />
+
+      <div class="app" aria-hidden="true">
+        <div class="app-header">
+          <img src="assets/motion/app-open/ticket-header.svg" width="206" height="55" alt="" />
+        </div>
+        <div class="app-card">
+          <div class="ticket-band ticket-band--1">
+            <img src="assets/motion/app-open/ticket-base.svg" width="195" height="355" alt="" />
+          </div>
+          <div class="ticket-band ticket-band--2">
+            <img src="assets/motion/app-open/ticket-white.svg" width="195" height="355" alt="" />
+          </div>
+          <!-- text + shield: one image, shown through stacked windows so each row can stagger -->
+          <div class="ticket-band ticket-band--3">
+            <div class="ticket-row ticket-row--1"><img src="assets/motion/app-open/ticket-content@4x.png" width="195" height="355" alt="" /></div>
+            <div class="ticket-row ticket-row--2"><img src="assets/motion/app-open/ticket-content@4x.png" width="195" height="355" alt="" /></div>
+            <div class="ticket-row ticket-row--3"><img src="assets/motion/app-open/ticket-content@4x.png" width="195" height="355" alt="" /></div>
+            <div class="ticket-row ticket-row--4"><img src="assets/motion/app-open/ticket-content.svg" width="195" height="369" alt="" />
+              <!-- Shield (2459:26512) layered over the content so it can shimmer -->
+              <div class="shield">
+                <div class="shield-shine">
+                  <div class="shield-shine-band"></div>
+                </div>
+              </div>
+            </div>
+            <div class="ticket-row ticket-row--5"><img src="assets/motion/app-open/ticket-content.svg" width="195" height="369" alt="" /></div>
+          </div>
+        </div>
+        <button class="app-back" id="back" aria-label="Back to home"></button>
+      </div>
+
+      <button class="app-icon" id="icon" aria-label="Open Headout">
+        <img src="assets/motion/app-open/headout-app-icon.svg" width="33" height="33" alt="" />
+      </button>
+      <!-- notification badge sits above the tile, as on iOS (a circle crop of the home export) -->
+      <div class="badge" aria-hidden="true"></div>
+      <!-- status bar is fixed like iOS: time/signal never move with the app; only the style crossfades -->
+      <div class="statusbar" aria-hidden="true">
+        <div class="statusbar-light"></div>
+        <div class="statusbar-dark"><img src="assets/motion/app-open/ticket-header.svg" width="206" height="55" alt="" /></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="play">Play once</button>
+    <label><input type="checkbox" id="loop" /> Loop</label>
+    <span class="sep"></span>
+    <button data-speed="1" aria-pressed="true">1×</button>
+    <button data-speed="2">½×</button>
+    <button data-speed="4">¼×</button>
+    <span class="hint">Tap the Headout icon to open · tap the back arrow to close · <kbd>Space</kbd> plays</span>
+  </div>
+
+  <script src="js/app-open-motion.js"></script>
+  <script>
+    const motion = AppOpenMotion.init(document.getElementById('screen'));
+    if (new URLSearchParams(location.search).has('embed')) {
+      document.body.dataset.embed = '';
+      AppOpenMotion.bindMessages(motion);
+      // fill whatever size the host gives the iframe (207 = the screen's design width)
+      const fit = () => {
+        const w = (window.visualViewport && window.visualViewport.width) || window.innerWidth;
+        document.documentElement.style.setProperty('--embed-zoom', w / 207);
+      };
+      fit();
+      window.addEventListener('resize', fit);
+    } else {
+      AppOpenMotion.bindControls(motion);
+    }
+  </script>
+</body>
+</html>

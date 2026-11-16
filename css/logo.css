@@ -235,7 +235,7 @@
     /* logo = wordmark silhouette masked with the card's ink colour; 62.8% of card width (18.62% inset each side) */
     .cv-logo {
       position: relative; z-index: 1; display: block; width: 62.8%; aspect-ratio: 2775.88 / 390.11;
-      -webkit-mask: url('../assets/svg/logo-wordmark.svg') center / contain no-repeat; mask: url('../assets/svg/logo-wordmark.svg') center / contain no-repeat;
+      -webkit-mask: url('../assets/shared/brand/logo-wordmark.svg') center / contain no-repeat; mask: url('../assets/shared/brand/logo-wordmark.svg') center / contain no-repeat;
     }
     .cv-logo-sm { width: 30.8%; }
     @media (max-width: 1023px) {

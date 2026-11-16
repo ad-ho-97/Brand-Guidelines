@@ -1,0 +1,316 @@
+/* Fluid scaling (Vevo-style) for logo-fluid.html.
+   logo-fluid-base.css is logo.css with every px value expressed as N × --u.
+   --u = 1px up to 1240px (mid + mobile unchanged); above that it tracks the
+   viewport against a 1440px design, clamped 0.9–1.6px. No zoom, so DevTools
+   boxes match what you see. Regenerate the base file if logo.css changes. */
+:root { --u: 1px; --t: 1px; }
+@media (min-width: 1241px) {
+  :root { --u: clamp(0.9px, calc(100vw / 1440), 1.6px); }
+  /* Uniform spacing: column centred in the main area (no -34px shift). */
+  .content { transform: none; }
+
+  /* Section index: centred in the right gutter so it stays attached to the
+     content. Gutter = (main width − column) / 2; centre the 16u tick column
+     (4u right pad + 8u half-tick = 12u). */
+  .index { right: calc((100vw - var(--sidebar-w) - var(--col)) / 4 - 12 * var(--u)); }
+  /* Hairlines stay on whole pixels; only their length scales */
+  .index-rail span,
+  .index-pop a::after { height: 2px; }
+
+  /* Reading text scales with the page but never drops below the design size and stops at a comfortable one
+     (17→20px intro, 15→18px body, ≈1.18× of the 1440 design) */
+  .intro { font-size: clamp(17px, calc(17 * var(--t)), 20px); line-height: clamp(28px, calc(28 * var(--t)), 33px); }
+  .body  { font-size: clamp(15px, calc(15 * var(--t)), 18px); line-height: clamp(24px, calc(24 * var(--t)), 29px); }
+
+  /* Side nav pinned to the left edge (Vevo: fixed, no panel), divider only */
+  :root { --sidebar-w: calc(232 * var(--u)); }
+  .sidebar {
+    background: transparent;
+    border-right: 0;
+    padding: calc(40 * var(--u)) calc(16 * var(--u)) calc(32 * var(--u)) calc(16 * var(--u));
+  }
+  .sidebar-logo { margin-bottom: calc(23.04 * var(--u) - 4px); padding-left: calc(8 * var(--u)); }
+
+  /* Visual Edit handoff (approved at 1500px, option B: fluid, exact at 1500) */
+  .sidebar-logo img { height: calc(16.943 * var(--u)); }        /* 181.3px wide at 1500, aspect kept */
+  .sidebar > .nav-group:nth-of-type(-n+2) { margin-bottom: calc(3.84 * var(--u)); }  /* 4px @1500 */
+  .nav-group-label { height: calc(30.72 * var(--u)); }          /* 32px @1500 */
+  .nav-item { height: calc(26.88 * var(--u)); }                 /* 28px @1500 */
+}
+
+/* Banner spans the full page-head width */
+.banner { grid-column: 1 / -1; }
+
+/* App tile art from Figma (12529:4127) — radius matches the SVG's 58.14/260.4 */
+.tile-icon { border-radius: 22.33%; }
+
+/* ─── Tile ⇄ avatar morph ──────────────────────────────────────
+   One object, two shapes. The art is square (no baked radius) so the container's
+   radius is the only shape — that's what lets the morph run identically both ways.
+   Radii from Figma: 58.14/260.4 = 22.33%, and 50%. */
+.tile-morph {
+  --morph-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative; width: 31%; aspect-ratio: 1;
+  border-radius: 22.33%; overflow: hidden; isolation: isolate;
+  background: #8000ff;
+  box-shadow: 0 calc(16 * var(--u)) calc(40 * var(--u)) rgb(128 0 255 / .22);
+  will-change: transform;
+  transition: border-radius 400ms var(--morph-ease);
+}
+.tile-morph[data-shape="avatar"] { border-radius: 50%; }
+/* Edge highlight (Figma: 3.32px radial stroke at 50%), redrawn so it morphs too */
+.tile-morph::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+  box-shadow: inset 0 0 0 calc(1.6 * var(--u)) rgb(255 255 255 / .28);
+}
+.tile-art {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  /* Centred on the morph: the art swaps while the shape is mid-way, not at either end */
+  transition: opacity 200ms ease 100ms;
+}
+.tile-art.is-avatar { opacity: 0; }
+.tile-morph[data-shape="avatar"] .tile-art.is-avatar { opacity: 1; }
+@media (max-width: 860px) { .tile-morph { width: 58%; } }
+@media (prefers-reduced-motion: reduce) {
+  .tile-morph, .tile-morph::after { transition: none; }
+}
+
+
+/* ─── Banner · Figma 11990:6472 (792×60, r12, #FAFAFA + blurred peach→grey→lilac) ─── */
+.banner {
+  height: calc(60 * var(--u)); padding: 0 calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  /* Sampled from the Figma render of the 170px-blurred gradient vector */
+  background: linear-gradient(90deg,
+    #fae3cd 0%, #f9e6d4 19%, #f5e9dd 28%, #f4ede6 38%, #f7f5f3 48%,
+    #f5f4f6 58%, #ede7f5 68%, #e3d9f5 76%, #e2d6f7 88%, #f3eefa 100%);
+  overflow: visible;
+}
+.banner .banner-art {
+  position: absolute; left: 0; top: calc(-15.574 * var(--u)); bottom: 0; /* overflows the top, clipped at the banner's bottom edge */
+  width: calc(180 * var(--u)); height: auto;
+  /* free above (tiles rise out of the banner), cut at the bottom edge following the banner's 12px corner */
+  clip-path: inset(calc(-40 * var(--u)) calc(-40 * var(--u)) 0 0 round 0 0 0 calc(12 * var(--u)));
+  pointer-events: none;
+}
+/* Copy · Figma 12533:4178 — in flow so it wraps instead of colliding with the CTA.
+   Left edge aligns with .pagehead-copy (282 + 24). */
+.banner { justify-content: flex-start; gap: var(--space-16); padding-left: calc(282 * var(--u) + var(--space-24)); }
+.banner .banner-copy {
+  position: relative; flex: 1 1 auto; min-width: 0; margin: 0;
+  display: grid; font-size: calc(15 * var(--t)); line-height: 1.2; color: #222; text-wrap: pretty;
+}
+.banner .banner-copy strong { font-weight: 500; }
+.banner .btn { margin-left: auto; }
+@media (max-width: 1200px) { .banner .banner-copy { display: none; } }
+@media (max-width: 860px) {
+  .banner { padding-left: calc(150 * var(--u)); height: auto; min-height: calc(var(--button-height) + var(--space-16)); }
+  /* Same treatment as desktop: tiles rise above the banner and are cut at its bottom edge.
+     Art box = banner height + rise (~75px); tiles are taller (88px), so the bottom ~15% is clipped. */
+  .banner .banner-art { width: calc(165 * var(--u)); top: calc(-11 * var(--u)); }
+  .banner .banner-art img { width: calc(165 * var(--u)); height: calc(88 * var(--u)); }
+}
+
+
+/* Banner motion: tiles fan apart while the CTA is hovered; icon confirms the download */
+.banner-art img { position: absolute; left: 0; top: 0; width: calc(180 * var(--u)); height: calc(96 * var(--u)); transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+.banner-art .tile-dark   { transform-origin: 32% 78%; }
+.banner-art .tile-purple { transform-origin: 66% 45%; }
+@media (hover: hover) and (pointer: fine) {
+  /* Whole banner wakes the tiles a little; the CTA itself fans them fully, with a slight overshoot */
+  .banner:hover .tile-dark   { transform: translate(calc(-1 * var(--u)), calc(-2 * var(--u))) rotate(-1.5deg); }
+  .banner:hover .tile-purple { transform: translate(calc(1 * var(--u)), calc(-3 * var(--u))) rotate(1.5deg); transition-delay: 30ms; }
+  .banner:has(.btn:hover) .banner-art img { transition: transform 480ms cubic-bezier(0.34, 1.36, 0.64, 1); }
+  .banner:has(.btn:hover) .tile-dark   { transform: translate(calc(-3 * var(--u)), calc(-6 * var(--u))) rotate(-4deg); }
+  .banner:has(.btn:hover) .tile-purple { transform: translate(calc(3 * var(--u)), calc(-8 * var(--u))) rotate(4deg); transition-delay: 30ms; }
+  .banner .btn:hover .dl-arrow path:first-child { transform: translateY(1px); }
+  .banner .btn-elevated:hover { background: var(--grey-900); color: #fff; }
+}
+.dl-icon { position: relative; display: inline-grid; width: calc(14 * var(--u)); height: calc(14 * var(--u)); }
+.dl-icon svg { grid-area: 1 / 1; transition: opacity 150ms var(--ease-out), transform 150ms var(--ease-out); }
+.dl-arrow path:first-child { transition: transform 150ms var(--ease-out); }
+.dl-check { opacity: 0; transform: scale(.6); }
+.btn.is-done .dl-arrow { opacity: 0; transform: scale(.6); }
+.btn.is-done .dl-check { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .banner-art img, .dl-icon svg, .dl-arrow path:first-child { transition: none; }
+  .banner:hover .banner-art img, .banner .btn:hover .dl-arrow path:first-child { transform: none !important; }
+}
+@media (max-width: 860px) {
+  .banner { height: calc(var(--button-height) + var(--space-16)); padding: 0 var(--space-8); }
+}
+
+/* ─── Tile stage backgrounds · Figma 12529:4125 (tile) / 12529:4152 (avatar) ───
+   Rotated radial gradients → SVG with the inverted Figma gradientTransform (exact).
+   Both layers sit on the stage; the one for the current shape fades in with the morph. */
+.tile-stage { position: relative; isolation: isolate; background: #fff; }
+.tile-stage::before, .tile-stage::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-size: 100% 100%; transition: opacity 400ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.tile-stage::before { background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 792 420%22 preserveAspectRatio=%22none%22><defs><radialGradient id=%22g0%22 cx=%22.5%22 cy=%22.5%22 r=%22.5%22 gradientUnits=%22objectBoundingBox%22 gradientTransform=%22matrix(-1.27249 -2.85135 -2.21771 3.51934 3.09908 1.19310)%22><stop offset=%220%22 stop-color=%22%23C2EAFF%22 stop-opacity=%221%22/><stop offset=%221%22 stop-color=%22%23C2EAFF%22 stop-opacity=%220%22/></radialGradient><radialGradient id=%22g1%22 cx=%22.5%22 cy=%22.5%22 r=%22.5%22 gradientUnits=%22objectBoundingBox%22 gradientTransform=%22matrix(0.83916 2.13851 1.60388 -2.23798 -1.22152 -0.12997)%22><stop offset=%220%22 stop-color=%22%23F6CEFF%22 stop-opacity=%221%22/><stop offset=%220.7%22 stop-color=%22%23F6CEFF%22 stop-opacity=%220%22/></radialGradient></defs><rect width=%22792%22 height=%22420%22 fill=%22%23fff%22/><rect width=%22792%22 height=%22420%22 fill=%22url(%23g0)%22/><rect width=%22792%22 height=%22420%22 fill=%22url(%23g1)%22/></svg>"); }
+.tile-stage::after  { background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 792 420%22 preserveAspectRatio=%22none%22><defs><radialGradient id=%22g0%22 cx=%22.5%22 cy=%22.5%22 r=%22.5%22 gradientUnits=%22objectBoundingBox%22 gradientTransform=%22matrix(-0.00000 -1.80000 -1.40000 -0.00000 1.65000 1.90000)%22><stop offset=%220%22 stop-color=%22%23FFF3C2%22 stop-opacity=%221%22/><stop offset=%220.7%22 stop-color=%22%23FFF3C2%22 stop-opacity=%220%22/></radialGradient><radialGradient id=%22g1%22 cx=%22.5%22 cy=%22.5%22 r=%22.5%22 gradientUnits=%22objectBoundingBox%22 gradientTransform=%22matrix(-0.00000 -1.60000 -1.20000 -0.00000 0.75000 0.90000)%22><stop offset=%220%22 stop-color=%22%23F4ECFF%22 stop-opacity=%221%22/><stop offset=%220.7%22 stop-color=%22%23F4ECFF%22 stop-opacity=%220%22/></radialGradient></defs><rect width=%22792%22 height=%22420%22 fill=%22%23fff%22/><rect width=%22792%22 height=%22420%22 fill=%22url(%23g0)%22/><rect width=%22792%22 height=%22420%22 fill=%22url(%23g1)%22/></svg>"); opacity: 0; }
+.tile-stage:has(.tile-morph[data-shape="avatar"])::after { opacity: 1; }
+
+/* Banner sits under the hero video (Figma: 40px gap; tiles overflow 12px into it) */
+.hero-media + .banner { margin-top: calc(40 * var(--u)); }
+
+/* ─── Morph v3 · vertex-matched clip-path ───────────────────────
+   Both shapes sampled at the same 120 angles from the centre, so every point
+   travels in a straight line to its partner: the silhouette changes at a steady
+   rate (border-radius % front-loads the change and creeps at the end).
+   Shadow lives on a wrapper as drop-shadow so it follows the clipped shape. */
+.tile-shadow {
+  display: grid; place-items: center; width: 31%;
+  filter: drop-shadow(0 calc(14 * var(--u)) calc(18 * var(--u)) rgb(128 0 255 / .2));
+}
+.tile-shadow > .tile-morph {
+  width: 100%;
+  border-radius: 0; box-shadow: none; overflow: visible;
+  --shape-tile: polygon(100.000% 50.000%, 100.000% 52.620%, 100.000% 55.255%, 100.000% 57.919%, 100.000% 60.628%, 100.000% 63.397%, 100.000% 66.246%, 100.000% 69.193%, 100.000% 72.261%, 100.000% 75.476%, 99.969% 78.850%, 99.541% 82.173%, 98.641% 85.340%, 97.304% 88.306%, 95.565% 91.027%, 93.460% 93.460%, 91.027% 95.565%, 88.306% 97.304%, 85.340% 98.641%, 82.173% 99.541%, 78.850% 99.969%, 75.476% 100.000%, 72.261% 100.000%, 69.193% 100.000%, 66.246% 100.000%, 63.397% 100.000%, 60.628% 100.000%, 57.919% 100.000%, 55.255% 100.000%, 52.620% 100.000%, 50.000% 100.000%, 47.380% 100.000%, 44.745% 100.000%, 42.081% 100.000%, 39.372% 100.000%, 36.603% 100.000%, 33.754% 100.000%, 30.807% 100.000%, 27.739% 100.000%, 24.524% 100.000%, 21.150% 99.969%, 17.827% 99.541%, 14.660% 98.641%, 11.694% 97.304%, 8.973% 95.565%, 6.540% 93.460%, 4.435% 91.027%, 2.696% 88.306%, 1.359% 85.340%, 0.459% 82.173%, 0.031% 78.850%, 0.000% 75.476%, 0.000% 72.261%, 0.000% 69.193%, 0.000% 66.246%, 0.000% 63.397%, 0.000% 60.628%, 0.000% 57.919%, 0.000% 55.255%, 0.000% 52.620%, 0.000% 50.000%, 0.000% 47.380%, 0.000% 44.745%, 0.000% 42.081%, 0.000% 39.372%, 0.000% 36.603%, 0.000% 33.754%, 0.000% 30.807%, 0.000% 27.739%, 0.000% 24.524%, 0.031% 21.150%, 0.459% 17.827%, 1.359% 14.660%, 2.696% 11.694%, 4.435% 8.973%, 6.540% 6.540%, 8.973% 4.435%, 11.694% 2.696%, 14.660% 1.359%, 17.827% 0.459%, 21.150% 0.031%, 24.524% 0.000%, 27.739% 0.000%, 30.807% 0.000%, 33.754% 0.000%, 36.603% 0.000%, 39.372% 0.000%, 42.081% 0.000%, 44.745% 0.000%, 47.380% 0.000%, 50.000% 0.000%, 52.620% 0.000%, 55.255% 0.000%, 57.919% 0.000%, 60.628% 0.000%, 63.397% 0.000%, 66.246% 0.000%, 69.193% 0.000%, 72.261% 0.000%, 75.476% 0.000%, 78.850% 0.031%, 82.173% 0.459%, 85.340% 1.359%, 88.306% 2.696%, 91.027% 4.435%, 93.460% 6.540%, 95.565% 8.973%, 97.304% 11.694%, 98.641% 14.660%, 99.541% 17.827%, 99.969% 21.150%, 100.000% 24.524%, 100.000% 27.739%, 100.000% 30.807%, 100.000% 33.754%, 100.000% 36.603%, 100.000% 39.372%, 100.000% 42.081%, 100.000% 44.745%, 100.000% 47.380%);
+  --shape-avatar: polygon(100.000% 50.000%, 99.931% 52.617%, 99.726% 55.226%, 99.384% 57.822%, 98.907% 60.396%, 98.296% 62.941%, 97.553% 65.451%, 96.679% 67.918%, 95.677% 70.337%, 94.550% 72.700%, 93.301% 75.000%, 91.934% 77.232%, 90.451% 79.389%, 88.857% 81.466%, 87.157% 83.457%, 85.355% 85.355%, 83.457% 87.157%, 81.466% 88.857%, 79.389% 90.451%, 77.232% 91.934%, 75.000% 93.301%, 72.700% 94.550%, 70.337% 95.677%, 67.918% 96.679%, 65.451% 97.553%, 62.941% 98.296%, 60.396% 98.907%, 57.822% 99.384%, 55.226% 99.726%, 52.617% 99.931%, 50.000% 100.000%, 47.383% 99.931%, 44.774% 99.726%, 42.178% 99.384%, 39.604% 98.907%, 37.059% 98.296%, 34.549% 97.553%, 32.082% 96.679%, 29.663% 95.677%, 27.300% 94.550%, 25.000% 93.301%, 22.768% 91.934%, 20.611% 90.451%, 18.534% 88.857%, 16.543% 87.157%, 14.645% 85.355%, 12.843% 83.457%, 11.143% 81.466%, 9.549% 79.389%, 8.066% 77.232%, 6.699% 75.000%, 5.450% 72.700%, 4.323% 70.337%, 3.321% 67.918%, 2.447% 65.451%, 1.704% 62.941%, 1.093% 60.396%, 0.616% 57.822%, 0.274% 55.226%, 0.069% 52.617%, 0.000% 50.000%, 0.069% 47.383%, 0.274% 44.774%, 0.616% 42.178%, 1.093% 39.604%, 1.704% 37.059%, 2.447% 34.549%, 3.321% 32.082%, 4.323% 29.663%, 5.450% 27.300%, 6.699% 25.000%, 8.066% 22.768%, 9.549% 20.611%, 11.143% 18.534%, 12.843% 16.543%, 14.645% 14.645%, 16.543% 12.843%, 18.534% 11.143%, 20.611% 9.549%, 22.768% 8.066%, 25.000% 6.699%, 27.300% 5.450%, 29.663% 4.323%, 32.082% 3.321%, 34.549% 2.447%, 37.059% 1.704%, 39.604% 1.093%, 42.178% 0.616%, 44.774% 0.274%, 47.383% 0.069%, 50.000% 0.000%, 52.617% 0.069%, 55.226% 0.274%, 57.822% 0.616%, 60.396% 1.093%, 62.941% 1.704%, 65.451% 2.447%, 67.918% 3.321%, 70.337% 4.323%, 72.700% 5.450%, 75.000% 6.699%, 77.232% 8.066%, 79.389% 9.549%, 81.466% 11.143%, 83.457% 12.843%, 85.355% 14.645%, 87.157% 16.543%, 88.857% 18.534%, 90.451% 20.611%, 91.934% 22.768%, 93.301% 25.000%, 94.550% 27.300%, 95.677% 29.663%, 96.679% 32.082%, 97.553% 34.549%, 98.296% 37.059%, 98.907% 39.604%, 99.384% 42.178%, 99.726% 44.774%, 99.931% 47.383%);
+  clip-path: var(--shape-tile);
+  transition: clip-path 440ms cubic-bezier(0.45, 0, 0.15, 1);
+}
+.tile-shadow > .tile-morph[data-shape="avatar"] { clip-path: var(--shape-avatar); border-radius: 0; }
+/* Edge highlight rides the same curve */
+.tile-shadow > .tile-morph::after { border-radius: 22.33%; transition: border-radius 440ms cubic-bezier(0.45, 0, 0.15, 1); }
+.tile-shadow > .tile-morph[data-shape="avatar"]::after { border-radius: 50%; }
+/* Art swaps through the middle third of the morph */
+.tile-shadow .tile-art { transition: opacity 180ms linear 130ms; }
+@media (max-width: 860px) { .tile-shadow { width: 58%; } }
+@media (prefers-reduced-motion: reduce) {
+  .tile-shadow > .tile-morph, .tile-shadow > .tile-morph::after, .tile-shadow .tile-art { transition: none; }
+}
+
+/* ─── Animated stage glows ──────────────────────────────────────
+   Replaces the crossfade. Each Figma radial gradient is an ellipse; one per corner
+   travels between its tile and avatar geometry (transform only) while its colour
+   crossfades on layers that move with it. Base box = the avatar ellipse; the tile
+   state is the same box translated, rotated and scaled (from the Figma matrices).
+     bottom-right  tile: #C2EAFF  c(1072,641) r(1148×783) −40.1°  →  avatar: #FFF3C2 c(752,420) r(388×265)
+     top-left      tile: #F6CEFF  c(0,−76)    r(553×391) −36.5°  →  avatar: #F4ECFF c(119,42)  r(333×235)
+   A slow ambient drift runs on the separate `translate` property so it composes. */
+.tile-stage { overflow: hidden; }
+.tile-stage::before, .tile-stage::after { content: none; }
+.glow {
+  --glow-ease: cubic-bezier(0.45, 0, 0.15, 1);
+  position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none;
+  transform-origin: 50% 50%;
+  transition: transform 560ms var(--glow-ease);
+  will-change: transform;
+}
+.glow::before, .glow::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  transition: opacity 560ms var(--glow-ease);
+}
+.glow-br { width: 98%; height: 126%;
+  transform: translate(88.16%, 71.20%) rotate(-40.08deg) scale(2.957, 2.958);
+  animation: glow-drift-a 19s ease-in-out infinite alternate; }
+.glow-br::before { background: radial-gradient(closest-side, #c2eaff, rgb(194 234 255 / 0)); }
+.glow-br::after  { background: radial-gradient(closest-side, #fff3c2, rgb(255 243 194 / 0)); opacity: 0; }
+.glow-tl { width: 83.99%; height: 112%;
+  transform: translate(-50%, -66.05%) rotate(-36.5deg) scale(1.663, 1.663);
+  animation: glow-drift-b 23s ease-in-out infinite alternate; }
+.glow-tl::before { background: radial-gradient(closest-side, #f6ceff, rgb(246 206 255 / 0)); }
+.glow-tl::after  { background: radial-gradient(closest-side, #f4ecff, rgb(244 236 255 / 0)); opacity: 0; }
+
+.tile-stage:has(.tile-morph[data-shape="avatar"]) .glow-br { transform: translate(46.93%, 29.37%) rotate(0deg) scale(1, 1); }
+.tile-stage:has(.tile-morph[data-shape="avatar"]) .glow-tl { transform: translate(-32.14%, -41.07%) rotate(0deg) scale(1, 1); }
+.tile-stage:has(.tile-morph[data-shape="avatar"]) .glow::before { opacity: 0; }
+.tile-stage:has(.tile-morph[data-shape="avatar"]) .glow::after  { opacity: 1; }
+
+@keyframes glow-drift-a { from { translate: 0 0; } to { translate: -4% -5%; } }
+@keyframes glow-drift-b { from { translate: 0 0; } to { translate: 5% 4%; } }
+@media (prefers-reduced-motion: reduce) {
+  .glow { animation: none; transition: none; }
+  .glow::before, .glow::after { transition: none; }
+}
+
+
+/* ─── Editorial scale ───────────────────────────────────────────
+   Two units. --u (layout: column, media, spacing) grows against a 1220px
+   design, ~1.18× at 1440. --t (type) stays at the design size, so captions,
+   buttons, labels and body keep their tuned values and hierarchy. Only the
+   display title grows, gently, 48 → 56px. Side nav keeps the 1440 calibration. */
+@media (min-width: 1241px) {
+  :root {
+    --u: clamp(1px, calc(100vw / 1220), 1.6px);
+    --t: clamp(1px, calc(100vw / 1600), 1.2px);   /* design size to 1600, ≤1.2× on very wide screens */
+    --sidebar-w: calc(232 * clamp(0.9px, calc(100vw / 1440), 1.6px));
+  }
+  .sidebar { --u: clamp(0.9px, calc(100vw / 1440), 1.6px); }
+  .page-title { font-size: clamp(48px, calc(48 * var(--u)), 56px); line-height: 1.12; }
+}
+
+/* ─── Grid & margin audit ───────────────────────────────────────
+   1. One column system: split sections, the page head and the banner copy
+      start their second column where the 2-up grids do (half the column).
+   2. Whole pixels: spacing/radius tokens round to 1px so hairlines and
+      edges stay crisp at in-between widths.
+   3. No lurch at 1240/1241: the desktop side nav (transparent, 232u) runs
+      from 861px up, so only the scale changes across that boundary. */
+@media (min-width: 861px) {
+  :root {
+    --space-4:  round(calc(4  * var(--u)), 1px); --space-8:  round(calc(8  * var(--u)), 1px);
+    --space-12: round(calc(12 * var(--u)), 1px); --space-16: round(calc(16 * var(--u)), 1px);
+    --space-24: round(calc(24 * var(--u)), 1px); --space-32: round(calc(32 * var(--u)), 1px);
+    --space-48: round(calc(48 * var(--u)), 1px); --space-64: round(calc(64 * var(--u)), 1px);
+    --space-96: round(calc(96 * var(--u)), 1px);
+    --radius-4: round(calc(4 * var(--u)), 1px); --radius-6: round(calc(6 * var(--u)), 1px);
+    --radius-8: round(calc(8 * var(--u)), 1px); --radius-12: round(calc(12 * var(--u)), 1px);
+    --sidebar-w: round(calc(232 * clamp(0.9px, calc(100vw / 1440), 1.6px)), 1px);
+  }
+  .sidebar { --u: clamp(0.9px, calc(100vw / 1440), 1.6px);
+    background: transparent; border-right: 0;
+    padding: calc(40 * var(--u)) calc(16 * var(--u)) calc(32 * var(--u)) calc(16 * var(--u)); }
+  /* Horizontal layouts share one 5:7 split: text 5/12, media 7/12 */
+  .content { --lead: calc((100% - var(--space-24)) * 5 / 12); }
+  .pagehead,
+  .section[data-layout="split"] { grid-template-columns: var(--lead) 1fr; }
+  .section[data-layout="split"] .copy { max-width: none; }
+  .section[data-layout="split"] .body { max-width: 34em; }
+  .banner { padding-left: calc(var(--lead) + var(--space-24)); }
+}
+@media (min-width: 1241px) {
+  :root { --col: round(calc(880 * var(--u)), 2px); }
+}
+/* Optical margins: the side nav has no panel, so the visible left edge is
+   where its items end (16u inside). Measure the main area from there so the
+   left and right gutters read equal. */
+@media (min-width: 861px) {
+  .main { margin-left: calc(var(--sidebar-w) - round(calc(16 * clamp(0.9px, calc(100vw / 1440), 1.6px)), 1px)); }
+}
+
+/* App tile: the tile/avatar switch lives inside the stage, hugging its labels */
+#app-tile .tabs { position: relative; gap: 0; }
+#app-tile .segmented {
+  position: absolute; z-index: 2; top: var(--space-16); left: 50%; transform: translateX(-50%);
+  width: calc(200 * var(--t));
+  background: rgb(0 0 0 / 0.05);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+#app-tile .segment { min-height: calc(32 * var(--t)); }
+@media (max-width: 860px) {
+  #app-tile .segmented { top: auto; bottom: var(--space-12); width: calc(180 * var(--t)); }
+}
+/* App tile in the split layout: copy + download stack in the left half */
+@media (min-width: 861px) {
+  #app-tile .section-head { flex-direction: column; align-items: flex-start; gap: var(--space-24); }
+  #app-tile .section-head + .tabs { margin-top: 0; }
+}
+@media (min-width: 861px) {
+  #app-tile .tile-stage { aspect-ratio: 5 / 4; height: auto; display: grid; place-items: center; }
+  #app-tile .tile-shadow { width: 42%; margin-top: calc(-24 * var(--u)); }
+  #app-tile .segmented { top: auto; bottom: var(--space-24); }
+}
+
+/* Primary logo: the mark read small in its panel (~23% of the width). The video's edges are
+   plain gradient, so scaling it inside the clipped .media enlarges the mark without losing content. */
+#primary-logo .media > video { transform: scale(1.4); }
+
+/* Co-brand: grid switch sits right-aligned directly above the examples video */
+.cb-example { grid-column: 1 / -1; margin-top: var(--space-24); }
+.cb-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-12); }
+.cb-label { font-size: calc(14 * var(--t)); }  /* matches the switch label */
+.cb-example > .ar-cobrand-ex { margin-top: 0; }

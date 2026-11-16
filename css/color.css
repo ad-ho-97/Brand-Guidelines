@@ -1,48 +1,6 @@
     /* ═══════════════════════════════════════════════
        COLOUR PAGE — hover-rise swatch cards
     ═══════════════════════════════════════════════ */
-    .col-row { display: flex; gap: 24px; }
-    .col-item { flex: 1; min-width: 0; }
-    .col-card {
-      position: relative;
-      aspect-ratio: 1 / 1.08;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-                  box-shadow 0.35s ease;
-    }
-    .col-card:hover {
-      transform: translateY(-14px);
-      box-shadow: 0 24px 48px rgba(17, 0, 41, 0.16);
-    }
-    .col-card.bordered { border: 1px solid rgba(159,159,159,0.4); }
-    .col-chip {
-      position: absolute;
-      left: 16px;
-      bottom: 16px;
-      max-width: calc(100% - 32px);
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 8px;
-      padding: 9px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      white-space: nowrap;
-      font-family: var(--ht);
-      font-size: 13.5px;
-      color: #111;
-    }
-    .col-chip .nm { font-weight: 500; }
-    .col-chip .hex { color: #555; border-left: 1px solid #e2e2e2; padding-left: 10px; }
-    .col-token {
-      margin-top: 12px;
-      font-family: var(--ht);
-      font-size: 13px;
-      color: #444;
-    }
-
-
     /* Dropbox-style colour decks: overlapping top-rounded cards in a flat
        band; hovering pulls a card up out of the stack (no grid backdrop).
        Compact one-fold layout: small label + band per category. */
@@ -126,10 +84,11 @@
     .cpurpose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
     .cpurpose-card .cph { aspect-ratio: 292 / 401; }
     .cpurpose-card h3 {
-      font-family: var(--hd); font-weight: 500; font-size: 22px; color: #000; margin-top: 18px;
+      font-family: var(--hd); font-weight: 500; font-size: 24px; line-height: 28px;
+      letter-spacing: 0.4px; color: #000; margin-top: 18px;
     }
     .cpurpose-card p {
-      font-family: var(--ht); font-size: 13.5px; line-height: 1.45; color: #555; margin-top: 8px;
+      font-family: var(--ht); font-weight: 300; font-size: 14px; line-height: 20px; color: #555; margin-top: 8px;
     }
     .cincorrect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
@@ -225,9 +184,6 @@
     }
     /* when a card holds real media, keep only a whisper of the mood tint */
     .ct-card.has-media::after { opacity: 0.12; }
-    @media (max-width: 760px) {
-      .combo-tool { flex-direction: column; }
-      .ct-field { aspect-ratio: 399 / 380; }
-      .ct-cards { flex-direction: row; }
-    }
+    /* Mobile layout for .combo-tool/.ct-field/.ct-cards is owned by shell.css's
+       shared max-width:1023px breakpoint — no page-level override here. */
 

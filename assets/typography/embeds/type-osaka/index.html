@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Osaka</title>
+<style>
+  /* Halyard Display Book (slnt 0) and Book Italic (slnt -16) merged into one variable font,
+     so the type interpolates between the two real outlines instead of cross-fading files.
+     Built by fonts/build_slant_font.py; subset to the glyphs of "Osaka". */
+  @font-face {
+    font-family: "Halyard Display Slant";
+    src: url("fonts/HalyardDisplaySlant.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+  }
+
+  :root {
+    --card-bg: #ebedf0;
+    --ink: #000;
+    --card-w: 722px;
+    --card-h: 437px;
+    --fit: 1;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; margin: 0; }
+
+  body {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Sized to the scaled card so grid centering stays on whole pixels. */
+  .fit {
+    position: relative;
+    width: calc(var(--card-w) * var(--fit));
+    height: calc(var(--card-h) * var(--fit));
+  }
+
+  /* The card is the Figma "Default" frame: every value below is the Default
+     node at 1:1. The animation only ever moves it toward the "Final" node. */
+  .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--card-w);
+    height: var(--card-h);
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 8px;
+    background: #000;
+    transform: scale(var(--fit));
+    transform-origin: 0 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* First paint is the complete Default state, never a card waiting on fonts. */
+  html:not(.is-ready) .card { visibility: hidden; }
+
+  .word {
+    position: absolute;
+    /* Baseline lands on y = 207 (Figma: cap-top at 55 + 152 cap height). Depending on whether an
+       engine rounds ascent/descent, the baseline sits 225 to 225.85px below the line top, and
+       the box itself snaps to whole pixels; -18.4px resolves to 207 either way. */
+    top: -18.4px;
+    left: 55px;
+    margin: 0;
+    font-family: "Halyard Display Slant", sans-serif;
+    font-size: 228.476px;
+    line-height: 274.171px;
+    letter-spacing: 2.4371px;
+    font-weight: 400;
+    font-synthesis: none;
+    font-variation-settings: "slnt" 0;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+
+  /* Default -> Final is an additive cross-fade around the one type layer, in Figma order:
+     the grey backdrop fades out (to the card's black) while the photo fades in beneath the type
+     and the cut-out fades in above it. plus-lighter adds light instead of stacking coverage, so
+     every pixel, castle edges included, moves in a straight line from Default to Final.
+     background-masked.png is background.png with the cut-out's alpha removed (1 - alpha), so the
+     photo and the cut-out sum to exactly the Figma Final wherever they overlap. */
+  .base {
+    position: absolute;
+    inset: 0;
+    background: var(--card-bg);
+    will-change: opacity;
+  }
+  .plate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 722px;
+    height: 437px;
+    opacity: 0;
+    mix-blend-mode: plus-lighter;
+    will-change: opacity;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Figma's overlay (black ramp, 1613 x 186 at -27, 304, layer blur 27), with the blur baked in:
+     a blurred ramp is separable into a vertical profile and a softened left edge, so it paints
+     once as plain gradients instead of running a 20px filter over the fading layers. */
+  .overlay {
+    position: absolute;
+    top: 240px;
+    left: 0;
+    width: 722px;
+    height: 197px;
+    background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 16px,
+      rgba(0, 0, 0, 0.0009) 24px,
+      rgba(0, 0, 0, 0.0025) 32px,
+      rgba(0, 0, 0, 0.006) 40px,
+      rgba(0, 0, 0, 0.0129) 48px,
+      rgba(0, 0, 0, 0.0248) 56px,
+      rgba(0, 0, 0, 0.0429) 64px,
+      rgba(0, 0, 0, 0.0678) 72px,
+      rgba(0, 0, 0, 0.0989) 80px,
+      rgba(0, 0, 0, 0.1351) 88px,
+      rgba(0, 0, 0, 0.1745) 96px,
+      rgba(0, 0, 0, 0.216) 104px,
+      rgba(0, 0, 0, 0.2584) 112px,
+      rgba(0, 0, 0, 0.3012) 120px,
+      rgba(0, 0, 0, 0.3441) 128px,
+      rgba(0, 0, 0, 0.3871) 136px,
+      rgba(0, 0, 0, 0.4301) 144px,
+      rgba(0, 0, 0, 0.4731) 152px,
+      rgba(0, 0, 0, 0.5161) 160px,
+      rgba(0, 0, 0, 0.5591) 168px,
+      rgba(0, 0, 0, 0.602) 176px,
+      rgba(0, 0, 0, 0.6447) 184px,
+      rgba(0, 0, 0, 0.6862) 192px,
+      rgba(0, 0, 0, 0.7109) 197px);
+    --edge: linear-gradient(to right,
+      rgba(0, 0, 0, 0.9115) 0px,
+      rgba(0, 0, 0, 0.9505) 6px,
+      rgba(0, 0, 0, 0.9744) 12px,
+      rgba(0, 0, 0, 0.9878) 18px,
+      rgba(0, 0, 0, 0.9946) 24px,
+      rgba(0, 0, 0, 0.9978) 30px,
+      rgba(0, 0, 0, 0.9992) 36px,
+      #000 48px);
+    -webkit-mask-image: var(--edge);
+    mask-image: var(--edge);
+  }
+
+  .slider {
+    position: absolute;
+    top: 395px;
+    left: 211px;
+    width: 300px;
+    height: 20px;
+  }
+  .slider__track {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 300px;
+    height: 4px;
+    border-radius: 12px;
+    background: #fff;
+    opacity: 0.38;
+  }
+  /* The fill is a full-length capsule sliding inside a clipping capsule, so progress
+     is a pure transform (compositor) and both ends keep their round caps. */
+  .slider__fill {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 290px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .slider__bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: #fff;
+    transform: translateX(-270px);
+    will-change: transform;
+  }
+  .slider__thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #fff;
+    will-change: transform;
+    box-shadow:
+      0 3px 1px rgba(0, 0, 0, 0.2),
+      0 2px 2px rgba(0, 0, 0, 0.14),
+      0 1px 5px rgba(0, 0, 0, 0.12);
+  }
+</style>
+</head>
+<body>
+  <div class="fit">
+    <div class="card" role="img" aria-label="Osaka">
+      <div class="base"></div>
+      <img class="plate plate--bg" src="background-masked.png" alt="" draggable="false">
+      <span class="word">Osaka</span>
+      <img class="plate plate--fg" src="foreground.png" alt="" draggable="false">
+      <div class="overlay"></div>
+      <div class="slider">
+        <div class="slider__track"></div>
+        <div class="slider__fill"><div class="slider__bar"></div></div>
+        <div class="slider__thumb"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const card = document.querySelector(".card");
+  const $ = (sel) => card.querySelector(sel);
+  const el = {
+    word:  $(".word"),
+    base:  $(".base"),
+    bg:    $(".plate--bg"),
+    fg:    $(".plate--fg"),
+    bar:   $(".slider__bar"),
+    thumb: $(".slider__thumb"),
+  };
+
+  /* One loop, in ms. A single progress value (0 = Default, 1 = Final) drives the slant, every
+     image layer and the slider, all written in the same frame, so they land together. */
+  const PHASE = {
+    rest:     1600,   // Default held (also on first load)
+    toFinal:   450,
+    hold:      900,
+    toDefault: 340,   // the way back is ~25% quicker; attention has already moved on
+  };
+  const TOTAL = Object.values(PHASE).reduce((a, b) => a + b, 0);
+  const ITALIC = -16; // the font's slnt axis: 0 = Book, -16 = Book Italic
+
+  // cubic-bezier(0.65, 0, 0.35, 1): ease-in-out cubic, snappy with no velocity jump at either end
+  const ease = ((x1, y1, x2, y2) => (x) => {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    let t = x;
+    for (let i = 0; i < 12; i++) {
+      const err = ((ax * t + bx) * t + cx) * t - x;
+      const slope = (3 * ax * t + 2 * bx) * t + cx;
+      if (Math.abs(err) < 1e-7 || !slope) break;
+      t -= err / slope;
+    }
+    return ((ay * t + by) * t + cy) * t;
+  })(0.65, 0, 0.35, 1);
+
+  const progressAt = (ms) => {
+    let t = ms % TOTAL;
+    if ((t -= PHASE.rest) < 0) return 0;
+    if (t < PHASE.toFinal) return ease(t / PHASE.toFinal);
+    if ((t -= PHASE.toFinal + PHASE.hold) < 0) return 1;
+    if (t < PHASE.toDefault) return 1 - ease(t / PHASE.toDefault);
+    return 0;
+  };
+
+  // Time until the next transition starts, or 0 while one is running.
+  const idleFor = (ms) => {
+    const t = ms % TOTAL;
+    const out = PHASE.rest + PHASE.toFinal + PHASE.hold;
+    if (t < PHASE.rest) return PHASE.rest - t;
+    if (t < PHASE.rest + PHASE.toFinal) return 0;
+    if (t < out) return out - t;
+    if (t < out + PHASE.toDefault) return 0;
+    return TOTAL - t + PHASE.rest;
+  };
+
+  let last = -1;
+  const render = (p) => {
+    if (p === last) return;
+    last = p;
+    el.word.style.fontVariationSettings = `"slnt" ${ITALIC * p}`;
+    el.base.style.opacity = 1 - p;
+    el.bg.style.opacity = p;
+    el.fg.style.opacity = p;
+    el.bar.style.transform = `translateX(${-270 * (1 - p)}px)`;
+    el.thumb.style.transform = `translateX(${280 * p}px)`;
+  };
+
+  /* Reduced motion shows the Figma Final node as a still; off-screen pauses the loop. */
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let onScreen = true;
+  let raf = 0;
+  let wake = 0;
+  let elapsed = 0;   // loop clock, frozen while paused
+  let prev = null;
+
+  const frame = (now) => {
+    if (prev !== null) elapsed += now - prev;
+    prev = now;
+    render(progressAt(elapsed));
+    /* Holds need no frames: sleep until just before the next transition. prev is kept, so the
+       first frame after waking adds the slept time and the clock stays exact. */
+    const idle = idleFor(elapsed);
+    if (idle > 50) wake = setTimeout(() => { raf = requestAnimationFrame(frame); }, idle - 25);
+    else raf = requestAnimationFrame(frame);
+  };
+  const sync = () => {
+    cancelAnimationFrame(raf);
+    clearTimeout(wake);
+    prev = null;
+    if (reduce.matches) render(1);
+    else if (onScreen) raf = requestAnimationFrame(frame);
+  };
+  reduce.addEventListener("change", sync);
+  new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; sync(); }).observe(card);
+
+  const fit = () => {
+    const s = Math.min(1, innerWidth / 722, innerHeight / 437);
+    document.documentElement.style.setProperty("--fit", String(Math.max(s, 0.1)));
+  };
+  fit();
+  addEventListener("resize", fit);
+
+  const loaded = Promise.all([
+    document.fonts.load('400 228px "Halyard Display Slant"', "Osaka"),
+    el.bg.decode(),
+    el.fg.decode(),
+  ]);
+  const timeout = new Promise((resolve) => setTimeout(resolve, 4000));
+
+  Promise.race([loaded, timeout]).catch(() => {}).then(() => {
+    document.documentElement.classList.add("is-ready");
+    sync();
+  });
+})();
+</script>
+</body>
+</html>

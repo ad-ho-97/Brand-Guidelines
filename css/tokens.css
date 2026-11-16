@@ -1,15 +1,15 @@
     /* Halyard self-hosted at the weights the eevee design system defines:
        300 Light · 500 Medium · 600 SemiBold · 700 Bold (no 400 in the system) */
-    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Light.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Regular.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/fonts/HalyardText-Book.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Medium.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/HalyardDisplay-SemiBold.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/HalyardDisplay-Bold.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/fonts/HalyardText-Light.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/fonts/HalyardText-Medium.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/fonts/HalyardText-SemiBold.woff2') format('woff2'); }
-    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/fonts/HalyardText-Bold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/shared/fonts/HalyardDisplay-Light.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/shared/fonts/HalyardDisplay-Regular.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:400; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Book.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/shared/fonts/HalyardDisplay-Medium.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/shared/fonts/HalyardDisplay-SemiBold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Display'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/shared/fonts/HalyardDisplay-Bold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:300; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Light.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:500; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Medium.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:600; font-display:swap; src:url('../assets/shared/fonts/HalyardText-SemiBold.woff2') format('woff2'); }
+    @font-face { font-family:'Halyard Text'; font-style:normal; font-weight:700; font-display:swap; src:url('../assets/shared/fonts/HalyardText-Bold.woff2') format('woff2'); }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

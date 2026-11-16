@@ -14,6 +14,44 @@
   <link rel="stylesheet" href="css/shell.css" />
   <link rel="stylesheet" href="css/media-carousel.css" />
   <link rel="stylesheet" href="css/color.css" />
+  <style>
+    /* Type hierarchy standardized against logo.html's system (brand guidelines
+       §5 heading hierarchy) — propagated here as a page-scoped override rather
+       than edited into shell.css, since shell.css is shared by every other
+       guideline page not in scope for this pass. */
+    /* Pagehead row (h1 + intro) capped to logo.html's content width (819px, not
+       the page's full 1200px rail) so the title/intro block reads at the same
+       width across Logo/Color/Typography regardless of each page's grid rail. */
+    #page-color .fig-stack { padding-top: 96px; }
+    #page-color .fig-pagehead { gap: 24px; max-width: 819px; }
+    #page-color .fig-pagehead h1 {
+      font-weight: 500; font-size: 60px; line-height: 72px; letter-spacing: 0.8px; color: #222222;
+    }
+    #page-color .fig-pagehead .intro {
+      font-weight: 300; font-size: 17px; line-height: 28px; letter-spacing: 0; color: #222222; max-width: 464px;
+    }
+    #page-color .fig-head h2,
+    #page-color .cu-text h2 {
+      font-weight: 500; font-size: 30px; line-height: 38px; letter-spacing: 0.4px; color: #111111;
+    }
+    #page-color .fig-head .fh-desc {
+      font-weight: 300; font-size: 15px; line-height: 24px; letter-spacing: 0; color: #222222; margin-top: 8px;
+    }
+
+    @media (max-width: 1023px) {
+      #page-color .fig-pagehead h1 { font-size: 30px; line-height: 38px; letter-spacing: 0.4px; }
+      #page-color .fig-pagehead .intro { font-size: 15px; line-height: 24px; }
+      #page-color .fig-head h2,
+      #page-color .cu-text h2 { font-size: 24px; line-height: 28px; letter-spacing: 0.4px; }
+      #page-color .fig-head .fh-desc { font-size: 14px; line-height: 20px; }
+    }
+
+    /* Section rhythm (spacing.md §3): space.64 desktop — scoped inside a width
+       query so it cannot out-specificity the shared mobile rhythm in shell.css */
+    @media (min-width: 1024px) {
+      #page-color .fig-stack.gap-48 .fig-sec { margin-bottom: 80px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -25,14 +63,14 @@
 ═══════════════════════════════════════════════════════════ -->
 <!-- Mobile top bar (≤1023px) — mark, label, hamburger. Cash-App-style; the sidebar becomes the menu sheet. -->
 <div class="m-topbar" id="m-topbar">
-  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/svg/logo-mark.svg" alt="" /></a>
+  <a class="m-mark" href="/" aria-label="Headout home"><img src="assets/shared/brand/logo-mark.svg" alt="" /></a>
   <a class="m-title" href="/">Brand guidelines</a>
   <button class="m-burger" id="m-burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" onclick="toggleMobileMenu()"><i><span></span><span></span><span></span></i></button>
 </div>
 
 <aside class="sidebar" id="site-nav">
   <a class="sidebar-logo-wrap" href="/" aria-label="Headout guidelines — go to Overview" title="Overview">
-    <img src="assets/svg/logo-full.svg" alt="Headout"
+    <img src="assets/shared/brand/logo-full.svg" alt="Headout"
       onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
     <span class="sidebar-logo-text">headout</span>
   </a>
@@ -53,7 +91,7 @@
     <div class="nav-items" id="items-foundations">
 
       <!-- Logo -->
-      <a class="nav-parent" id="nav-logo-parent" href="/logo"><span>Logo</span></a>
+      <a class="nav-parent" id="nav-logo-parent" href="/v2/logo-fluid.html"><span>Logo</span></a>
       <div class="nav-children" id="nav-logo-children" style="display:none;">
         <a class="nav-child" href="/logo#primary-logo">Primary logo</a>
         <a class="nav-child" href="/logo#colour-variants">Colour variants</a>
@@ -70,7 +108,7 @@
       </div>
 
       <!-- Color -->
-      <a class="nav-parent active-section" id="nav-color-parent" href="/color"><span>Color</span></a>
+      <a class="nav-parent active-section" id="nav-color-parent" href="/v2/color.html"><span>Color</span></a>
       <div class="nav-children" id="nav-color-children">
         <a class="nav-child" href="/color#color-primary">Primary palette</a>
         <a class="nav-child" href="/color#color-purps-in-use">Headout Purps in use</a>
@@ -82,7 +120,7 @@
         <a class="nav-child" href="/color#color-incorrect">Incorrect usage</a>
       </div>
       <!-- Typography -->
-      <a class="nav-parent" id="nav-typography-parent" href="/typography"><span>Typography</span></a>
+      <a class="nav-parent" id="nav-typography-parent" href="/v2/typography.html"><span>Typography</span></a>
       <div class="nav-children" id="nav-typography-children" style="display:none;">
         <a class="nav-child" href="/typography#our-typeface">Our typeface</a>
         <a class="nav-child" href="/typography#halyard-display">Halyard Display</a>
@@ -94,7 +132,7 @@
         <a class="nav-child" href="/typography#typo-incorrect-usage">Incorrect usage</a>
       </div>
       <!-- Layout -->
-      <a class="nav-parent" id="nav-layout-parent" href="/layout"><span>Layout</span></a>
+      <a class="nav-parent" id="nav-layout-parent" href="/v2/layout.html"><span>Layout</span></a>
       <div class="nav-children" id="nav-layout-children" style="display:none;">
         <a class="nav-child" href="/layout#layout-three-ways">Three ways to lay out</a>
         <a class="nav-child" href="/layout#layout-grid">The grid system</a>
@@ -111,7 +149,7 @@
         <a class="nav-child" href="/motion#motion-marketing">Marketing</a>
       </div>
       <!-- Iconography -->
-      <a class="nav-parent" id="nav-iconography-parent" href="/iconography"><span>Iconography</span></a>
+      <a class="nav-parent" id="nav-iconography-parent" href="/v2/iconography.html"><span>Iconography</span></a>
       <!-- Voice & Tone -->
       <button class="nav-parent nav-locked" aria-disabled="true" title="Coming soon">
         <span>Voice &amp; Tone</span><svg class="nav-lock" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2.75" y="6.25" width="8.5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 6.25V4.6a2.5 2.5 0 0 1 5 0v1.65" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -153,16 +191,16 @@
       <div class="fig-sec" id="color-intro">
         <div class="fig-pagehead">
           <h1>Colour</h1>
-          <p class="intro" style="max-width:640px;">Purps is loud, confident and unmistakably ours. It carries the weight of the brand, while a small, disciplined set of secondary colours gives us room to be playful without ever losing the plot.</p>
+          <p class="intro">Purps is loud, confident and unmistakably ours. It carries the weight of the brand, while a small, disciplined set of secondary colours gives us room to be playful without ever losing the plot.</p>
         </div>
       </div>
 
-      <hr class="fig-divider" />
+      <hr class="fig-divider" style="margin:80px 0 96px;" />
 
       <div class="fig-sec" id="color-hero">
         <div class="page-hero-ph hero-blend-top">
           <video autoplay loop muted playsinline aria-label="Colour hero — organic gradient motion">
-            <source src="assets/video/color-hero.mp4" type="video/mp4" />
+            <source src="assets/color/color-hero.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -177,7 +215,7 @@
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Headout Purps in use — media carousel -->
       <div class="fig-sec" id="color-purps-in-use">
@@ -192,7 +230,7 @@
         </div>
       </div>
 
-      <hr class="fig-divider" style="margin:64px 0;" />
+      <hr class="fig-divider" style="margin:80px 0;" />
 
       <!-- Secondary palette (single cards, same behaviour as Primary) -->
       <div class="fig-sec" id="color-secondary">
@@ -204,7 +242,7 @@
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Secondary colour in use — media carousel -->
       <div class="fig-sec" id="color-secondary-in-use">
@@ -219,7 +257,7 @@
         </div>
       </div>
 
-      <hr class="fig-divider" style="margin:64px 0;" />
+      <hr class="fig-divider" style="margin:80px 0;" />
 
       <!-- Gradients (placeholder) -->
       <div class="fig-sec" id="color-gradients">
@@ -228,12 +266,12 @@
         </div>
         <div style="aspect-ratio:1254/620; border-radius:16px; overflow:hidden; background:#0d0d0f;">
           <video autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
-            <source src="assets/video/gradients.mp4" type="video/mp4" />
+            <source src="assets/color/gradients.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      <div style="height:64px;"></div>
+      <div style="height:80px;"></div>
 
       <!-- Our suggested combinations (placeholder tool) -->
       <div class="fig-sec" id="color-combinations">
@@ -246,12 +284,12 @@
             <div class="combo-tool" id="combo-tool">
               <!-- interactive colour field -->
               <div class="ct-field" id="ct-field">
-                <img class="ct-state on" src="assets/ct-states/state-1.svg" alt="" aria-hidden="true" />
-                <img class="ct-state" src="assets/ct-states/state-2.svg" alt="" aria-hidden="true" />
-                <img class="ct-state" src="assets/ct-states/state-3.svg" alt="" aria-hidden="true" />
-                <img class="ct-state" src="assets/ct-states/state-4.svg" alt="" aria-hidden="true" />
-                <img class="ct-state" src="assets/ct-states/state-5.svg" alt="" aria-hidden="true" />
-                <img class="ct-state" src="assets/ct-states/state-6.svg" alt="" aria-hidden="true" />
+                <img class="ct-state on" src="assets/color/ct-states/state-1.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/color/ct-states/state-2.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/color/ct-states/state-3.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/color/ct-states/state-4.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/color/ct-states/state-5.svg" alt="" aria-hidden="true" />
+                <img class="ct-state" src="assets/color/ct-states/state-6.svg" alt="" aria-hidden="true" />
                 <!-- frosted glass: real backdrop blur under the hexagon -->
                 <div class="ct-hex-glass" aria-hidden="true"></div>
                 <svg class="ct-hex" viewBox="0 0 399 506" preserveAspectRatio="none" aria-hidden="true">
@@ -309,7 +347,7 @@
         </div>
       </div>
 
-      <hr class="fig-divider" style="margin:64px 0;" />
+      <hr class="fig-divider" style="margin:80px 0;" />
 
       <!-- Colour use with a purpose (4 placeholder cards) -->
       <div class="fig-sec" id="color-purpose">
@@ -319,7 +357,7 @@
         <div class="cpurpose-grid">
           <div class="cpurpose-card">
             <div class="cph" style="aspect-ratio:292/401;">
-              <img src="assets/images/purpose-recognition.jpg" alt="Headout window sticker on a green tram" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+              <img src="assets/color/purpose-recognition.jpg" alt="Headout window sticker on a green tram" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
             </div>
             <h3>Recognition</h3>
             <p>Purps first — the colour people remember us by.</p>
@@ -327,7 +365,7 @@
           <div class="cpurpose-card">
             <div class="cph" style="aspect-ratio:292/401;">
               <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-                <source src="assets/video/purpose-expression.mp4" type="video/mp4" />
+                <source src="assets/color/purpose-expression.mp4" type="video/mp4" />
               </video>
             </div>
             <h3>Expression</h3>
@@ -335,7 +373,7 @@
           </div>
           <div class="cpurpose-card">
             <div class="cph" style="aspect-ratio:292/401;">
-              <img src="assets/images/purpose-navigation.jpg" alt="Rating card — 4.7 stars, 27,021 ratings" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
+              <img src="assets/color/purpose-navigation.jpg" alt="Rating card — 4.7 stars, 27,021 ratings" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;" />
             </div>
             <h3>Navigation</h3>
             <p>Colour that guides the eye and signals action.</p>
@@ -343,7 +381,7 @@
           <div class="cpurpose-card">
             <div class="cph" style="aspect-ratio:292/401;">
               <video autoplay loop muted playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-                <source src="assets/video/purpose-utility.mp4" type="video/mp4" />
+                <source src="assets/color/purpose-utility.mp4" type="video/mp4" />
               </video>
             </div>
             <h3>Utility</h3>
@@ -352,7 +390,7 @@
         </div>
       </div>
 
-      <hr class="fig-divider" style="margin:64px 0;" />
+      <hr class="fig-divider" style="margin:80px 0;" />
 
       <!-- Incorrect usage (4 placeholder frames) -->
       <div class="fig-sec" id="color-incorrect">
