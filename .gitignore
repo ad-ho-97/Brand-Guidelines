@@ -19,3 +19,68 @@ _src/
 # Editor
 .vscode/
 .idea/
+
+# ─── Not part of the v2 fluid site (kept locally, untracked) ───
+/README.txt
+/_headers
+/_redirects
+/app-open-motion.html
+/app-open-poster.html
+/assets/generic-poster/
+/assets/layout/
+/assets/logo/Active.svg
+/assets/logo/Active_logomark.svg
+/assets/logo/Default.svg
+/assets/logo/Default_logomark.svg
+/assets/logo/Frame 1.svg
+/assets/logo/Frame 2.svg
+/assets/logo/Frame 3.svg
+/assets/logo/app-avatar.svg
+/assets/logo/app-tile-avatars.png
+/assets/logo/app-tile.svg
+/assets/logo/banner-tiles-v2.svg
+/assets/logo/banner-tiles.svg
+/assets/logo/cobrand-examples-white.mp4
+/assets/logo/cobrand-examples.mp4
+/assets/logo/cobrand-lockup.jpg
+/assets/logo/cs_grid_off.svg
+/assets/logo/cs_grid_on.svg
+/assets/logo/cv-black-on-white.png
+/assets/logo/cv-white-on-black.png
+/assets/logo/headout_subbrand_lockup_zoom.mp4
+/assets/logo/icon-construction-grid-off.png
+/assets/logo/icon-construction-grid-on.png
+/assets/logo/lapse-panel.global.js
+/assets/logo/primary-logo-animated.html
+/assets/logo/primary-logo-animated.svg
+/assets/logo/qr-code.png
+/assets/logo/subbrand-grid.mp4
+/assets/motion/
+/assets/overview/cv-purps-on-white.png
+/assets/overview/cv-white-on-image.jpg
+/assets/overview/cv-white-on-purps.png
+/assets/shared/app-open/
+/assets/shared/brand/logo-mark.svg
+/assets/shared/fonts/HalyardDisplay-Bold.woff2
+/assets/shared/fonts/HalyardDisplay-Light.woff2
+/assets/shared/fonts/HalyardDisplay-Regular.woff2
+/assets/shared/fonts/HalyardText-Bold.woff2
+/assets/shared/fonts/HalyardText-SemiBold.woff2
+/color.html
+/css/
+/generic-poster.html
+/iconography.html
+/index.html
+/js/
+/layout.html
+/logo-mweb.html
+/logo.html
+/motion.html
+/typography.html
+/v2/logo.css
+/v2/logo.html
+/v2/visual-edit.js
+/widgets/
+# Icon library files at the top of assets/iconography (subfolders are used)
+/assets/iconography/*.svg
+/assets/iconography/_manifest.json
