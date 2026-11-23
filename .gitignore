@@ -27,7 +27,13 @@ _src/
 /app-open-motion.html
 /app-open-poster.html
 /assets/generic-poster/
-/assets/layout/
+/assets/layout/*
+!/assets/layout/layout-hero.mp4
+!/assets/layout/portals-banner.jpg
+!/assets/layout/system.mp4
+!/assets/layout/grid-*.png
+!/assets/layout/usage-*
+!/assets/layout/adapt-*.jpg
 /assets/logo/Active.svg
 /assets/logo/Active_logomark.svg
 /assets/logo/Default.svg

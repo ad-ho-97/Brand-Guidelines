@@ -41,9 +41,28 @@
 @media (max-width: 860px) {
   .deck-wrap { margin-top: var(--space-24); }
   .deck { height: auto; flex-direction: column; gap: var(--space-8); clip-path: none; }
-  .deck-cluster { display: grid; gap: var(--space-8); }
-  .deck-card { position: relative; left: auto !important; width: auto !important; height: calc(64 * var(--u)); border-radius: var(--radius-8); transform: none !important; }
-  .dk-info { opacity: 1; align-items: center; height: 100%; padding: 0 var(--space-16); }
+  /* Mobile: the deck turns on its side. Cards stack like passes in a wallet, each tucked under the next;
+     tap one and it slides open to show its name, hex and "Tap to copy". Tap the open card to copy. */
+  .deck-cluster { display: flex; flex-direction: column; }
+  .deck-card {
+    position: relative; left: auto !important; width: auto !important; transform: none !important;
+    height: calc(72 * var(--u)); border-radius: calc(18 * var(--u)) calc(18 * var(--u)) 0 0;
+    transition: height 360ms cubic-bezier(0.15, 0.5, 0.05, 1);
+  }
+  .deck-card + .deck-card { margin-top: calc(-16 * var(--u)); }
+  .deck-card:last-child { border-radius: calc(18 * var(--u)); height: calc(60 * var(--u)); }
+  .deck-card.is-open { height: calc(116 * var(--u)); }
+  .deck-card:last-child.is-open { height: calc(100 * var(--u)); }
+  /* No press-shrink in the stack: a card that scales down shows the colours behind it at its edges */
+  .deck-card:active { scale: none; }
+  /* No tap flash or focus ring in the stack: on touch they draw a box around the card (and its overlapped area) */
+  .deck-card { -webkit-tap-highlight-color: transparent; }
+  .deck-card:focus, .deck-card:focus-visible { outline: none; }
+  .dk-info { opacity: 1; align-items: flex-start; height: auto; padding: calc(18 * var(--u)) var(--space-16); }
+  .deck-card .dk-info .hint { display: block; opacity: 0; transition: opacity 200ms ease; }
+  .deck-card.is-open .dk-info .hint { opacity: 0.6; transition-delay: 140ms; }
+  .deck-card.is-open .dk-info .nm { font-size: calc(17 * var(--t)); }
+  .dk-info .nm { transition: font-size 300ms cubic-bezier(0.15, 0.5, 0.05, 1); }
 }
 @media (prefers-reduced-motion: reduce) { .deck-card { transition: none; } }
 
@@ -114,6 +133,8 @@
   border-radius: var(--card-radius); overflow: hidden; background: #101014;
   cursor: pointer; touch-action: pan-y; user-select: none;   /* page still scrolls over the field on touch */
 }
+/* Stage: full field width, always 399:506, centred. On desktop it is exactly the field; on phones it overflows top and bottom. */
+.ct-stage { position: absolute; left: 0; top: 50%; width: 100%; aspect-ratio: 399 / 506; transform: translateY(-50%); }
 .ct-field.is-dragging, .ct-field.is-dragging .ct-dot { cursor: grabbing; }
 .ct-field .ct-state { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); pointer-events: none; }
 .ct-field .ct-state.on { opacity: 1; }
@@ -136,7 +157,7 @@
 .ct-hex { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 2; filter: drop-shadow(0 14px 28px rgb(0 0 0 / .18)) drop-shadow(0 2px 6px rgb(0 0 0 / .10)); }
 .ct-dot {
   position: absolute; left: 0; top: 0; width: 25px; height: 25px; margin: -12.5px 0 0 -12.5px; z-index: 3;
-  border-radius: 50%; will-change: transform; cursor: grab; touch-action: none;
+  border-radius: 50%; will-change: translate, scale; cursor: grab; touch-action: none;
   transition: scale 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms ease;
   background: radial-gradient(circle at 38% 32%, #fff 0%, #f7f7f7 55%, #e6e6e6 100%);
   box-shadow: 0 4px 12px rgb(0 0 0 / .28), 0 1px 2px rgb(0 0 0 / .18), inset 0 1px 1px rgb(255 255 255 / .9), inset 0 -1px 2px rgb(0 0 0 / .08);
@@ -148,17 +169,18 @@
 @property --tint { syntax: '<color>'; inherits: true; initial-value: #8000ff; }
 .ct-card { flex: 1; position: relative; overflow: hidden; border-radius: var(--card-radius); background: #0c0c0e; transition: --tint 400ms cubic-bezier(0.23, 1, 0.32, 1); }
 .ct-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(130% 120% at 50% 0%, var(--tint, #8000ff), transparent 72%); opacity: 0.12; }
-.ct-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1), filter 400ms cubic-bezier(0.23, 1, 0.32, 1); }
+.ct-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1); }
 /* Picked up: the pearl lifts off the glass */
 
 .ct-field.is-dragging .ct-dot { scale: 1.12; box-shadow: 0 12px 26px rgb(0 0 0 / .34), 0 3px 6px rgb(0 0 0 / .16), inset 0 1px 1px rgb(255 255 255 / .9), inset 0 -1px 2px rgb(0 0 0 / .08); }
-.ct-card img.is-new { opacity: 0; filter: blur(2px); }
+.ct-card img.is-new { opacity: 0; }   /* opacity only: a blur filter on two large images repaints every frame */
 .ct-field.is-dragging .ct-dot { cursor: grabbing; }
 @media (max-width: 860px) {
   .combo-tool { flex-direction: column; gap: var(--space-12); }
-  .ct-field { flex: none; aspect-ratio: 399 / 420; }
-  .ct-cards { flex: none; flex-direction: row; gap: var(--space-12); }
-  .ct-card { aspect-ratio: 4 / 5; }
+  .ct-field { flex: none; aspect-ratio: 399 / 290; }   /* shorter colour field on phones; the glass shape keeps its size and proportion */
+  /* Phones: the two images sit one below the other in their own landscape shape (they are all about 1.63:1), so nothing is cropped */
+  .ct-cards { flex: none; flex-direction: column; gap: var(--space-12); }
+  .ct-card { flex: none; aspect-ratio: 1774 / 1088; }
 }
 @media (prefers-reduced-motion: reduce) { .ct-field .ct-state { transition: none; } }
 
@@ -200,6 +222,10 @@
 
 /* ─── Layout page: interactive grid demo ─── */
 .grid-demo { margin-top: var(--space-32); }
+/* Split (copy left, demo right): tops align on desktop */
+@media (min-width: 861px) { .section[data-layout="split"] .section-head + .grid-demo { margin-top: 0; } }
+/* Portal application: the intro runs the full row, as a header for the two usage rows below */
+#portal-application > .section-head .copy, #portal-application > .section-head .body { max-width: none; }
 .gd-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); flex-wrap: wrap; margin-bottom: var(--space-16); }
 .gd-picker { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
 .gd-label { font-size: calc(14 * var(--t)); margin-right: var(--space-8); }
@@ -245,7 +271,8 @@
 .adapt-options button[aria-selected="true"] { background: var(--grey-900); border-color: var(--grey-900); color: #fff; }
 @media (hover: hover) { .adapt-options button[aria-selected="false"]:hover { color: var(--grey-900); border-color: var(--grey-700); } }
 .adapt-options button:focus-visible { outline: 2px solid var(--grey-900); outline-offset: 2px; }
-.adapt-panel { flex: 1; min-width: 0; aspect-ratio: 530 / 510; border-radius: var(--radius-6); }
+.adapt-panel { flex: 1; min-width: 0; aspect-ratio: 2262 / 2175; border-radius: var(--radius-6); overflow: hidden; }
+.adapt-panel > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 860px) {
   .adapt { flex-direction: column; align-items: stretch; padding: var(--space-16); }
   .adapt-options { flex-direction: row; flex-wrap: wrap; }
@@ -254,7 +281,7 @@
 
 /* ─── Layout page: usage rows ─── */
 .usage-list { display: grid; gap: var(--space-64); margin-top: var(--space-32); }
-.usage { display: grid; grid-template-columns: var(--lead, 1fr) 1fr; gap: var(--space-24); align-items: start; }
+.usage { display: grid; grid-template-columns: var(--lead-media, var(--lead, 1fr)) minmax(0, 1fr); gap: var(--space-24) var(--gap-media, var(--space-24)); align-items: start; }
 .usage-copy .h3 { margin-top: var(--space-4); }
 .usage-copy .body { margin-top: var(--space-12); }
 .eyebrow { font-size: calc(12 * var(--t)); line-height: calc(16 * var(--t)); letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-700); }
@@ -284,11 +311,24 @@
 }
 
 /* ─── Iconography: icons in context ─── */
+/* Icons in context: the intro runs the full row so it reads as a header for the two blocks below */
+#icons-in-context > .section-head .copy, #icons-in-context > .section-head .body { max-width: none; }
 .context-block { margin-top: var(--space-48); }
 .context-block .copy { max-width: var(--copy); }
 .context-block .body { margin-top: var(--space-8); }
 .context-block .media { margin-top: var(--space-24); }
+/* Desktop: same text-left / media-right row as Icon styles */
+@media (min-width: 861px) {
+  .context-block { display: grid; grid-template-columns: var(--lead-media, calc(276 * var(--u))) minmax(0, 1fr); column-gap: var(--gap-media, calc(40 * var(--u))); align-items: start; }
+  .context-block .copy { max-width: none; }
+  .context-block .media { margin-top: 0; }
+}
 .ar-context { aspect-ratio: 880 / 506; }
+/* Icons-in-context decks: these assets are 1636:940, so the deck takes that shape instead of 813:506 */
+.coverflow.is-stack.cf-context, .coverflow.is-stack.cf-context .cf-slide { aspect-ratio: 1636 / 940; }
+.context-block .coverflow { margin-top: var(--space-24); }
+@media (min-width: 861px) { .context-block .coverflow { margin-top: 0; } }
+.styles-preview { aspect-ratio: 2454 / 1680; }
 
 /* ─── Iconography: best-practice examples (built natively, 1em = 1 design px at 428) ─── */
 .bp-stage { aspect-ratio: 1; background: #efefef; display: grid; place-items: center; container-type: inline-size; }
@@ -341,9 +381,11 @@
 
 /* ─── Deck coverflow (split sections): front card face-on, the rest fanned behind it in depth ───
    Positions come from logo.js (layoutStack) as custom properties; CSS only composes and eases them. */
-.coverflow.is-stack { aspect-ratio: 100 / 76; perspective: 1600px; }
+/* The front card fills the box width; its height follows the assets (813:506), so nothing is cropped.
+   The front card fills the box edge to edge; the box clips the deck so nothing pokes past the column. */
+.coverflow.is-stack { aspect-ratio: 813 / 506; perspective: 1600px; overflow: hidden; border-radius: var(--card-radius); }
 .coverflow.is-stack .cf-slide {
-  left: 50%; top: 47%; width: 80%; margin: 0; aspect-ratio: 5 / 4;
+  left: 50%; top: 50%; width: 100%; margin: 0; aspect-ratio: 813 / 506;
   transform: translate(-50%, -50%) translateX(calc(var(--x, 0px) + var(--drag, 0px))) translateZ(var(--tz, 0px))
              rotateY(var(--ry, 0deg)) rotateZ(var(--rz, 0deg)) scale(var(--s, 1));
   transition: transform var(--cf-dur, 550ms) cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease;
@@ -351,13 +393,104 @@
 .coverflow.is-stack .cf-slide.is-dragging { transition: none; }
 .coverflow.is-stack .cf-slide::after { transition: opacity 400ms ease; }
 .coverflow.is-stack .cf-dots {
-  bottom: 0; padding: 5px 7px; border-radius: 999px;
+  bottom: var(--space-12); z-index: 200; padding: 5px 7px; border-radius: 999px;
   background: rgb(0 0 0 / .28); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 @media (max-width: 860px) {
-  .coverflow.is-stack { aspect-ratio: 100 / 76; }
-  .coverflow.is-stack .cf-slide { top: 46%; width: 80%; margin: 0; }
+  .coverflow.is-stack { aspect-ratio: 813 / 506; }
+  .coverflow.is-stack .cf-slide { top: 50%; width: 100%; margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .coverflow.is-stack .cf-slide { transition: opacity 150ms ease; }
+}
+
+/* ─── Brand story page ─── */
+.story-frame { margin-top: var(--space-32); }
+.story-frame > img { display: block; width: 100%; height: auto; }
+/* Phone version: portrait frame image + the manifesto as live typewriter text, as on headout.com/about-us */
+.story-m { display: none; position: relative; filter: drop-shadow(1px 2px 6px rgb(60 30 10 / .35)); }
+.story-m > img { display: block; width: 100%; height: auto; }
+.story-m-in { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 13.5% 13%; overflow: hidden; }
+.story-m-scroll {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace; font-weight: 400; font-size: clamp(10px, 2.8vw, 13px); line-height: 1.65; color: rgb(48 22 12);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 52px), transparent 100%); mask-image: linear-gradient(#000 calc(100% - 52px), transparent 100%);
+  padding-bottom: 40px;
+}
+.story-m-scroll::-webkit-scrollbar { display: none; }
+.story-m-scroll p { margin: 0 0 0.85em; }
+.story-m-scroll em { font-style: italic; font-weight: 500; }
+.story-sig { flex: none; margin: 0; padding-top: 12px; text-align: right; font-family: 'Homemade Apple', cursive; font-size: 15px; line-height: 1.5; color: rgb(125 58 32); transform: rotate(-2.71deg); transform-origin: 100% 50%; }
+@media (max-width: 860px) {
+  .story-frame .story-d { display: none; }
+  .story-m { display: block; }
+  .story-frame .story-sr { display: none; }   /* the text is visible here, so the hidden copy isn't needed */
+}
+.story-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.story-more { display: grid; gap: var(--space-16); justify-items: start; max-width: 34em; }
+.story-more .body { margin-top: 0; }
+@media (max-width: 860px) {
+  .story-more { margin-top: var(--space-16); }
+}
+
+/* ─── Motion page ─── */
+.grid.grid-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1100px) and (min-width: 861px) { .grid.grid-3 { grid-template-columns: 1fr 1fr; } }
+.mo-card .h3 { margin-top: var(--space-16); }
+.mo-card .body { margin-top: var(--space-4); }
+.mo-sub { margin-top: var(--space-32); }
+.mo-sub + .mo-grid4 { margin-top: var(--space-16); }
+.mo-row2 { margin-top: var(--space-32); }
+.ar-mo-lg { aspect-ratio: 384 / 288; }
+.mo-chip { display: inline-block; margin-top: var(--space-12); padding: 4px 8px; border-radius: var(--radius-6); background: var(--grey-100); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: calc(12 * var(--t)); color: var(--grey-700); }
+.do-tick { flex: none; width: calc(16 * var(--u)); height: calc(16 * var(--u)); margin-top: calc(2 * var(--u)); border-radius: 50%; background: #15a34a; position: relative; }
+.do-tick::before { content: ''; position: absolute; left: 50%; top: 46%; width: calc(4 * var(--u)); height: calc(7 * var(--u)); border: solid #fff; border-width: 0 calc(1.6 * var(--u)) calc(1.6 * var(--u)) 0; transform: translate(-50%, -50%) rotate(45deg); }
+
+/* ─── Layout page: grid demo with real artwork (clean / with grid) ─── */
+.gd-canvas.gd-art { background: #fff; aspect-ratio: 1258 / 722; display: block; }
+.gd-art .gd-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.gd-overlay { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 250ms ease; pointer-events: none; }
+/* Matches the guide lines in the Figma exports: 1px dashed (3 on, 2.5 off), neutral grey, no fill */
+.gd-overlay line { stroke: rgb(0 0 0 / .2); stroke-width: 1; stroke-dasharray: 3 2.5; vector-effect: non-scaling-stroke; shape-rendering: crispEdges; }
+.grid-demo.show-anatomy .gd-overlay { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .gd-overlay { transition: none; } }
+/* Portal application decks sit in the usage rows */
+.usage > .coverflow { margin-top: 0; }
+
+/* ─── Mobile: copy runs the full width of the screen ───
+   The desktop measures (--copy, --copy-split, 34em) were also capping paragraphs on phones,
+   so text wrapped early and left a gap on the right. */
+@media (max-width: 860px) {
+  .copy, .section[data-layout="split"] .copy, .context-block .copy,
+  .section[data-layout="split"] .body, .media-caption, .story-more, .usage-copy, .styles-rule { max-width: none; }
+}
+
+/* ─── Typography: Type setting specimen, built in HTML ───
+   Desktop: laid out in the artwork's own 1254px space and scaled with the container (--q = one design pixel),
+   so it matches the old image at any width. Narrow containers: rows stack and the type sets at readable sizes. */
+.ts { container-type: inline-size; background: linear-gradient(115deg, #f2e9fe 0%, #f7e3ff 45%, #f6dcfe 70%, #f2e8ff 100%); }
+.ts-in { --q: calc(100cqw / 1254); padding: calc(63 * var(--q)) calc(67 * var(--q)) calc(34 * var(--q)) calc(64 * var(--q)); }
+.ts-row { display: grid; grid-template-columns: calc(473 * var(--q)) minmax(0, 1fr); border-top: 1px solid rgb(0 0 0 / .08); padding-top: calc(16 * var(--q)); }
+.ts-spec { margin: 0; font-family: var(--ht); font-size: calc(12.5 * var(--q)); line-height: calc(16.5 * var(--q)); }
+.ts-spec div { display: flex; gap: calc(6 * var(--q)); }
+.ts-spec dt { font-weight: 500; color: #3b3b3b; }
+.ts-spec dd { margin: 0; color: #8a8490; }
+.ts-sample { margin: 0; color: #000; text-wrap: pretty; }
+.ts-title { min-height: calc(244 * var(--q)); }
+.ts-title .ts-sample { font-family: var(--hd); font-weight: 600; font-size: calc(75 * var(--q)); line-height: calc(90 * var(--q)); letter-spacing: calc(0.8 * var(--q)); margin-top: calc(18 * var(--q)); max-width: 8.2em; }
+.ts-subtitle { min-height: calc(120 * var(--q)); }
+.ts-subtitle .ts-sample { font-family: var(--hd); font-weight: 600; font-size: calc(48 * var(--q)); line-height: calc(54 * var(--q)); letter-spacing: calc(0.6 * var(--q)); margin-top: calc(12 * var(--q)); }
+.ts-body { min-height: calc(175 * var(--q)); }
+.ts-body .ts-sample { font-family: var(--ht); font-weight: 400; font-size: calc(17 * var(--q)); line-height: calc(28 * var(--q)); margin-top: calc(4 * var(--q)); }
+.ts-small { min-height: calc(92 * var(--q)); }
+.ts-small .ts-sample { font-family: var(--ht); font-weight: 400; font-size: calc(12 * var(--q)); line-height: calc(20 * var(--q)); margin-top: calc(4 * var(--q)); max-width: calc(600 * var(--q)); }
+@container (max-width: 640px) {
+  .ts-in { --q: 1px; padding: 20px 20px 24px; }
+  .ts-row { display: block; min-height: 0; padding: 14px 0 24px; }
+  .ts-row:last-child { padding-bottom: 0; }
+  .ts-spec { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 12px; line-height: 16px; }
+  .ts-row .ts-sample { margin-top: 12px; max-width: none; }
+  /* Headline samples step down to fit a phone; the specs still state the real settings */
+  .ts-title .ts-sample { font-size: 44px; line-height: 52px; letter-spacing: 0.5px; }
+  .ts-subtitle .ts-sample { font-size: 30px; line-height: 35px; letter-spacing: 0.4px; }
 }

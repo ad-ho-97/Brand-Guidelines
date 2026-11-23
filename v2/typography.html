@@ -7,10 +7,10 @@
   <meta name="description" content="Headout typography: the Halyard typeface, type setting, alignment, colour in typography, suggested combinations and incorrect usage." />
   <link rel="preload" href="../assets/shared/fonts/HalyardDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="../assets/shared/fonts/HalyardText-Light.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="foundation.css" />
-  <link rel="stylesheet" href="logo-fluid-base.css" />
-  <link rel="stylesheet" href="logo-fluid.css" />
-  <link rel="stylesheet" href="pages.css" />
+  <link rel="stylesheet" href="foundation.css?v=20261123q" />
+  <link rel="stylesheet" href="logo-fluid-base.css?v=20261123q" />
+  <link rel="stylesheet" href="logo-fluid.css?v=20261123q" />
+  <link rel="stylesheet" href="pages.css?v=20261123q" />
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,9 +28,9 @@
       <li><a class="nav-item" href="/v2/color.html">Colour</a></li>
       <li><a class="nav-item" href="/v2/typography.html" aria-current="page">Typography</a></li>
       <li><a class="nav-item" href="/v2/layout.html">Layout</a></li>
-      <li><a class="nav-item" href="/motion">Motion</a></li>
+      <li><a class="nav-item" href="/v2/motion.html">Motion</a></li>
       <li><a class="nav-item" href="/v2/iconography.html">Iconography</a></li>
-      <li><span class="nav-item is-locked" tabindex="0" aria-disabled="true" aria-describedby="lock-tip-1">Voice and tone <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg><span class="tip" role="tooltip" id="lock-tip-1">Headout employees only · Sign in to view</span></span></li>
+      <li><a class="nav-item" href="/v2/brand-story.html">Brand story</a></li>
     </ul>
   </div>
   <div class="nav-group">
@@ -61,7 +61,7 @@
   <ul class="m-list">
     <li><a class="m-row" href="/v2/overview.html">Overview</a></li>
     <li class="m-group">Foundations</li>
-    <li><a class="m-row" href="/v2/logo-fluid.html">Logo</a></li><li><a class="m-row" href="/v2/color.html">Colour</a></li><li><a class="m-row" href="/v2/typography.html" aria-current="page">Typography</a></li><li><a class="m-row" href="/v2/layout.html">Layout</a></li><li><a class="m-row" href="/motion">Motion</a></li><li><a class="m-row" href="/v2/iconography.html">Iconography</a></li><li><button type="button" class="m-row is-locked" aria-disabled="true">Voice and tone <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg></button></li>
+    <li><a class="m-row" href="/v2/logo-fluid.html">Logo</a></li><li><a class="m-row" href="/v2/color.html">Colour</a></li><li><a class="m-row" href="/v2/typography.html" aria-current="page">Typography</a></li><li><a class="m-row" href="/v2/layout.html">Layout</a></li><li><a class="m-row" href="/v2/motion.html">Motion</a></li><li><a class="m-row" href="/v2/iconography.html">Iconography</a></li><li><a class="m-row" href="/v2/brand-story.html">Brand story</a></li>
     <li class="m-group">Asset bank</li>
     <li><button type="button" class="m-row is-locked" aria-disabled="true">Partners <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg></button></li><li><button type="button" class="m-row is-locked" aria-disabled="true">Employees <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg></button></li>
   </ul>
@@ -109,7 +109,26 @@
         <h2 class="h2">Type setting</h2>
         <p class="body">Leading, tracking and measure do the quiet work. Headlines sit tight so they read as one shape; body copy gets room to breathe. These are the settings we rely on for consistency and legibility.</p>
       </div></div>
-      <div class="media ar-typesetting"><img src="../assets/typography/type-setting.jpg" alt="Type setting — title, subtitle, body and small body specimens with size, leading and tracking" loading="lazy" /></div>
+      <div class="media ts" role="group" aria-label="Type setting specimens: title, subtitle, body and small body, each with its size, leading and tracking">
+        <div class="ts-in">
+          <div class="ts-row ts-title">
+            <dl class="ts-spec"><div><dt>Size</dt><dd>75px</dd></div><div><dt>Leading</dt><dd>90px</dd></div><div><dt>Tracking</dt><dd>0.8px</dd></div></dl>
+            <p class="ts-sample">This is a title example.</p>
+          </div>
+          <div class="ts-row ts-subtitle">
+            <dl class="ts-spec"><div><dt>Size</dt><dd>48px</dd></div><div><dt>Leading</dt><dd>54px</dd></div><div><dt>Tracking</dt><dd>0.6px</dd></div></dl>
+            <p class="ts-sample">This is a subtitle example.</p>
+          </div>
+          <div class="ts-row ts-body">
+            <dl class="ts-spec"><div><dt>Size</dt><dd>17px</dd></div><div><dt>Leading</dt><dd>28px</dd></div><div><dt>Tracking</dt><dd>0px</dd></div></dl>
+            <p class="ts-sample">This is a body copy used for longer-form content and supporting information across the brand. It should feel clear, calm, and easy to read, giving enough space to explain ideas without feeling dense. Use it to provide context, introduce sections, or expand on key messages while keeping sentences straightforward and approachable.</p>
+          </div>
+          <div class="ts-row ts-small">
+            <dl class="ts-spec"><div><dt>Size</dt><dd>12px</dd></div><div><dt>Leading</dt><dd>20px</dd></div><div><dt>Tracking</dt><dd>0px</dd></div></dl>
+            <p class="ts-sample">This is a smaller body copy used for supporting details, captions, and secondary information. Keep it concise, clear, and easy to scan without competing with the primary content.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Alignment · Split -->
@@ -130,7 +149,7 @@
         <h2 class="h2">Colour in typography</h2>
         <p class="body">Text colour has to hold up on every shade. Drag the sliders to explore the palette and see which text colour stays legible.</p>
       </div></div>
-      <div class="media embed-scaled" data-embed-width="780" data-embed-height="540"><iframe class="tool-frame" src="../assets/typography/embeds/brand-textcolor-tool.html" title="Colour in typography — interactive text-colour tool" allow="clipboard-write" loading="lazy"></iframe></div>
+      <div class="media embed-scaled" data-embed-width="780" data-embed-height="540" data-embed-mobile-width="440" data-embed-mobile-height="570"><iframe class="tool-frame" scrolling="no" src="../assets/typography/embeds/brand-textcolor-tool.html?v=20261123m" title="Colour in typography — interactive text-colour tool" allow="clipboard-write" loading="lazy"></iframe></div>
     </section>
 
     <!-- Suggested combinations · Split -->
@@ -167,8 +186,8 @@
   <div class="index-pop"><a href="#our-typeface">Our typeface</a><a href="#type-setting">Type setting</a><a href="#alignment">Alignment</a><a href="#colour-in-typography">Colour in typography</a><a href="#type-combinations">Suggested combinations</a><a href="#type-incorrect-usage">Incorrect usage</a></div>
 </nav>
 
-<script src="logo.js" defer></script>
-<script src="pages.js" defer></script>
+<script src="logo.js?v=20261123q" defer></script>
+<script src="pages.js?v=20261123q" defer></script>
 <script type="module" src="agentation.js"></script>
 <!-- Visual Edit (dev only): loads on localhost/file only -->
 <!-- visual-edit disabled: <script>if (['localhost','127.0.0.1','0.0.0.0'].includes(location.hostname) || location.protocol === 'file:') { var ve = document.createElement('script'); ve.src = 'visual-edit.js'; document.body.appendChild(ve); }</script> -->

@@ -264,10 +264,12 @@
   .sidebar { --u: clamp(0.9px, calc(100vw / 1440), 1.6px);
     background: transparent; border-right: 0;
     padding: calc(40 * var(--u)) calc(16 * var(--u)) calc(32 * var(--u)) calc(16 * var(--u)); }
-  /* Horizontal layouts share one 5:7 split: text 5/12, media 7/12 */
-  .content { --lead: calc((100% - var(--space-24)) * 5 / 12); }
-  .pagehead,
-  .section[data-layout="split"] { grid-template-columns: var(--lead) 1fr; }
+  /* Page header keeps the 5:7 split (text 5/12, media 7/12).
+     Text-beside-media sections use the Icon styles proportions instead: a narrow
+     276u copy column and a 40u gutter, so the visual takes the rest of the row. */
+  .content { --lead: calc((100% - var(--space-24)) * 5 / 12); --lead-media: calc(276 * var(--u)); --gap-media: calc(40 * var(--u)); }
+  .pagehead { grid-template-columns: var(--lead) 1fr; }
+  .section[data-layout="split"] { grid-template-columns: var(--lead-media) minmax(0, 1fr); column-gap: var(--gap-media); }
   .section[data-layout="split"] .copy { max-width: none; }
   .section[data-layout="split"] .body { max-width: 34em; }
   .banner { padding-left: calc(var(--lead) + var(--space-24)); }

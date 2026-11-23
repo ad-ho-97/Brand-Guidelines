@@ -14,6 +14,21 @@
     body { font-family:'Halyard Text', -apple-system, BlinkMacSystemFont, sans-serif; }
     /* Headline: Halyard Display Medium, three tight lines */
     .cit-headline { font-family:'Halyard Display', -apple-system, sans-serif; font-weight:500; line-height:1.0; letter-spacing:-0.02em; font-size:clamp(2.75rem, 7.8vw, 7.5rem); }
+    .cit-br-m { display: none; }
+    /* Phone layout (the page renders this frame narrow on mobile): headline at the top,
+       the control panel flush to the left, right and bottom edges of the colour card. */
+    @media (max-width: 600px) {
+      html, body { overflow: hidden; overscroll-behavior: none; }   /* the page sizes the frame; nothing scrolls inside it */
+      .cit-root { padding: 0 !important; min-height: 0 !important; }   /* natural height: the page sizes the frame to fit */
+      .cit-row { flex-direction: column !important; gap: 0 !important; }
+      .cit-head { align-items: flex-start !important; padding: 44px 24px 40px; }
+      .cit-headline { font-size: 44px; }
+      .cit-panelwrap { width: 100% !important; align-self: stretch !important; padding: 0 12px 12px; }
+      .cit-panel { max-width: none !important; border-radius: 22px !important; box-shadow: 0 12px 40px -18px rgba(0,0,0,0.3) !important; }
+      .cit-br-d { display: none; }
+      .cit-br-m { display: inline; }
+      .cit-cards { grid-template-columns: 1fr 1fr !important; }
+    }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -206,7 +221,7 @@
       const { background: currentHex, text } = resolveColors(hueKey, shadeIndex);
 
       return (
-        <div className="w-full max-w-[440px] rounded-3xl bg-white p-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]">
+        <div className="cit-panel w-full max-w-[440px] rounded-3xl bg-white p-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]">
           <SectionHeader title="Hue" subtitle="Pick a color family"
             trailing={<span className="mt-0.5 rounded bg-neutral-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-600">{angle}°</span>} />
           <SegmentedSlider segments={hueSegments} value={hueIndex} onChange={onHue} variant="hue" ariaLabel="Hue" />
@@ -234,7 +249,7 @@
             <p>Drag the sliders to explore colors. Shade and tone can be adjusted separately.</p>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <div className="cit-cards mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             <ColorCard label="Current color" name={hueName} hex={currentHex} />
             <ColorCard label="Text color" name={nameForText(text.color)} hex={text.color} note={opacityNote(text.opacity)} />
           </div>
@@ -255,16 +270,15 @@
       };
 
       return (
-        <div className="flex min-h-[100svh] flex-col px-6 py-5 transition-colors duration-500 ease-out sm:px-10 sm:py-5" style={{ backgroundColor: background }}>
-          <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-row items-stretch gap-12">
-            <div className="flex flex-1 items-center">
+        <div className="cit-root flex min-h-[100svh] flex-col px-6 py-5 transition-colors duration-500 ease-out sm:px-10 sm:py-5" style={{ backgroundColor: background }}>
+          <div className="cit-row mx-auto flex w-full max-w-[1400px] flex-1 flex-row items-stretch gap-12">
+            <div className="cit-head flex flex-1 items-center">
               <h1 className="cit-headline transition-colors duration-500 ease-out" style={{ color: toRgba(text.color, text.opacity) }}>
-                <span className="block">Home to</span>
-                <span className="block">world&rsquo;s best</span>
-                <span className="block">experiences</span>
+                {/* Desktop: Home to / world's best / experiences. Phone: Home to world's / best experiences */}
+                Home to<br className="cit-br-d" /> world&rsquo;s<br className="cit-br-m" /> best<br className="cit-br-d" /> experiences
               </h1>
             </div>
-            <div className="w-[400px] shrink-0 self-center">
+            <div className="cit-panelwrap w-[400px] shrink-0 self-center">
               <BrandColorTool hueIndex={hueIndex} shadeIndex={shadeIndex} onHue={handleHue} onShade={setShadeIndex} />
             </div>
           </div>

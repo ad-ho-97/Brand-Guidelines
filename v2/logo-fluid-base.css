@@ -314,6 +314,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .section-head + .media, .section-head + .grid, .section-head + .tabs, .section-head + .stack { margin-top: var(--space-24); }
   .section[data-layout="split"] { display: block; }
   .section[data-layout="split"] .section-head + .media { margin-top: var(--space-24); }
+  /* Whatever follows the copy in a stacked split section gets the same gap (e.g. a wrapper around a carousel + caption) */
+  .section[data-layout="split"] .section-head + * { margin-top: var(--space-24); }
+  /* Copy runs the full width on phones: the desktop measures were capping paragraphs and leaving a gap on the right */
+  .copy, .section[data-layout="split"] .copy, .section[data-layout="split"] .body,
+  .context-block .copy, .media-caption, .story-more, .usage-copy, .styles-rule { max-width: none; }
   .grid { gap: var(--space-12); }
   .grid.grid-tight { row-gap: var(--space-24); }
 }

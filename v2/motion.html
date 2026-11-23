@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Motion · Headout brand guidelines</title>
+  <meta name="description" content="Headout motion: product UI motion, marketing motion, brand motion, easing, and do's and don'ts." />
+  <link rel="preload" href="../assets/shared/fonts/HalyardDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/shared/fonts/HalyardText-Light.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="foundation.css?v=20261123q" />
+  <link rel="stylesheet" href="logo-fluid-base.css?v=20261123q" />
+  <link rel="stylesheet" href="logo-fluid.css?v=20261123q" />
+  <link rel="stylesheet" href="pages.css?v=20261123q" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ─── Desktop sidebar ─── -->
+<nav class="sidebar" aria-label="Brand guidelines">
+  <a class="sidebar-logo" href="/v2/overview.html" aria-label="Headout guidelines — Overview"><img src="../assets/shared/brand/logo-full.svg" alt="" /></a>
+  <div class="nav-group">
+    <a class="nav-group-label" href="/v2/overview.html"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 3.5h4.5a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 0-1.5-1.5H2v-8Zm12 0H9.5A1.5 1.5 0 0 0 8 5v8a1.5 1.5 0 0 1 1.5-1.5H14v-8Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Overview</a>
+  </div>
+  <div class="nav-group">
+    <span class="nav-group-label"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h2M2 8h2M2 12h2M6.5 4H14M6.5 8H14M6.5 12H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Foundations</span>
+    <ul class="nav-list">
+      <li><a class="nav-item" href="/v2/logo-fluid.html">Logo</a></li>
+      <li><a class="nav-item" href="/v2/color.html">Colour</a></li>
+      <li><a class="nav-item" href="/v2/typography.html">Typography</a></li>
+      <li><a class="nav-item" href="/v2/layout.html">Layout</a></li>
+      <li><a class="nav-item" href="/v2/motion.html" aria-current="page">Motion</a></li>
+      <li><a class="nav-item" href="/v2/iconography.html">Iconography</a></li>
+      <li><a class="nav-item" href="/v2/brand-story.html">Brand story</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <span class="nav-group-label"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 6h6M5 8.5h6M5 11h3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Asset bank</span>
+    <ul class="nav-list">
+      <li><span class="nav-item is-locked" tabindex="0" aria-disabled="true" aria-describedby="lock-tip-2">Partners <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg><span class="tip" role="tooltip" id="lock-tip-2">Headout employees only · Sign in to view</span></span></li>
+      <li><span class="nav-item is-locked" tabindex="0" aria-disabled="true" aria-describedby="lock-tip-3">Employees <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg><span class="tip" role="tooltip" id="lock-tip-3">Headout employees only · Sign in to view</span></span></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ─── Mobile header + pinned section bar ─── -->
+<header class="m-header">
+  <div class="m-top">
+    <a href="/v2/overview.html" aria-label="Headout guidelines — Overview"><img src="../assets/shared/brand/logo-full.svg" alt="" /></a>
+    <button class="m-burger" type="button" aria-label="All guideline pages" aria-expanded="false" aria-controls="m-drawer"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <button class="m-section" aria-expanded="false" aria-controls="m-sheet"><span class="m-section-label">Motion</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</header>
+
+<!-- ─── Mobile overlays: pages drawer (☰) + sections swipe sheet ─── -->
+<div class="m-scrim" hidden></div>
+<nav class="m-drawer" id="m-drawer" aria-label="All guideline pages" inert>
+  <div class="m-drawer-head">
+    <a href="/v2/overview.html" aria-label="Headout guidelines — Overview"><img src="../assets/shared/brand/logo-full.svg" alt="" /></a>
+    <button class="m-close" type="button" aria-label="Close menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 3 10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <ul class="m-list">
+    <li><a class="m-row" href="/v2/overview.html">Overview</a></li>
+    <li class="m-group">Foundations</li>
+    <li><a class="m-row" href="/v2/logo-fluid.html">Logo</a></li><li><a class="m-row" href="/v2/color.html">Colour</a></li><li><a class="m-row" href="/v2/typography.html">Typography</a></li><li><a class="m-row" href="/v2/layout.html">Layout</a></li><li><a class="m-row" href="/v2/motion.html" aria-current="page">Motion</a></li><li><a class="m-row" href="/v2/iconography.html">Iconography</a></li><li><a class="m-row" href="/v2/brand-story.html">Brand story</a></li>
+    <li class="m-group">Asset bank</li>
+    <li><button type="button" class="m-row is-locked" aria-disabled="true">Partners <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg></button></li><li><button type="button" class="m-row is-locked" aria-disabled="true">Employees <svg class="lock" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/></svg></button></li>
+  </ul>
+  <p class="m-toast" role="status" aria-live="polite"></p>
+</nav>
+<section class="m-sheet" id="m-sheet" role="dialog" aria-modal="true" aria-label="Sections on this page" inert>
+  <div class="m-sheet-grab" aria-hidden="true"><span></span></div>
+  <div class="m-sheet-title"><span>Foundations / Motion</span><button class="m-close" type="button" aria-label="Close sections"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 3 10 10M13 3 3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div>
+  <ul class="m-list m-sheet-list"><li><a class="m-row" href="#main" aria-current="true">Top</a></li><li><a class="m-row" href="#motion-overview">Overview</a></li><li><a class="m-row" href="#product-ui-motion">Product UI motion</a></li><li><a class="m-row" href="#marketing-motion">Marketing motion</a></li><li><a class="m-row" href="#brand-motion">Brand motion</a></li><li><a class="m-row" href="#easing">Easing</a></li><li><a class="m-row" href="#motion-dos-donts">Do's and don'ts</a></li></ul>
+</section>
+
+<main class="main" id="main">
+  <div class="content">
+
+    <!-- Page head -->
+    <header class="pagehead">
+      <h1 class="page-title">Motion</h1>
+      <div class="pagehead-copy">
+        <p class="intro">Motion is how Headout feels in use, across product, marketing and the brand itself.</p>
+      </div>
+    </header>
+    <div class="media hero-media placeholder"><span class="placeholder-tag">Hero loop · video coming soon</span></div>
+
+    <section class="section" id="motion-overview" data-index="Overview" data-layout="grid">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Overview</h2>
+      </div></div>
+      <div class="grid grid-3 grid-tight grid-stack-m">
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · search, results, checkout</span></div><h3 class="h3">Product</h3><p class="body">Web and app interactions: what responds, how fast, and how it moves.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · 9:16 social cut</span></div><h3 class="h3">Marketing</h3><p class="body">Video, social and campaign motion: formats, text, transitions, pacing.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · blimp sign-off</span></div><h3 class="h3">Brand</h3><p class="body">Blimp and wordmark animation, colour wipes and motifs.</p></figure>
+      </div>
+    </section>
+
+    <section class="section" id="product-ui-motion" data-index="Product UI motion" data-layout="grid">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Product UI motion</h2>
+      </div></div>
+      <div class="grid grid-3 grid-tight grid-stack-m">
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · button states</span></div><h3 class="h3">Buttons and taps</h3><p class="body">Instant feedback on press, then a clear state change.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · experience card and carousel</span></div><h3 class="h3">Cards and carousels</h3><p class="body">Hover lift, swipe momentum, snap to card.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · search</span></div><h3 class="h3">Search and suggestions</h3><p class="body">Suggestions slide in under the field; results update without a full reload.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · bottom sheet</span></div><h3 class="h3">Modals and bottom sheets</h3><p class="body">Enter from where they were triggered, leave the same way.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · list to detail</span></div><h3 class="h3">Page transitions</h3><p class="body">Shared elements carry people from list to detail.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · skeleton to content</span></div><h3 class="h3">Loading and skeletons</h3><p class="body">Show structure early, keep waiting calm.</p></figure>
+      </div>
+    </section>
+
+    <section class="section" id="marketing-motion" data-index="Marketing motion" data-layout="grid">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Marketing motion</h2>
+      </div></div>
+      <h3 class="h3 mo-sub">Building blocks</h3>
+      <div class="grid-4 mo-grid4">
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Preset demos</span></div><h3 class="h3">Text animation</h3><p class="body">Presets for Halyard Display: quick by line, scroll, zoom in. Keep rounded letterforms undistorted.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Transition demos</span></div><h3 class="h3">Transitions</h3><p class="body">Cut, match cut, swipe and jump. Say when to use each.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Timeline example</span></div><h3 class="h3">Pacing and beats</h3><p class="body">Fast and cut-heavy for energy, slow and smooth for calm. Cut on the beat.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Image loop</span></div><h3 class="h3">Photography in motion</h3><p class="body">Slow push-ins and cinemagraphs on destination imagery.</p></figure>
+      </div>
+    </section>
+
+    <section class="section" id="brand-motion" data-index="Brand motion" data-layout="grid">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Brand motion</h2>
+      </div></div>
+      <div class="grid grid-tight grid-stack-m">
+        <figure class="mo-card"><div class="media placeholder ar-mo-lg"><span class="placeholder-tag">Loop · blimp drift and settle</span></div><h3 class="h3">Blimp animation</h3><p class="body">Drifts in and settles; the soft tail sways once. Buoyant, never bouncy.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-mo-lg"><span class="placeholder-tag">Loop · lockup reveal</span></div><h3 class="h3">Wordmark reveal</h3><p class="body">Wordmark resolves beside the blimp. No stretching or per-letter wobble.</p></figure>
+      </div>
+      <div class="grid grid-3 grid-tight grid-stack-m mo-row2">
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · colour wipe</span></div><h3 class="h3">Purps and Candy colour wipes</h3><p class="body">Colour enters as a wipe or fill to mark a shift or a highlight.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · end card</span></div><h3 class="h3">Sign-off and end card</h3><p class="body">Standard 2-second end card for video, with hold time.</p></figure>
+        <figure class="mo-card"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Loop · motif</span></div><h3 class="h3">Motifs</h3><p class="body">Reusable shapes and movement that can carry a layout.</p></figure>
+      </div>
+    </section>
+
+    <section class="section" id="easing" data-index="Easing" data-layout="stacked">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Easing</h2>
+      </div></div>
+      <div class="usage-list">
+        <div class="usage">
+          <div class="usage-copy">
+            <h3 class="h3">Standard</h3>
+            <p class="body">The default. An element on screen changes state: starts gently, speeds, settles.</p>
+            <p class="mo-chip">cubic-bezier · value to come</p>
+          </div>
+          <div class="grid"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Curve diagram</span></div><div class="media placeholder ar-swatch"><span class="placeholder-tag">Live demo</span></div></div>
+        </div>
+        <div class="usage">
+          <div class="usage-copy">
+            <h3 class="h3">Enter</h3>
+            <p class="body">Elements arriving: modals, toasts, sheets. Fast start, soft landing.</p>
+            <p class="mo-chip">cubic-bezier · value to come</p>
+          </div>
+          <div class="grid"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Curve diagram</span></div><div class="media placeholder ar-swatch"><span class="placeholder-tag">Live demo</span></div></div>
+        </div>
+        <div class="usage">
+          <div class="usage-copy">
+            <h3 class="h3">Exit</h3>
+            <p class="body">Elements leaving the screen. Gentle start, quick finish.</p>
+            <p class="mo-chip">cubic-bezier · value to come</p>
+          </div>
+          <div class="grid"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Curve diagram</span></div><div class="media placeholder ar-swatch"><span class="placeholder-tag">Live demo</span></div></div>
+        </div>
+        <div class="usage">
+          <div class="usage-copy">
+            <h3 class="h3">Expressive</h3>
+            <p class="body">For delight when the user triggers it: a touch of anticipation and overshoot.</p>
+            <p class="mo-chip">cubic-bezier · value to come</p>
+          </div>
+          <div class="grid"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Curve diagram</span></div><div class="media placeholder ar-swatch"><span class="placeholder-tag">Live demo</span></div></div>
+        </div>
+        <div class="usage">
+          <div class="usage-copy">
+            <h3 class="h3">Linear</h3>
+            <p class="body">Exception only: continuous motion like marquees, progress and carousel indicators.</p>
+            <p class="mo-chip">linear</p>
+          </div>
+          <div class="grid"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Curve diagram</span></div><div class="media placeholder ar-swatch"><span class="placeholder-tag">Live demo</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="motion-dos-donts" data-index="Do's and don'ts" data-layout="grid">
+      <div class="section-head"><div class="copy">
+        <h2 class="h2">Do's and don'ts</h2>
+      </div></div>
+      <div class="grid grid-3 grid-tight grid-stack-m">
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Do · example loop</span></div><figcaption><span class="do-tick" aria-hidden="true"></span>Use one clear hero motion per screen and let it lead.</figcaption></figure>
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Do · example loop</span></div><figcaption><span class="do-tick" aria-hidden="true"></span>Stay on the duration and easing tokens.</figcaption></figure>
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Do · example loop</span></div><figcaption><span class="do-tick" aria-hidden="true"></span>Offer a calmer version when reduced motion is on.</figcaption></figure>
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Don't · example loop</span></div><figcaption><span class="dont-x" aria-hidden="true"></span>Add bounce or overshoot to errors or serious states.</figcaption></figure>
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Don't · example loop</span></div><figcaption><span class="dont-x" aria-hidden="true"></span>Stack many animations so they compete with the content.</figcaption></figure>
+        <figure class="dont"><div class="media placeholder ar-swatch"><span class="placeholder-tag">Don't · example loop</span></div><figcaption><span class="dont-x" aria-hidden="true"></span>Stretch, squash or distort the blimp or Halyard type.</figcaption></figure>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ─── Section index (desktop) ─── -->
+<nav class="index" aria-label="On this page">
+  <div class="index-rail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="index-pop"><a href="#motion-overview">Overview</a><a href="#product-ui-motion">Product UI motion</a><a href="#marketing-motion">Marketing motion</a><a href="#brand-motion">Brand motion</a><a href="#easing">Easing</a><a href="#motion-dos-donts">Do's and don'ts</a></div>
+</nav>
+
+<script src="logo.js?v=20261123q" defer></script>
+<script src="pages.js?v=20261123q" defer></script>
+<script type="module" src="agentation.js"></script>
+<!-- Visual Edit (dev only): loads on localhost/file only -->
+<!-- visual-edit disabled: <script>if (['localhost','127.0.0.1','0.0.0.0'].includes(location.hostname) || location.protocol === 'file:') { var ve = document.createElement('script'); ve.src = 'visual-edit.js'; document.body.appendChild(ve); }</script> -->
+</body>
+</html>

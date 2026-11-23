@@ -183,16 +183,22 @@
     var deck = document.getElementById(id); if (!deck) return;
     var cl = document.createElement('div'); cl.className = 'deck-cluster'; deck.appendChild(cl);
     var n = colors.length, step = n > 1 ? (100 - cardW) / (n - 1) : 0;
+    var stacked = window.matchMedia('(max-width: 860px)'), touch = window.matchMedia('(hover: none)').matches;
     var cards = colors.map(function (c, i) {
       var card = document.createElement('button');
       card.type = 'button';
       card.className = 'deck-card' + (lum(c.h) > 0.88 ? ' lite' : '');
       card.style.left = (i * step).toFixed(3) + '%'; card.style.width = cardW + '%'; card.style.background = c.h;
       card.setAttribute('aria-label', c.n + ', ' + c.h + '. Copy hex');
-      card.innerHTML = '<span class="dk-info" style="color:' + (lum(c.h) > 0.6 ? '#111111' : '#FFFFFF') + '"><span class="nm">' + c.n + '</span><span class="dk-right"><span class="hex">' + c.h + '</span><span class="hint">Click to copy</span></span></span>';
-      card.addEventListener('click', function () { copyHex(card, c); });
+      card.innerHTML = '<span class="dk-info" style="color:' + (lum(c.h) > 0.6 ? '#111111' : '#FFFFFF') + '"><span class="nm">' + c.n + '</span><span class="dk-right"><span class="hex">' + c.h + '</span><span class="hint">' + (touch ? 'Tap to copy' : 'Click to copy') + '</span></span></span>';
+      // Phones: the first tap opens a card in the stack, a tap on the open card copies. Desktop: click copies.
+      card.addEventListener('click', function () {
+        if (stacked.matches && !card.classList.contains('is-open')) { cards.forEach(function (x) { x.classList.toggle('is-open', x === card); }); return; }
+        copyHex(card, c);
+      });
       cl.appendChild(card); return card;
     });
+    cards[0].classList.add('is-open');   // only has an effect in the mobile stack
     function lift(card) { if (reduceMotion) return; cards.forEach(function (c) { c.style.transform = 'translateY(-20px)'; }); card.style.transform = 'translateY(-96px) rotate(-0.6deg)'; }
     function drop() { cards.forEach(function (c) { c.style.transform = ''; }); }
     cards.forEach(function (card) { card.addEventListener('mouseenter', function () { lift(card); }); card.addEventListener('focus', function () { lift(card); }); });
@@ -206,6 +212,9 @@
   if (field) {
     var dot = document.getElementById('ct-dot'), cardT = document.getElementById('ct-card-top'), cardB = document.getElementById('ct-card-bot');
     var layers = field.querySelectorAll('.ct-state');
+    // The glass shape and the dot live in a stage that always keeps the artwork's 399:506 proportion,
+    // so the field can be shorter on phones without squashing the shape. Positions are measured against the stage.
+    var stage = field.querySelector('.ct-stage') || field;
     var VERTS = [
       { x: 0.3016, y: 0.4994, tint: '#8000FF', name: 'Purps',  key: 'purps' },
       { x: 0.3839, y: 0.3570, tint: '#FE3394', name: 'Pink',   key: 'pink' },
@@ -224,12 +233,16 @@
       var im = new Image(); im.src = src; im.alt = alt;
       if (first || reduceMotion) { card.innerHTML = ''; card.appendChild(im); return; }
       im.className = 'is-new'; im.style.transitionDelay = (delay || 0) + 'ms';
-      card.appendChild(im);
-      requestAnimationFrame(function () { requestAnimationFrame(function () { im.classList.remove('is-new'); }); });
-      clearTimeout(card._clr);
-      card._clr = setTimeout(function () {
-        Array.prototype.slice.call(card.querySelectorAll('img')).forEach(function (x) { if (x !== card.lastElementChild) x.remove(); });
-      }, 380 + (delay || 0));
+      var insert = function () {
+        if (card.dataset.src !== src) return;            // a newer mood was picked while this one decoded
+        card.appendChild(im);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { im.classList.remove('is-new'); }); });
+        clearTimeout(card._clr);
+        card._clr = setTimeout(function () {
+          Array.prototype.slice.call(card.querySelectorAll('img')).forEach(function (x) { if (x !== card.lastElementChild) x.remove(); });
+        }, 380 + (delay || 0));
+      };
+      if (im.decode) im.decode().then(insert, insert); else insert();
     }
     function show(i) {
       layers.forEach(function (l, k) { l.classList.toggle('on', k === i); });
@@ -244,6 +257,7 @@
     function nearest(px, py) { var b = 0, bd = Infinity; VERTS.forEach(function (v, i) { var d = (px - v.x) * (px - v.x) + (py - v.y) * (py - v.y); if (d < bd) { bd = d; b = i; } }); return b; }
     var TRAVEL = reduceMotion ? 1 : 450, DWELL = 2200;
     function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
     function easeBack(t) { var c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
     // Keep a dragged point inside the hexagon: pull it toward the centre onto the nearest edge (pixel space)
     var HX = VERTS.reduce(function (a, v) { return a + v.x; }, 0) / 6, HY = VERTS.reduce(function (a, v) { return a + v.y; }, 0) / 6;
@@ -262,9 +276,12 @@
     var touched = false;   // once someone picks a mood, autoplay waits until the tool leaves view
     var tween = null, tweenTarget = -1, nextAuto = performance.now() + DWELL, vis = true, dragging = false, userPaused = false;
     var fw = 0, fh = 0;
-    function measure() { var r = field.getBoundingClientRect(); fw = r.width; fh = r.height; }
-    measure(); if ('ResizeObserver' in window) new ResizeObserver(measure).observe(field);
-    function place() { dot.style.transform = 'translate3d(' + (cx * fw).toFixed(2) + 'px,' + (cy * fh).toFixed(2) + 'px,0)'; }
+    function measure() { fw = stage.clientWidth; fh = stage.clientHeight; if (typeof cx === 'number') place(); }   // layout size, and keep the dot glued to its point when the field resizes
+    // Position with the individual `translate` property, not `transform`. The dot is also scaled with the `scale`
+    // property (pick-up lift and the arrival pulse), and `scale` is applied outside `transform`, so it was multiplying
+    // the position too: every pulse threw the dot 15% away from the field's top-left corner and back.
+    function place() { dot.style.translate = (cx * fw).toFixed(2) + 'px ' + (cy * fh).toFixed(2) + 'px'; }
+    measure(); if ('ResizeObserver' in window) new ResizeObserver(measure).observe(stage); window.addEventListener('resize', measure);
     function setTarget(i, byUser) { target = i; if (byUser) { nextAuto = performance.now() + TRAVEL + DWELL; } }
     function frame(now) {
       if (vis && !dragging && !tween && !reduceMotion && !userPaused && !touched && now >= nextAuto) { target = (target + 1) % 6; nextAuto = now + TRAVEL + DWELL; }
@@ -275,7 +292,7 @@
         if (p >= 1) { tween = null; pulse(); }
         place();
       }
-      if (target !== shown && (!tween || now - tween.t0 > 16)) show(target);
+      if (target !== shown && (!tween || dragging)) show(target);   // swap the theme once the dot has landed, so the heavy repaint never lands mid-travel
       requestAnimationFrame(frame);
     }
     dot.setAttribute('aria-valuemin', '1'); dot.setAttribute('aria-valuemax', '6');
@@ -284,16 +301,16 @@
     // While dragging, the dot follows the finger (inside the hex) and the mood follows the nearest point
     var grabDX = 0, grabDY = 0;   // where on the dot it was grabbed, so it doesn't jump to centre under the cursor
     function pick(e) {
-      var r = field.getBoundingClientRect(), q = clampHex((e.clientX - r.left) / r.width - grabDX, (e.clientY - r.top) / r.height - grabDY);
+      var r = stage.getBoundingClientRect(), q = clampHex((e.clientX - r.left) / r.width - grabDX, (e.clientY - r.top) / r.height - grabDY);
       tween = null; cx = q.x; cy = q.y; place();
       var n = nearest(cx, cy); setTarget(n, true); tweenTarget = n;
     }
-    // On release, settle onto the point with a slight overshoot
+    // On release, settle onto the point
     function settle() {
       var v = VERTS[target];
       if (Math.abs((cx - v.x) * fw) < 1 && Math.abs((cy - v.y) * fh) < 1) { cx = v.x; cy = v.y; place(); tween = null; tweenTarget = target; return; }   // a click, not a drag: stay put
       if (reduceMotion) { cx = VERTS[target].x; cy = VERTS[target].y; place(); return; }
-      tween = { x0: cx, y0: cy, x1: VERTS[target].x, y1: VERTS[target].y, t0: performance.now(), dur: 380, fn: easeBack };
+      tween = { x0: cx, y0: cy, x1: VERTS[target].x, y1: VERTS[target].y, t0: performance.now(), dur: 260, fn: easeOut };   // no overshoot: an overshoot carries the dot past the corner and outside the glass
       tweenTarget = target;
     }
     // Grab the dot to drag it; press anywhere else and it glides to the nearest mood
@@ -301,13 +318,13 @@
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       touched = true;
       if (e.target === dot) {
-        var r0 = field.getBoundingClientRect();
+        var r0 = stage.getBoundingClientRect();
         grabDX = (e.clientX - r0.left) / r0.width - cx; grabDY = (e.clientY - r0.top) / r0.height - cy;
         dragging = true; field.classList.add('is-dragging'); pick(e);
         if (field.setPointerCapture) field.setPointerCapture(e.pointerId);
         e.preventDefault();
       } else {
-        var r = field.getBoundingClientRect(), q = clampHex((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+        var r = stage.getBoundingClientRect(), q = clampHex((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
         setTarget(nearest(q.x, q.y), true);
       }
     });
@@ -336,19 +353,51 @@
   function fit(box) {
     var w = +box.dataset.embedWidth, h = +box.dataset.embedHeight, f = box.querySelector('iframe');
     var cw = box.clientWidth;
+    // Phones: embeds with a mobile layout render at that (narrow) design size instead of a shrunken desktop one
+    if (cw < 600 && box.dataset.embedMobileWidth) {
+      w = +box.dataset.embedMobileWidth; h = +box.dataset.embedMobileHeight;
+      // Fit the frame to the tool's real height so nothing is cut off at the bottom (same-origin only; falls back to the set height)
+      try { var bh = f.contentDocument && f.contentDocument.body && f.contentDocument.body.scrollHeight; if (bh > 200) h = bh + 2; } catch (e) {}
+    }
     if (cw >= w) { box.style.removeProperty('--embed-scale'); f.style.width = '100%'; f.style.height = h + 'px'; box.style.height = h + 'px'; return; }
     var k = cw / w;
     f.style.width = w + 'px'; f.style.height = h + 'px';
     box.style.setProperty('--embed-scale', k); box.style.height = Math.round(h * k) + 'px';
   }
-  boxes.forEach(function (b) { fit(b); if ('ResizeObserver' in window) new ResizeObserver(function () { fit(b); }).observe(b); });
+  boxes.forEach(function (b) {
+    fit(b); if ('ResizeObserver' in window) new ResizeObserver(function () { fit(b); }).observe(b);
+    // The tool renders a moment after its frame loads, so re-measure a few times
+    var fr = b.querySelector('iframe');
+    if (fr) fr.addEventListener('load', function () { [100, 500, 1200, 2500].forEach(function (ms) { setTimeout(function () { fit(b); }, ms); }); });
+    [800, 2000, 4000].forEach(function (ms) { setTimeout(function () { fit(b); }, ms); });
+  });
 })();
 
 /* ─── Layout page: grid demo + portal adaptation selector ─── */
 (function () {
   var demo = document.querySelector('.grid-demo');
   if (demo) {
-    var live = demo.querySelector('.gd-live'), canvas = demo.querySelector('.gd-canvas');
+    var live = demo.querySelector('.gd-live') || document.createElement('div'), canvas = demo.querySelector('.gd-canvas');
+    var art = document.getElementById('gd-img'), overlay = document.getElementById('gd-overlay');
+    ['2', '4', '6', '8', '10', 'modular'].forEach(function (k) { var pre = new Image(); pre.src = '../assets/layout/grid-' + k + '.png?v=2'; });
+    // Each artwork's grid, in the artwork's own 1258 × 722 space: x = column edges in left/right pairs, y = row edges
+    // (top and bottom margin for column grids; top/bottom pairs per row for the modular grid).
+    var GRIDS = {
+      2:  { x: [158.5, 616.5, 642.5, 1100], y: [148.5, 567] },
+      4:  { x: [155.5, 361, 403, 608.5, 650.5, 856, 898.5, 1103.5], y: [279, 436.5] },
+      6:  { x: [466, 506, 523.5, 563, 580.5, 620.5, 638, 677.5, 695, 734.5, 752, 791.5], y: [99, 617] },
+      8:  { x: [229, 305.5, 332.5, 409, 435.5, 512, 539, 616, 642.5, 719, 746, 822.5, 849, 926, 952, 1029], y: [153, 564] },
+      10: { x: [89, 175.5, 199.5, 285.5, 309.5, 396.5, 420.5, 506.5, 530.5, 617, 641, 727, 751.5, 838, 861.5, 948.5, 972.5, 1058.5, 1082.5, 1169], y: [80.5, 636] },
+      modular: { x: [455, 502, 515.5, 562, 575.5, 622.5, 635.5, 682.5, 696, 742.5, 756, 803],
+                 y: [101, 140.5, 154, 193, 206.5, 246, 259.5, 299, 312, 351.5, 365, 404.5, 418, 457, 470.5, 510, 523.5, 562.5, 576.5, 615.5], rows: true }
+    };
+    // Drawn as vector, so the lines stay one crisp pixel at any size
+    function drawGrid(v) {
+      var g = GRIDS[v], W = 1258, H = 722, out = '';
+      g.x.forEach(function (x) { out += '<line x1="' + x + '" y1="0" x2="' + x + '" y2="' + H + '"/>'; });
+      g.y.forEach(function (y) { out += '<line x1="0" y1="' + y + '" x2="' + W + '" y2="' + y + '"/>'; });
+      overlay.innerHTML = out;
+    }
     var radios = Array.prototype.slice.call(demo.querySelectorAll('[role="radio"]'));
     var names = { 2: 'Two', 4: 'Four', 6: 'Six', 8: 'Eight', 10: 'Ten', modular: 'Modular' };
     function render(v) {
@@ -357,7 +406,10 @@
       live.style.setProperty('--cols', v === 'modular' ? 6 : v);
       live.innerHTML = new Array(n + 1).join('<span></span>');
       radios.forEach(function (r) { var on = r.dataset.cols === String(v); r.setAttribute('aria-checked', String(on)); r.tabIndex = on ? 0 : -1; });
-      canvas.setAttribute('aria-label', v === 'modular' ? 'Modular grid of six columns and four rows inside the page margins' : names[v] + '-column grid inside the page margins');
+      canvas.setAttribute('aria-label', v === 'modular' ? 'Modular grid shown on a Headout artwork' : names[v] + '-column grid shown on a Headout artwork');
+      // Artwork per grid: a clean version, and the same artwork with its grid drawn on (shown by the switch)
+      if (art) art.src = '../assets/layout/grid-' + v + '.png?v=2';
+      if (overlay) drawGrid(v);
     }
     radios.forEach(function (r, i) {
       r.addEventListener('click', function () { render(r.dataset.cols === 'modular' ? 'modular' : +r.dataset.cols); });
@@ -375,9 +427,13 @@
   var opts = document.querySelector('.adapt-options');
   if (opts) {
     var tabs = Array.prototype.slice.call(opts.querySelectorAll('[role="tab"]')), name = document.querySelector('.adapt-name');
+    var img = document.getElementById('adapt-img'), FILES = ['square', 'rotated', 'stretched-horizontal', 'stretched-vertical', 'cropped'];
+    FILES.forEach(function (f) { var pre = new Image(); pre.src = '../assets/layout/adapt-' + f + '.jpg'; });   // preload so switching is instant
     function pick(i, focus) {
       tabs.forEach(function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
-      name.textContent = tabs[i].dataset.shape; if (focus) tabs[i].focus();
+      if (name) name.textContent = tabs[i].dataset.shape;
+      if (img) { img.src = '../assets/layout/adapt-' + FILES[i] + '.jpg'; img.alt = tabs[i].dataset.shape + ' portal in use'; }
+      if (focus) tabs[i].focus();
     }
     tabs.forEach(function (t, i) {
       t.addEventListener('click', function () { pick(i); });
@@ -396,14 +452,38 @@
   var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
   var panel = document.getElementById('st-panel'), rule = panel.querySelector('.st-rule'), used = panel.querySelector('.st-used'), prev = document.querySelector('.st-preview');
   var DATA = [
-    ['Our default. Use stroke icons for navigation, actions and inline information across the product. They stay light and let the content lead.', 'Used in: navbar, lists, inputs, buttons, posters & decks', 'Stroke icons in use — e.g. navbar, list rows, inputs'],
-    ['Use filled icons to show an active or selected state, like the current tab in the navbar, and at small sizes where a stroke gets too thin to read.', 'Used in: active tabs, selected states, small badges', 'Filled icons in use — e.g. active navbar tab, selected states'],
-    ['Stroke icons with a colour accent, and fully coloured icons. These are our most recognisable treatments, so save them for moments that build trust and help people decide: value props like booking protection and trip support, descriptor icons on product pages, and boosters like “660K+ booked this”. Boosters are customised Hugeicons too. Keep the accent to one small detail and stay within the set palette.', 'Used in: trust strips, value props, descriptor rows, boosters, landing pages, banners', 'Mixed & multicolour icons in use — e.g. trust strip, value props'],
-    ['Animated icons mark moments worth noticing, like a confirmed booking or a category change. In value-prop animations, Hugeicons become the building blocks: a calendar that checks itself off, a price badge with drop arrows. Use motion only where the icon is the main feedback, and keep it short.', 'Used in: success screens, value-prop animations, category icons, rollovers', 'Motion — success screen or value-prop animation (“Book anytime”, “Best price, always”)']
+    ['Our default, and the one you\'ll use most. Line icons work anywhere an icon simply needs to say what something is: navigation, actions, lists, inputs and labels. They stay light and let the content lead.', 'Used in: navbar, lists, inputs, buttons', 'Stroke icons in use — e.g. navbar, list rows, inputs'],
+    ['The same icon with more weight. Use it to show that something is active or selected, like the current tab in the navbar. Every filled icon has a stroke twin, so switching between the two reads as a change of state.', 'Used in: active tabs, selected states, small badges', 'Filled icons in use — e.g. active navbar tab, selected states'],
+    ['Stroke icons with a colour accent, and fully coloured icons. Use them as expression where there is no photo or illustration to carry the message, such as value props and trust strips. Keep the accent to one small detail and stay within the brand palette.', 'Used in: value props, trust strips, descriptor rows, banners', 'Mixed icons in use — e.g. trust strip, value props']
   ];
+  var box = document.getElementById('st-media');
+  var MEDIA = [
+    { type: 'video', src: '../assets/iconography/style-stroke.mp4', label: 'Stroke icons in use', ratio: '2454 / 1680' },
+    { type: 'video', src: '../assets/iconography/style-filled.mp4', label: 'Filled icons in use: the active tab in the navbar', ratio: '2454 / 1410' },
+    { type: 'video', src: '../assets/iconography/style-mixed.mp4', label: 'Mixed icons in use: value props', ratio: '1636 / 1120' }
+  ];
+  var current = 0, onScreen = true;
+  var still = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   function pick(i, focus) {
+    current = i;
     tabs.forEach(function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
-    rule.textContent = DATA[i][0]; used.textContent = DATA[i][1]; prev.textContent = DATA[i][2];
+    rule.textContent = DATA[i][0]; used.textContent = DATA[i][1];
+    // Preview: real media where we have it, otherwise the labelled placeholder
+    var m = MEDIA[i];
+    if (box) {
+      box.classList.toggle('placeholder', !m);
+      box.style.aspectRatio = m && m.ratio ? m.ratio : '';   // each asset keeps its own shape, so nothing is cropped
+      if (!m) box.innerHTML = '<span class="placeholder-tag"></span>', box.firstChild.textContent = DATA[i][2];
+      else if (m.type === 'video') {
+        // No loop: when the clip finishes, move on to the next style (carousel). Reduced motion keeps it looping in place.
+        box.innerHTML = '<video muted playsinline preload="auto" aria-label="' + m.label + '"><source src="' + m.src + '" type="video/mp4" /></video>';
+        var v = box.firstChild;
+        if (still.matches) v.loop = true;
+        else v.addEventListener('ended', function () { if (current === i) pick((i + 1) % tabs.length); });
+        if (onScreen) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      }
+      else box.innerHTML = '<img src="' + m.src + '" alt="' + m.label + '" />';
+    } else if (prev) prev.textContent = DATA[i][2];
     panel.setAttribute('aria-labelledby', tabs[i].id);
     if (focus) tabs[i].focus();
   }
@@ -415,4 +495,14 @@
       else if (d) { e.preventDefault(); pick((i + d + tabs.length) % tabs.length, true); }
     });
   });
+  // Only play while the section is on screen; resume where it left off
+  if (box && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      onScreen = es[0].isIntersecting;
+      var v = box.querySelector('video'); if (!v) return;
+      if (onScreen) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause();
+    }, { threshold: 0.3 }).observe(box);
+  }
+  MEDIA.forEach(function (m) { if (m && m.type === 'video') { var l = document.createElement('link'); l.rel = 'preload'; l.as = 'video'; l.href = m.src; document.head.appendChild(l); } });
+  pick(0);
 })();
